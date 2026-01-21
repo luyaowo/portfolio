@@ -1,0 +1,79 @@
+---
+import Layout from './Layout.astro';
+
+const { title, date } = Astro.props;
+const formattedDate =
+  date instanceof Date
+    ? date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : date;
+---
+
+<Layout>
+  <article class="essay">
+    <header class="essay-header">
+      <h1 class="essay-title">{title}</h1>
+      {date && <time class="essay-date">{formattedDate}</time>}
+    </header>
+    <div class="essay-body">
+      <slot />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .essay {
+    width: min(720px, 100%);
+    margin: 72px auto 64px;
+  }
+
+  .essay-header {
+    margin-bottom: 24px;
+  }
+
+  .essay-title {
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .essay-date {
+    font-size: 14px;
+    opacity: 0.6;
+  }
+
+  .essay-body :global(p) {
+    font-size: 17px;
+    line-height: 1.9;
+    margin: 0 0 12px;
+  }
+
+  .essay-body :global(img) {
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    object-fit: contain;
+    display: block;
+    margin: 18px 0;
+    border-radius: 0px;
+  }
+
+  @media (max-width: 720px) {
+    .essay-body :global(img) {
+      max-height: 50vh;
+    }
+  }
+
+  .essay-body :global(h2) {
+    font-size: 22px;
+    margin: 36px 0 14px;
+  }
+
+  .essay-body :global(h3) {
+    font-size: 18px;
+    margin: 28px 0 12px;
+  }
+</style>

@@ -1,0 +1,1844 @@
+
+> portfolio@0.0.1 dev
+> astro dev --force
+
+10:46:36 [WARN] [content] data store cleared (force)
+10:46:36 [types] Generated 1ms
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+10:46:36 [content] Syncing content
+10:46:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+10:46:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+10:46:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+10:46:36 [content] Synced content
+10:46:36 [vite] Port 4321 is in use, trying another one...
+10:46:36 [vite] Port 4322 is in use, trying another one...
+
+ astro  v5.16.7 ready in 371 ms
+
+┃ Local    http://localhost:4323/
+┃ Network  use --host to expose
+
+10:46:36 watching for file changes...
+10:48:49 [WARN] [glob-loader] Duplicate id "photography-2026-01-14" found in /Users/fanluyao/portfolio/src/content/essays/photography-2026-01-14/index.md. Later items with the same id will overwrite earlier ones.
+10:48:49 [glob-loader] Reloaded data from photography-2026-01-14/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+10:57:32 [WARN] [glob-loader] No entry type found for .DS_Store
+10:57:32 [glob-loader] Reloaded data from .DS_Store
+10:58:49 [WARN] [glob-loader] No entry type found for .DS_Store
+10:58:49 [glob-loader] Reloaded data from .DS_Store
+10:59:20 [WARN] [glob-loader] No entry type found for .DS_Store
+10:59:20 [glob-loader] Reloaded data from .DS_Store
+10:59:24 [WARN] [glob-loader] No entry type found for .DS_Store
+10:59:24 [glob-loader] Reloaded data from .DS_Store
+10:59:24 [ERROR] [InvalidContentEntryDataError] essays → summary-2026-01-15 data does not match collection schema.
+
+  title**: **title: Required
+  date**: **date: Required
+
+  Hint:
+    See https://docs.astro.build/en/guides/content-collections/ for more information on content schemas.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/invalid-content-entry-data-error/
+  Stack trace:
+    at /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md
+    [...] See full stack trace in the browser, or rerun with --verbose.
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+10:59:29 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+10:59:29 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+10:59:32 [WARN] [glob-loader] No entry type found for summary-2026-01-15/lockesama_a_boy_holding_an_umbrella_standing_in_the_rain_with_h_fdb5228a-9eb0-47f3-beea-b6f52c831414.png
+10:59:32 [glob-loader] Reloaded data from summary-2026-01-15/lockesama_a_boy_holding_an_umbrella_standing_in_the_rain_with_h_fdb5228a-9eb0-47f3-beea-b6f52c831414.png
+10:59:36 [WARN] [glob-loader] No entry type found for summary-2026-01-15/01.png
+10:59:36 [glob-loader] Reloaded data from summary-2026-01-15/01.png
+11:01:35 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:01:36 [ERROR] [UnknownFilesystemError] 
+  Hint:
+    It can be caused by many things, eg. missing permissions or a file not existing we attempt to read. Check the error cause for more details.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/unknown-filesystem-error/
+  Stack trace:
+    at /Users/fanluyao/portfolio/node_modules/astro/dist/content/mutable-data-store.js:337:13
+    [...] See full stack trace in the browser, or rerun with --verbose.
+  Caused by:
+  ENOENT: no such file or directory, rename '/Users/fanluyao/portfolio/.astro/data-store.json.tmp' -> '/Users/fanluyao/portfolio/.astro/data-store.json'
+    at async Object.rename (node:internal/fs/promises:787:10)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:06:40 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:06:40 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:07:01 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:07:01 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:07:01 [WARN] [glob-loader] No entry type found for .DS_Store
+11:07:01 [glob-loader] Reloaded data from .DS_Store
+11:10:02 Configuration file updated. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:10:02 [WARN] [content] data store cleared (force)
+11:10:02 [vite] Re-optimizing dependencies because vite config has changed
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:10:03 [content] Syncing content
+11:10:03 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:10:03 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:10:03 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:10:03 [content] Synced content
+11:10:03 [types] Generated 611ms
+11:10:03 [vite] Port 4321 is in use, trying another one...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:53 Configuration file removed. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:53 [content] Syncing content
+11:17:53 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:17:53 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:17:53 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:17:53 [content] Synced content
+11:17:53 [types] Generated 261ms
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:54 [200] / 13ms
+11:17:55 Configuration file added. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:55 [content] Syncing content
+11:17:55 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:17:55 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:17:55 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:17:55 [content] Synced content
+11:17:55 [types] Generated 139ms
+11:17:55 [vite] Port 4321 is in use, trying another one...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:23 Configuration file removed. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:24 [content] Syncing content
+11:21:24 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:21:24 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:21:24 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:21:24 [content] Synced content
+11:21:24 [types] Generated 343ms
+11:21:24 [vite] Port 4321 is in use, trying another one...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:35 Configuration file added. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:36 [content] Syncing content
+11:21:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:21:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:21:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:21:36 [content] Synced content
+11:21:36 [types] Generated 162ms
+11:21:36 [vite] Port 4321 is in use, trying another one...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:27:05 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:27:05 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:27:11 [WARN] [glob-loader] No entry type found for .DS_Store
+11:27:11 [glob-loader] Reloaded data from .DS_Store
+11:27:24 [WARN] [glob-loader] No entry type found for .DS_Store
+11:27:24 [glob-loader] Reloaded data from .DS_Store
+11:27:29 [WARN] [glob-loader] No entry type found for .DS_Store
+11:27:29 [glob-loader] Reloaded data from .DS_Store
+11:27:58 [WARN] [glob-loader] No entry type found for summary-2026-01-15/image.png
+11:27:58 [glob-loader] Reloaded data from summary-2026-01-15/image.png
+11:32:32 [WARN] [glob-loader] No entry type found for .DS_Store
+11:32:32 [glob-loader] Reloaded data from .DS_Store
+11:33:29 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:33:29 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:33:42 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:33:42 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:34:22 [WARN] [glob-loader] No entry type found for .DS_Store
+11:34:22 [glob-loader] Reloaded data from .DS_Store
+11:34:29 [WARN] [glob-loader] No entry type found for .DS_Store
+11:34:29 [glob-loader] Reloaded data from .DS_Store
+11:34:36 [WARN] [glob-loader] No entry type found for .DS_Store
+11:34:36 [glob-loader] Reloaded data from .DS_Store
+11:35:23 [WARN] [glob-loader] No entry type found for summary-2026-01-15/01.jpg
+11:35:23 [glob-loader] Reloaded data from summary-2026-01-15/01.jpg
+11:35:28 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:35:28 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:35:51 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:35:51 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:36:18 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:36:48 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:36:48 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:38:19 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:38:19 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:38:51 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:38:51 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:39:12 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:39:12 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:39:38 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:39:38 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+16:08:14 [glob-loader] Reloaded data from test.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+ps://docs.astro.build/en/reference/errors/invalid-content-entry-data-error/
+  Stack trace:
+    at /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md
+    [...] See full stack trace in the browser, or rerun with --verbose.
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+10:59:29 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+10:59:29 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+10:59:32 [WARN] [glob-loader] No entry type found for summary-2026-01-15/lockesama_a_boy_holding_an_umbrella_standing_in_the_rain_with_h_fdb5228a-9eb0-47f3-beea-b6f52c831414.png
+10:59:32 [glob-loader] Reloaded data from summary-2026-01-15/lockesama_a_boy_holding_an_umbrella_standing_in_the_rain_with_h_fdb5228a-9eb0-47f3-beea-b6f52c831414.png
+10:59:36 [WARN] [glob-loader] No entry type found for summary-2026-01-15/01.png
+10:59:36 [glob-loader] Reloaded data from summary-2026-01-15/01.png
+11:01:35 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:01:36 [ERROR] [UnknownFilesystemError] 
+  Hint:
+    It can be caused by many things, eg. missing permissions or a file not existing we attempt to read. Check the error cause for more details.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/unknown-filesystem-error/
+  Stack trace:
+    at /Users/fanluyao/portfolio/node_modules/astro/dist/content/mutable-data-store.js:92:13
+    [...] See full stack trace in the browser, or rerun with --verbose.
+  Caused by:
+  ENOENT: no such file or directory, rename '/Users/fanluyao/portfolio/.astro/content-assets.mjs.tmp' -> '/Users/fanluyao/portfolio/.astro/content-assets.mjs'
+    at async Object.rename (node:internal/fs/promises:787:10)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:06:40 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:06:40 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:06:41 [ERROR] [UnknownFilesystemError] 
+  Hint:
+    It can be caused by many things, eg. missing permissions or a file not existing we attempt to read. Check the error cause for more details.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/unknown-filesystem-error/
+  Stack trace:
+    at /Users/fanluyao/portfolio/node_modules/astro/dist/content/mutable-data-store.js:337:13
+    [...] See full stack trace in the browser, or rerun with --verbose.
+  Caused by:
+  ENOENT: no such file or directory, rename '/Users/fanluyao/portfolio/.astro/data-store.json.tmp' -> '/Users/fanluyao/portfolio/.astro/data-store.json'
+    at async Object.rename (node:internal/fs/promises:787:10)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:07:01 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:07:01 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:07:01 [WARN] [glob-loader] No entry type found for .DS_Store
+11:07:01 [glob-loader] Reloaded data from .DS_Store
+11:10:02 Configuration file updated. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:10:03 [content] Syncing content
+11:10:03 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:10:03 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:10:03 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:10:03 [content] Synced content
+11:10:03 [types] Generated 629ms
+11:10:03 [vite] Port 4321 is in use, trying another one...
+11:10:03 [vite] Port 4322 is in use, trying another one...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:53 Configuration file removed. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:53 [content] Syncing content
+11:17:53 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:17:53 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:17:53 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:17:53 [content] Synced content
+11:17:53 [types] Generated 231ms
+11:17:53 [vite] Re-optimizing dependencies because vite config has changed
+11:17:53 [vite] Port 4321 is in use, trying another one...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:55 Configuration file added. Restarting...
+11:17:55 [WARN] [content] data store cleared (force)
+11:17:55 [vite] Re-optimizing dependencies because vite config has changed
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:17:55 [content] Syncing content
+11:17:55 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:17:55 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:17:55 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:17:55 [content] Synced content
+11:17:55 [types] Generated 147ms
+11:17:55 [vite] Re-optimizing dependencies because vite config has changed
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:18:01 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:05 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:18 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:31 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:33 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:33 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:33 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:33 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:33 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:34 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:34 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:34 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:34 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:34 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:18:34 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:20:59 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:23 Configuration file removed. Restarting...
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:24 [content] Syncing content
+11:21:24 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:21:24 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:21:24 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:21:24 [content] Synced content
+11:21:24 [types] Generated 341ms
+11:21:24 [vite] Re-optimizing dependencies because vite config has changed
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:25 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:26 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:27 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:28 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:29 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:35 Configuration file added. Restarting...
+11:21:35 [WARN] [content] data store cleared (force)
+11:21:35 [vite] Re-optimizing dependencies because vite config has changed
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:36 [content] Syncing content
+11:21:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/notes"
+11:21:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/photography"
+11:21:36 [WARN] [glob-loader] No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src/content/work"
+11:21:36 [content] Synced content
+11:21:36 [types] Generated 189ms
+11:21:36 [vite] Re-optimizing dependencies because vite config has changed
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:21:36 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:21:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:32 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:37 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:38 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:39 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:39 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:39 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:39 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:26:39 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:05 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:27:05 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:27:11 [WARN] [glob-loader] No entry type found for .DS_Store
+11:27:11 [glob-loader] Reloaded data from .DS_Store
+11:27:24 [WARN] [glob-loader] No entry type found for .DS_Store
+11:27:24 [glob-loader] Reloaded data from .DS_Store
+11:27:29 [WARN] [glob-loader] No entry type found for .DS_Store
+11:27:30 [glob-loader] Reloaded data from .DS_Store
+11:27:52 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:52 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:53 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:53 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:53 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:58 [WARN] [glob-loader] No entry type found for summary-2026-01-15/image.png
+11:27:58 [glob-loader] Reloaded data from summary-2026-01-15/image.png
+11:27:59 [ERROR] [ImageNotFound] Could not find requested image `./01.jpg`. Does it exist?
+  Hint:
+    This is often caused by a typo in the image path. Please make sure the file exists, and is spelled correctly.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/image-not-found/
+  Stack trace:
+    at ResolveIdContext.resolveId (file:///Users/fanluyao/portfolio/node_modules/astro/dist/content/vite-plugin-content-assets.js:31:17)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:32:32 [WARN] [glob-loader] No entry type found for .DS_Store
+11:32:32 [glob-loader] Reloaded data from .DS_Store
+11:33:29 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:33:29 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:33:42 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:33:42 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:34:22 [WARN] [glob-loader] No entry type found for .DS_Store
+11:34:22 [glob-loader] Reloaded data from .DS_Store
+11:34:29 [WARN] [glob-loader] No entry type found for .DS_Store
+11:34:29 [glob-loader] Reloaded data from .DS_Store
+11:34:36 [WARN] [glob-loader] No entry type found for .DS_Store
+11:34:36 [glob-loader] Reloaded data from .DS_Store
+11:35:23 [WARN] [glob-loader] No entry type found for summary-2026-01-15/01.jpg
+11:35:23 [glob-loader] Reloaded data from summary-2026-01-15/01.jpg
+11:35:28 [WARN] [glob-loader] No entry type found for summary-2026-01-15/.DS_Store
+11:35:28 [glob-loader] Reloaded data from summary-2026-01-15/.DS_Store
+11:35:51 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:35:51 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:35:52 [ERROR] [UnknownFilesystemError] 
+  Hint:
+    It can be caused by many things, eg. missing permissions or a file not existing we attempt to read. Check the error cause for more details.
+  Error reference:
+    https://docs.astro.build/en/reference/errors/unknown-filesystem-error/
+  Stack trace:
+    at /Users/fanluyao/portfolio/node_modules/astro/dist/content/mutable-data-store.js:337:13
+    [...] See full stack trace in the browser, or rerun with --verbose.
+  Caused by:
+  ENOENT: no such file or directory, rename '/Users/fanluyao/portfolio/.astro/data-store.json.tmp' -> '/Users/fanluyao/portfolio/.astro/data-store.json'
+    at async Object.rename (node:internal/fs/promises:787:10)
+    [...] See full stack trace in the browser, or rerun with --verbose.
+11:35:58 [200] /essays 131ms
+11:36:18 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:36:19 [200] /essays 16ms
+11:36:35 [200] /essays/summary-2026-01-15 157ms
+11:36:35 [200] /_image 172ms
+11:36:48 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:36:48 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:36:49 [200] /essays 19ms
+11:37:44 [200] /essays/summary-2026-01-15 10ms
+11:38:19 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:38:19 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:38:19 [200] /essays/summary-2026-01-15 5ms
+11:38:51 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:38:51 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:38:52 [200] /essays/summary-2026-01-15 6ms
+11:39:12 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:39:12 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:39:13 [200] /essays/summary-2026-01-15 14ms
+11:39:38 [WARN] [glob-loader] Duplicate id "summary-2026-01-15" found in /Users/fanluyao/portfolio/src/content/essays/summary-2026-01-15/index.md. Later items with the same id will overwrite earlier ones.
+11:39:38 [glob-loader] Reloaded data from summary-2026-01-15/index.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+11:39:39 [200] /essays/summary-2026-01-15 5ms
+11:39:49 [200] /essays/xiongan-2026-01-12 5ms
+11:48:55 [200] /essays 115ms
+12:50:42 [200] /essays 67ms
+12:58:24 [200] /essays 61ms
+13:23:23 [200] /essays/photography-2026-01-14 26ms
+14:13:20 [200] /essays 40ms
+14:13:25 [200] /essays 10ms
+14:13:29 [200] /notes 1ms
+14:13:32 [200] /essays 8ms
+14:37:52 [watch] /src/layouts/Layout.astro?astro&type=style&index=0&lang.css
+14:37:52 [200] / 10ms
+14:39:47 [404] /home 7ms
+14:39:51 [200] /essays 16ms
+14:40:10 [200] /essays 17ms
+14:40:12 [200] /essays 8ms
+14:40:14 [404] /home 1ms
+14:40:15 [200] / 5ms
+14:40:59 [200] /essays 15ms
+14:41:00 [404] /home 1ms
+14:41:03 [200] / 4ms
+14:41:03 [200] /essays 7ms
+14:41:40 [200] /essays 11ms
+14:41:42 [200] /essays 10ms
+14:41:43 [404] /home 0ms
+14:43:53 [watch] /src/layouts/Layout.astro?astro&type=style&index=0&lang.css
+14:43:53 [200] /essays 5ms
+14:45:38 [200] /essays 11ms
+14:48:20 [200] / 9ms
+14:48:22 [200] /essays 4ms
+14:48:22 [200] / 7ms
+14:48:23 [200] /essays 5ms
+14:48:25 [200] / 4ms
+14:48:25 [200] / 3ms
+14:48:26 [200] / 6ms
+14:48:28 [200] /essays 6ms
+14:48:29 [200] / 5ms
+14:48:59 [200] /essays 12ms
+14:49:01 [200] / 3ms
+14:49:01 [200] /essays 6ms
+14:51:07 [404] /visual 5ms
+14:51:11 [200] /notes 6ms
+14:51:16 [200] /work 1ms
+14:51:19 [404] /visual 1ms
+14:51:26 [404] /visual 1ms
+14:51:38 [200] /notes 4ms
+14:52:19 [404] /visual 2ms
+14:53:19 [200] /essays 14ms
+14:53:38 [200] / 7ms
+14:55:53 [watch] /src/layouts/Layout.astro?astro&type=style&index=0&lang.css
+14:55:53 [200] / 6ms
+14:56:46 [watch] /src/pages/index.astro?astro&type=style&index=0&lang.css
+14:56:46 [200] / 22ms
+14:57:45 [200] /photography 5ms
+14:58:08 [watch] /src/pages/index.astro?astro&type=style&index=0&lang.css
+14:58:09 [200] / 8ms
+14:58:21 [200] / 189ms
+14:59:52 [200] / 61ms
+18:36:33 [200] / 24ms
+18:38:28 [200] / 25ms
+09:13:31 [200] / 17ms
+09:14:40 [200] / 50ms
+09:17:40 [200] /photography 21ms
+09:17:44 [200] /essays 26ms
+09:23:16 [200] /notes 22ms
+09:27:00 [200] / 25ms
+09:27:01 [200] /essays 14ms
+09:31:54 [200] /essays 63ms
+09:43:42 [200] /photography 12ms
+09:43:44 [200] /essays 17ms
+09:43:45 [200] /photography 3ms
+09:43:46 [200] /essays 7ms
+09:43:47 [200] /photography 3ms
+09:43:50 [200] /essays 6ms
+09:45:01 [200] /essays 65ms
+09:45:04 [200] /essays 65ms
+09:57:38 [200] /essays 1053ms
+11:21:15 [200] /photography 51ms
+11:21:16 [200] /essays 16ms
+11:21:17 [200] /photography 4ms
+11:21:20 [200] /essays 7ms
+11:21:58 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:21:58 [watch] src/pages/photography/index.astro
+11:22:01 [200] /photography 6ms
+11:22:02 [200] /essays 11ms
+11:22:03 [200] /photography 3ms
+11:22:51 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:22:51 [watch] src/pages/photography/index.astro
+11:22:54 [200] /essays 8ms
+11:22:55 [200] /photography 4ms
+11:23:14 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:23:14 [200] /photography 5ms
+11:23:19 [200] /essays 9ms
+11:23:23 [200] /photography 6ms
+11:23:37 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:23:38 [200] /photography 5ms
+11:23:45 [watch] /src/pages/essays/index.astro?astro&type=style&index=0&lang.css
+11:23:45 [200] /photography 9ms
+11:23:48 [200] /essays 8ms
+11:23:49 [200] /photography 2ms
+11:23:50 [200] /essays 12ms
+11:23:53 [200] /photography 5ms
+11:23:55 [200] /essays 6ms
+11:23:57 [200] /photography 4ms
+11:24:47 [200] /essays 15ms
+11:24:48 [200] / 3ms
+11:24:49 [200] /essays 5ms
+11:24:50 [200] /photography 1ms
+11:24:51 [200] /essays 15ms
+11:25:00 [200] /photography 3ms
+11:25:04 [200] /essays 7ms
+11:25:35 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:25:35 [watch] src/pages/photography/index.astro
+11:25:38 [200] /photography 13ms
+11:25:39 [200] /essays 5ms
+11:25:40 [200] /photography 4ms
+11:25:41 [200] /essays 6ms
+11:25:44 [200] /photography 4ms
+11:25:48 [200] /essays 8ms
+11:25:49 [200] /photography 4ms
+11:25:55 [200] /essays 6ms
+11:26:03 [200] /photography 6ms
+11:26:05 [200] /essays 7ms
+11:26:07 [200] /photography 3ms
+11:26:09 [200] /essays 5ms
+11:26:13 [200] /photography 5ms
+11:36:05 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:36:06 [200] /photography 12ms
+11:39:23 [200] / 8ms
+11:39:25 [200] /photography 3ms
+11:41:04 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+11:41:04 [watch] src/pages/photography/index.astro
+11:43:06 [200] /photography 8ms
+11:46:37 [200] /essays 47ms
+11:46:38 [200] / 6ms
+11:46:39 [200] /essays 8ms
+11:46:40 [200] /photography 6ms
+11:46:42 [200] /essays 4ms
+11:46:43 [200] /photography 4ms
+11:46:46 [200] /essays 7ms
+11:46:47 [200] /photography 3ms
+11:46:54 [200] /essays 4ms
+11:46:55 [200] /photography 2ms
+11:50:23 [200] /photography 49ms
+12:49:22 [200] /photography 26ms
+13:01:21 [200] /photography 30ms
+13:15:34 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+13:15:35 [200] /photography 14ms
+13:32:39 [200] /photography 35ms
+13:43:50 [200] /photography 10ms
+13:43:52 [200] / 5ms
+13:43:54 [200] /photography 7ms
+13:46:42 [200] /essays 31ms
+13:48:11 [200] /photography 14ms
+13:48:59 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+13:48:59 [watch] src/pages/photography/index.astro
+13:49:02 [200] /notes 12ms
+13:49:06 [200] /essays 14ms
+13:49:07 [200] /photography 4ms
+13:53:09 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+13:53:09 [watch] src/pages/photography/index.astro
+13:55:31 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+13:55:31 [200] /photography 13ms
+13:55:46 [200] /essays 13ms
+13:55:47 [200] /photography 9ms
+13:56:03 [200] / 15ms
+13:56:04 [200] /notes 3ms
+13:56:07 [200] /essays 5ms
+13:56:09 [200] /photography 4ms
+13:57:59 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+13:57:59 [watch] src/pages/photography/index.astro
+13:58:07 [200] /essays 12ms
+13:58:08 [200] /photography 5ms
+13:59:55 [200] /essays 15ms
+14:00:05 [200] /photography 3ms
+14:00:07 [200] / 7ms
+15:06:23 [200] / 116ms
+15:07:35 [200] / 14ms
+16:05:52 [200] /essays 25ms
+16:05:53 [200] /notes 5ms
+16:05:56 [200] /photography 4ms
+16:06:13 [200] /essays 7ms
+16:06:36 [200] /photography 7ms
+16:08:14 [glob-loader] Reloaded data from test.md
+
+Auto-generating collections for folders in "src/content/" that are not defined as collections.
+This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+The following collections have been auto-generated: notes, photography, work
+
+16:08:14 [200] /photography 3ms
+16:09:31 [200] /essays 149ms
+16:09:36 [200] / 4ms
+16:09:46 [200] /photography 14ms
+16:09:51 [200] /essays 16ms
+16:12:52 [404] /links 11ms
+16:15:39 [404] /about 3ms
+17:00:55 [200] / 70ms
+17:34:01 [200] /work 10ms
+17:34:04 [200] /about 8ms
+17:34:08 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:34:08 [200] /about 6ms
+17:34:55 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:34:55 [200] /about 5ms
+17:35:26 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:35:26 [watch] src/pages/about/index.astro
+17:36:57 [watch] /src/pages/photography/index.astro?astro&type=style&index=0&lang.css
+17:36:57 [200] /about 14ms
+17:37:58 [200] /photography 8ms
+17:37:59 [200] /essays 17ms
+17:38:14 [200] /about 11ms
+17:40:41 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:40:41 [watch] src/pages/about/index.astro
+17:41:08 [200] /essays 17ms
+17:41:10 [200] /photography 3ms
+17:41:10 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:41:10 [watch] src/pages/about/index.astro
+17:41:11 [200] /about 4ms
+17:41:13 [200] /notes 2ms
+17:41:26 [200] /about 5ms
+17:41:27 [200] /essays 6ms
+17:41:28 [200] /photography 3ms
+17:41:30 [200] /work 3ms
+17:41:33 [200] /about 4ms
+17:42:21 [200] /photography 6ms
+17:42:22 [200] /notes 2ms
+17:42:25 [200] /essays 4ms
+17:42:27 [200] /photography 3ms
+17:42:30 [200] /about 3ms
+17:43:08 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:43:08 [watch] src/pages/about/index.astro
+17:43:12 [200] /essays 9ms
+17:43:13 [200] /about 3ms
+17:43:16 [200] /photography 3ms
+17:43:18 [200] /about 5ms
+17:43:22 [200] /notes 3ms
+17:43:39 [200] /essays 20ms
+17:43:42 [200] /photography 3ms
+17:45:35 [200] / 5ms
+17:46:01 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:46:01 [watch] src/pages/about/index.astro
+17:46:01 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:46:02 [200] / 9ms
+17:46:02 [200] /photography 12ms
+17:46:18 [200] /about 6ms
+17:46:28 [200] /about 3ms
+17:47:00 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:47:00 [watch] src/pages/about/index.astro
+17:47:06 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:47:06 [200] /about 5ms
+17:47:07 [200] /photography 1ms
+17:47:11 [watch] /src/pages/about/index.astro?astro&type=style&index=0&lang.css
+17:47:11 [watch] src/pages/about/index.astro
+17:47:34 [200] /about 6ms
+17:47:57 [200] /essays 6ms
+17:49:02 [200] /photography 24ms
+17:49:04 [200] /essays 5ms
+17:49:05 [200] / 4ms
+17:49:42 [200] /photography 8ms
+17:49:44 [200] /essays 5ms
+17:49:46 [200] /about 4ms
+17:49:54 [200] /essays 4ms
+17:53:47 [200] /photography 8ms
+17:53:49 [200] /work 4ms
+17:53:52 [200] /about 5ms
+18:01:06 [200] /about 125ms
+18:01:06 [200] /about 4ms
+18:07:26 [200] /essays 50ms
+18:07:28 [200] / 4ms
+18:07:34 [200] /about 8ms
+18:07:52 [200] /about 54ms
+18:07:52 [200] /about 7ms
+18:08:40 [200] /about 101ms
+18:08:40 [200] /about 5ms
+09:01:24 [200] /about 21ms
+09:01:24 [200] /about 3ms
+09:28:11 [200] /work 10ms
+09:28:15 [200] /notes 12ms
+09:28:17 [200] /essays 21ms
+09:28:19 [200] /photography 7ms
+09:28:22 [200] /essays 6ms
+09:28:24 [200] / 4ms
+09:29:32 [200] /about 8ms
+09:29:57 [200] / 7ms
+09:32:20 [200] /essays 19ms
+09:49:52 [200] /about 28ms
+09:49:52 [200] /essays 37ms
+09:59:39 [200] /about 361ms
+10:07:16 [200] /about 74ms
+10:07:28 [200] /about 22ms
+11:00:01 [200] /about 124ms
+11:29:48 [200] /about 17ms
+11:41:55 [200] /about 39ms
+13:04:41 [200] /about 28ms
+13:06:58 [200] /about 17ms
+13:17:06 [200] /essays 45ms
+13:17:08 [200] /photography 7ms
+13:17:10 [200] / 3ms
+13:17:17 [200] /about 5ms
+13:17:20 [404] /links 2ms
+14:34:46 [200] / 61ms
+14:34:46 [200] /essays 24ms
+14:34:49 [200] / 3ms
+14:35:11 [200] /photography 16ms
+14:35:12 [200] /about 5ms
+15:04:04 [200] /about 255ms
+18:02:40 [200] /about 94ms
+18:03:42 [200] /about 41ms
+13:43:51 [200] /about 48ms
+15:51:54 [200] /about 29ms
+18:06:24 [200] /about 36ms
+19:40:56 [200] /about 65ms
+13:53:46 [200] /about 16ms
+19:11:57 [200] /about 53ms
+19:25:04 [200] /about 21ms
+19:37:40 [200] /about 134ms
+19:37:50 [200] /about 5ms
+20:19:56 [200] /about 16ms
+20:46:10 [200] /about 24ms
+20:52:32 [200] /about 14ms
+08:58:33 [200] /about 44ms
+08:59:58 [200] /about 19ms

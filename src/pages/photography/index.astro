@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const photos = [
+  '/images/photography/photo_01.jpg',
+  '/images/photography/photo_02.jpg',
+  '/images/photography/photo_03.jpg',
+  '/images/photography/photo_04.jpg',
+  '/images/photography/photo_05.jpg',
+  '/images/photography/photo_06.jpg',
+  '/images/photography/photo_07.jpg',
+  '/images/photography/photo_08.jpg',
+  '/images/photography/photo_09.jpg',
+  '/images/photography/photo_10.jpg',
+  '/images/photography/photo_11.jpg',
+  '/images/photography/photo_12.jpg',
+  '/images/photography/photo_13.jpg',
+  '/images/photography/photo_14.jpg',
+  '/images/photography/photo_15.jpg',
+  '/images/photography/photo_16.jpg',
+  '/images/photography/photo_17.jpg',
+  '/images/photography/photo_18.jpg',
+  '/images/photography/photo_19.jpg',
+  '/images/photography/photo_20.jpg',
+  '/images/photography/photo_21.jpg',
+  '/images/photography/photo_22.jpg',
+  '/images/photography/photo_23.jpg',
+  '/images/photography/photo_24.jpg',
+  '/images/photography/photo_25.jpg',
+  '/images/photography/photo_26.jpg',
+  '/images/photography/photo_27.jpg',
+  '/images/photography/photo_28.jpg',
+  '/images/photography/photo_29.jpg',
+  '/images/photography/photo_30.jpg',
+  '/images/photography/photo_31.jpg',
+  '/images/photography/photo_32.jpg',
+  '/images/photography/photo_33.jpg',
+  '/images/photography/photo_34.jpg',
+  '/images/photography/photo_35.jpg',
+  '/images/photography/photo_36.jpg',
+  '/images/photography/photo_37.jpg',
+  '/images/photography/photo_38.jpg',
+  '/images/photography/photo_39.jpg',
+  '/images/photography/photo_40.jpg',
+  '/images/photography/photo_41.jpg',
+  '/images/photography/photo_42.jpg',
+  '/images/photography/photo_43.jpg',
+  '/images/photography/photo_44.jpg',
+  '/images/photography/photo_45.jpg',
+
+];
+---
+
+<Layout>
+  <main class="photography">
+    <header class="photography-header">
+      <h1>photography</h1>
+      <p class="intro">
+        这里收录的是一些通过影像完成的记录。<br />
+        它们并不试图解释世界，而是保留观看发生的瞬间。
+      </p>
+    </header>
+
+    <section class="masonry" aria-label="摄影瀑布流">
+      {photos.map((src, index) => (
+        <article class="card">
+          <img
+            class="photo"
+            src={src}
+            alt={`摄影 ${String(index + 1).padStart(2, '0')}`}
+            loading="lazy"
+            decoding="async"
+          />
+        </article>
+      ))}
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .photography {
+    max-width: 1280px;
+    margin: 48px auto 120px;
+    padding: 0 20px;
+  }
+
+  .photography-header {
+    margin-bottom: 48px;
+  }
+
+  .photography-header h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  .masonry {
+    column-width: 220px;
+    column-gap: 16px;
+  }
+
+  .card {
+    break-inside: avoid;
+    margin: 0 0 16px;
+  }
+
+  .photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+  }
+
+  @media (max-width: 600px) {
+    .masonry {
+      column-width: 100%;
+    }
+  }
+</style>

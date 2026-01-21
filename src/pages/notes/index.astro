@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const notes = await getCollection('notes');
+const sortedNotes = notes.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const renderedNotes = await Promise.all(
+  sortedNotes.map(async (note) => ({
+    note,
+    Content: (await note.render()).Content,
+  }))
+);
+
+const formatDate = (value: Date) =>
+  value.toISOString().slice(0, 10).replaceAll('-', '/');
+---
+
+<Layout>
+  <main class="notes">
+    <header class="notes-header">
+      <h1>Notes</h1>
+      <p class="intro">
+        这里记录一些小的想法，<br />
+        它们来自生活或工作之间，<br />
+        不刻意强求，只让情绪短暂停留。
+      </p>
+    </header>
+
+    <ol class="note-list">
+      {renderedNotes.map(({ note, Content }) => (
+        <li class="note-item">
+          <time class="note-date" datetime={note.data.date.toISOString()}>
+            {formatDate(note.data.date)}
+          </time>
+          <div class="note-body">
+            <Content />
+          </div>
+        </li>
+      ))}
+    </ol>
+  </main>
+</Layout>
+
+<style>
+  .notes {
+    max-width: 720px;
+    margin: 56px auto 120px;
+    padding: 0 20px;
+    display: grid;
+    gap: 48px;
+  }
+
+  .notes-header h1 {
+    font-size: 32px;
+    margin: 0 0 12px;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.75;
+    margin: 0;
+  }
+
+  .note-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 48px;
+  }
+
+  .note-item {
+    display: grid;
+    gap: 12px;
+  }
+
+  .note-date {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+    line-height: 1.6;
+  }
+
+  .note-body :global(p) {
+    margin: 0;
+    line-height: 1.9;
+    opacity: 0.85;
+    font-size: 16px;
+  }
+
+  .note-body :global(p + p) {
+    margin-top: 8px;
+  }
+</style>

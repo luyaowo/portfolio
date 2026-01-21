@@ -1,0 +1,127 @@
+
+
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const essays = await getCollection('essays');
+const sortedEssays = essays.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Layout>
+  <main class="essays">
+    <header class="essays-header">
+      <h1>Essays</h1>
+      <p class="intro">
+        这里收录的是一些需要时间完成的文章，<br />
+        它们并不追求结论，而是记录思考如何发生。
+      </p>
+    </header>
+
+    <ul class="essay-list">
+      {sortedEssays.map((post) => (
+        <li class="essay-item">
+          <a class="essay-card" href={`/essays/${post.slug}`}>
+            {post.data.cover && (
+              <img
+                class="cover"
+                src={post.data.cover.src}
+                width={post.data.cover.width}
+                height={post.data.cover.height}
+                alt={post.data.title}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <h2 class="title">{post.data.title}</h2>
+
+            {post.data.summary && (
+              <p class="summary">{post.data.summary}</p>
+            )}
+
+            <time class="date" datetime={post.data.date}>
+              {new Date(post.data.date).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  .essays {
+    max-width: 720px;
+    margin: 48px auto 120px;
+    padding: 0 20px;
+  }
+
+  .essays-header {
+    margin-bottom: 48px;
+  }
+
+  .essays-header h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  .essay-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 56px;
+  }
+
+  .essay-card {
+    display: grid;
+    gap: 4px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 0px;
+    background: #e7e2d9;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+    line-height: 1.4;
+    margin: 0 0 0px;
+  }
+
+  .summary {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.75;
+    margin: 0 0 0px;
+  }
+
+  .date {
+    font-size: 13px;
+    opacity: 0.5;
+    margin-top: 0;
+  }
+
+  .essay-card:hover .title {
+    text-decoration: underline;
+  }
+</style>

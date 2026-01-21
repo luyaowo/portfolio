@@ -1,0 +1,148 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const profile = {
+  name: '路遥知玛丽',
+  intro: '一个产品设计师，会点儿吉他，喜欢摄影，最近在研究 Ai。',
+  sections: [
+    {
+      title: '我在做什么',
+      body: [
+        '从事产品与交互设计工作，',
+        '具有系统化的设计教育背景，',
+        '长期参与真实业务场景中的产品实践。',
+      ],
+    },
+    {
+      title: '',
+      body: [
+        '我的工作通常围绕复杂系统展开——',
+        '从需求梳理、信息结构到交互与视觉表达，',
+        '关注设计如何在限制条件中成立。',
+      ],
+    },
+    {
+      title: '我关心什么',
+      body: [
+        '除了设计工作本身，',
+        '我也持续通过摄影与写作进行观察。',
+        '相比结果，我更在意过程如何发生：',
+        '一次决策、一段路径、一个被忽略的瞬间，',
+        '往往比结论更有信息量。',
+      ],
+    },
+    {
+      title: '我怎么工作',
+      body: [
+        '我习惯通过可视化工具辅助思考与沟通，',
+        '包括流程图、原型与界面系统，',
+        '也在逐步将 AI 引入设计流程，',
+        '用于探索、验证与降低表达成本。',
+      ],
+    },
+  ],
+  contact: 'fly890611@163.com',
+};
+---
+
+<Layout>
+  <main class="about">
+    <div class="portrait" role="presentation">
+      <img src="/images/about/01.jpg" alt="" loading="lazy" decoding="async" />
+    </div>
+    <section class="content">
+      <header class="intro">
+        <h1>{profile.name}</h1>
+        <p>{profile.intro}</p>
+      </header>
+
+      {profile.sections.map((section) => (
+        <section class="block">
+          {section.title ? <h2>{section.title}</h2> : null}
+          {section.body.map((line) => (
+            <p>{line}</p>
+          ))}
+        </section>
+      ))}
+
+      <section class="block contact">
+        <h2>联系我</h2>
+        <p>{profile.contact}</p>
+      </section>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .about {
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
+    gap: 48px;
+    margin: 80px auto 120px;
+    padding: 0 20px;
+  }
+
+  .portrait {
+    width: 100%;
+  }
+
+  .portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .content {
+    display: grid;
+    gap: 28px;
+  }
+
+  .intro h1 {
+    font-size: clamp(22px, 2vw, 28px);
+    margin: 0 0 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .intro p {
+    margin: 0;
+    opacity: 0.8;
+    line-height: 1.7;
+  }
+
+  .block h2 {
+    font-size: 16px;
+    margin: 0 0 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .block p {
+    margin: 0 0 6px;
+    line-height: 1.75;
+    opacity: 0.85;
+  }
+
+  .block p:last-child {
+    margin-bottom: 0;
+  }
+
+  .contact p {
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 860px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait {
+      max-width: 520px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .about {
+      margin-top: 12px;
+    }
+  }
+</style>

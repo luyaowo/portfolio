@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const links = [
+  {
+    name: '小红书',
+    href: 'https://www.xiaohongshu.com/user/profile/60a87cbb000000000101f725',
+    icon: '/images/links/xhs-placeholder.svg',
+  },
+];
+---
+
+<Layout>
+  <main class="links">
+    <div class="links-card" role="presentation"></div>
+    <section class="links-panel">
+      <h1>links</h1>
+      <div class="links-grid">
+        {links.map((item) => (
+          <a class="link-item" href={item.href} target="_blank" rel="noreferrer">
+            <img src={item.icon} alt={item.name} />
+            <span>{item.name}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .links {
+    width: min(880px, 100%);
+    margin: 80px auto 140px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) minmax(240px, 320px);
+    gap: 48px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .links-card {
+    width: min(320px, 100%);
+    aspect-ratio: 1 / 1;
+    background: url('/images/photography/photo_34.jpg') center / cover no-repeat;
+  }
+
+  .links-panel h1 {
+    font-size: 22px;
+    margin: 0 0 18px;
+  }
+
+  .links-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .link-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+  }
+
+  .link-item img {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: transparent;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .link-item:hover span {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 720px) {
+    .links {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .links-card {
+      max-width: 320px;
+    }
+  }
+</style>

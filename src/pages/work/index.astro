@@ -1,0 +1,149 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('work');
+const sortedProjects = projects.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const formatDate = (value: Date) =>
+  `${value.getFullYear()}.${String(value.getMonth() + 1).padStart(2, '0')}`;
+const getCover = (cover: { src: string; width?: number; height?: number } | string) =>
+  typeof cover === 'string' ? { src: cover } : cover;
+---
+
+<Layout>
+  <main class="work">
+    <header class="work-header">
+      <h1>work</h1>
+      <p class="intro">
+        一些我参与过的设计与产品实践，<br />
+        关注在复杂约束下如何做出清晰判断。
+      </p>
+    </header>
+
+    <section class="work-list">
+      {sortedProjects.map((project) => {
+        const cover = getCover(project.data.cover);
+
+        return (
+        <article class="work-item">
+          <a class="work-card" href={`/work/${project.slug}`}>
+            <header class="item-header">
+              <h2>{project.data.title}</h2>
+              <p>{project.data.summary}</p>
+            </header>
+
+            <figure class="item-cover">
+              <img
+                src={cover.src}
+                width={cover.width}
+                height={cover.height}
+                alt={project.data.title}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+
+            <footer class="item-meta">
+              <span>{project.data.metaLeft}</span>
+              <span>{formatDate(project.data.date)}</span>
+              <span>{project.data.metaRight}</span>
+            </footer>
+          </a>
+        </article>
+        );
+      })}
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .work {
+    max-width: 720px;
+    margin: 56px auto 120px;
+    padding: 0 20px;
+    display: grid;
+    gap: 48px;
+  }
+
+  .work-header h1 {
+    font-size: 32px;
+    margin: 0 0 12px;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.75;
+    margin: 0;
+  }
+
+  .work-list {
+    display: grid;
+    gap: 48px;
+  }
+
+  .work-item {
+    display: grid;
+    gap: 16px;
+  }
+
+  .work-card {
+    display: grid;
+    gap: 16px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .item-header h2 {
+    font-size: 22px;
+    line-height: 1.4;
+    margin: 0 0 4px;
+    letter-spacing: 0;
+  }
+
+  .item-header p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+
+  .item-cover {
+    margin: 0;
+  }
+
+  .item-cover img {
+    width: 100%;
+    display: block;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  .item-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+  }
+
+  .work-card:hover .item-header h2 {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 540px) {
+    .work {
+      margin-top: 32px;
+    }
+
+    .item-meta {
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+    }
+  }
+</style>

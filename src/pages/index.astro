@@ -1,11 +1,285 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+  <section class="home">
+    <header class="intro">
+      <p class="kicker">Design · Observation · Writing</p>
+      <h1 class="title">
+        我通过设计理解复杂系统，<br />
+        也通过影像与文字记录那些无法被效率化的瞬间。
+      </h1>
+      <p class="desc">
+        这里是一个长期更新的个人站点，用于沉淀设计思考、视觉记录与阶段性写作。
+      </p>
+    </header>
+
+    <nav class="primary-nav" aria-label="主要内容入口">
+      <a href="/essays" class="nav-card">
+        <strong>Essays</strong>
+        <span>长期思考与完整文章</span>
+      </a>
+      <a href="/notes" class="nav-card">
+        <strong>Notes</strong>
+        <span>碎片化想法与观察记录</span>
+      </a>
+      <a href="/photography" class="nav-card">
+        <strong>photography</strong>
+        <span>摄影与视觉日记</span>
+      </a>
+      <a href="/work" class="nav-card">
+        <strong>Work</strong>
+        <span>设计项目与方法论</span>
+      </a>
+    </nav>
+  </section>
 </Layout>
+
+<style>
+  :global(body) {
+    background: #f6f4f0;
+    color: #1f1c17;
+  }
+
+  .home {
+    width: min(1200px, 100%);
+  }
+
+  .carousel {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .frame {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+    padding: 0;
+  }
+
+  .slide {
+    height: clamp(320px, 48vw, 560px);
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    background-size: cover;
+    background-position: center;
+    background-image: url('/images_slide1.jpg');
+  }
+
+  .slide.is-fading {
+    opacity: 0;
+  }
+
+  .arrow {
+    border: none;
+    background: none;
+    font-size: 24px;
+    color: #1f1c17;
+    cursor: pointer;
+    height: 44px;
+    width: 44px;
+  }
+
+  .dots {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    border: 1px solid #1f1c17;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .dot.is-active {
+    background: #1f1c17;
+  }
+
+  .social-entry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin: 32px 0 10px;
+  }
+
+  .social-link {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    border: 1px solid rgba(31, 28, 23, 0.2);
+    background: rgba(255, 255, 255, 0.7);
+    display: grid;
+    place-items: center;
+    color: #1f1c17;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .social-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(31, 28, 23, 0.4);
+    box-shadow: 0 10px 20px rgba(31, 28, 23, 0.12);
+  }
+
+  .social-link:focus-visible {
+    outline: 2px solid rgba(31, 28, 23, 0.5);
+    outline-offset: 3px;
+  }
+
+  .icon {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .carousel {
+      grid-template-columns: 1fr;
+    }
+
+    .arrow {
+      display: none;
+    }
+
+    .slide {
+      height: clamp(240px, 60vw, 420px);
+    }
+
+    .social-entry {
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .social-link {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+    }
+  }
+
+  .intro {
+    max-width: 720px;
+    margin: 120px auto 80px;
+    padding: 0 20px;
+  }
+
+  .kicker {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.3;
+    margin-bottom: 20px;
+  }
+
+  .desc {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.8;
+  }
+
+  .primary-nav {
+    max-width: 900px;
+    margin: 0 auto 120px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .nav-card {
+    border: 1px solid rgba(31, 28, 23, 0.12);
+    border-radius: 16px;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .nav-card strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .nav-card span {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .nav-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(31, 28, 23, 0.12);
+  }
+</style>
+
+<script is:inline>
+  const slides = [
+    "url('/images_slide1.jpg')",
+    "url('/images_slide2.jpg')",
+    "url('/images_slide3.jpg')",
+    "url('/images_slide4.jpg')",
+    "url('/images_slide5.jpg')",
+  ];
+
+  const initCarousel = () => {
+    let index = 0;
+    const slide = document.querySelector('.slide');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    const prev = document.querySelector('.prev');
+    const next = document.querySelector('.next');
+
+    if (!slide) return;
+
+    const render = () => {
+      slide.classList.add('is-fading');
+      window.setTimeout(() => {
+        slide.style.backgroundImage = slides[index];
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === index);
+        });
+        slide.classList.remove('is-fading');
+      }, 220);
+    };
+
+    const go = (step) => {
+      index = (index + step + slides.length) % slides.length;
+      render();
+    };
+
+    prev?.addEventListener('click', () => go(-1));
+    next?.addEventListener('click', () => go(1));
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        index = i;
+        render();
+      });
+    });
+
+    render();
+    setInterval(() => go(1), 6000);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarousel);
+  } else {
+    initCarousel();
+  }
+</script>
