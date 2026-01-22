@@ -10,7 +10,9 @@ const {
 
 const siteUrl = "https://portfolio-iota-two-prscaglsow.vercel.app/";
 const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
-const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const ogImageVersion = "1";
+const ogImageUrl = new URL(ogImage, siteUrl);
+ogImageUrl.searchParams.set("v", ogImageVersion);
 ---
 <!doctype html>
 <html lang={lang}>
