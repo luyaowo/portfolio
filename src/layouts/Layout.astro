@@ -1,11 +1,32 @@
+---
+import Analytics from "@vercel/analytics/astro";
+
+const {
+  title = "路遥知玛丽",
+  description = "一个产品设计师，会点儿吉他，喜欢摄影，最近在研究 Ai。",
+  ogImage = "/og-cover.jpg",
+  lang = "zh-CN"
+} = Astro.props;
+
+const siteUrl = "https://portfolio-iota-two-prscaglsow.vercel.app/";
+const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteUrl).toString();
+---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/avatar.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>路遥知玛丽</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={pageUrl} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={pageUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImageUrl} />
 	</head>
 	<body>
 		<header class="site-header">
@@ -23,6 +44,7 @@
 		<main class="site-main">
 			<slot />
 		</main>
+		<Analytics />
 	</body>
 </html>
 
