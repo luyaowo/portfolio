@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
-    "astro": "^5.16.7"
+    "astro": "^5.16.7",
+    "oh-my-opencode": "^3.1.4"
   }
 }
