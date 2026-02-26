@@ -29,13 +29,19 @@ const formatDate = (value: Date) =>
     </header>
 
     <ol class="note-list">
-      {renderedNotes.map(({ note, Content }) => (
-        <li class="note-item">
-          <time class="note-date" datetime={note.data.date.toISOString()}>
-            {formatDate(note.data.date)}
-          </time>
-          <div class="note-body">
-            <Content />
+      {renderedNotes.map(({ note, Content }, index) => (
+        <li class:list={['note-item', { 'is-first': index === 0, 'is-last': index === renderedNotes.length - 1 }]}>
+          <div class="timeline-col">
+            <span class="timeline-dot" />
+            <span class="timeline-line" />
+          </div>
+          <div class="note-content">
+            <time class="note-date" datetime={note.data.date.toISOString()}>
+              {formatDate(note.data.date)}
+            </time>
+            <div class="note-body">
+              <Content />
+            </div>
           </div>
         </li>
       ))}
@@ -68,19 +74,74 @@ const formatDate = (value: Date) =>
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    gap: 48px;
+    display: flex;
+    flex-direction: column;
   }
 
+  /* ── each note item: two-column grid ── */
   .note-item {
     display: grid;
-    gap: 12px;
+    grid-template-columns: 24px 1fr;
+    column-gap: 20px;
+  }
+
+  /* ── timeline column: dot + line, stretches full height ── */
+  .timeline-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100%;
+  }
+
+  .timeline-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #1f1c17;
+    opacity: 0.25;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .timeline-line {
+    width: 1.5px;
+    flex: 1 1 auto;
+    min-height: 40px;
+    background: #1f1c17;
+    opacity: 0.18;
+    margin-top: 6px;
+  }
+
+  /* hide line on last item */
+  .note-item.is-last .timeline-line {
+    visibility: hidden;
+  }
+
+  /* ── first item emphasis ── */
+  .note-item.is-first .timeline-dot {
+    width: 11px;
+    height: 11px;
+    opacity: 0.9;
+    margin-top: 4px;
+  }
+
+  /* ── content area ── */
+  .note-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 40px;
+    min-width: 0;
+  }
+
+  .note-item.is-last .note-content {
+    padding-bottom: 0;
   }
 
   .note-date {
     font-size: 14px;
     letter-spacing: 0.04em;
-    opacity: 0.6;
+    opacity: 0.5;
     line-height: 1.6;
   }
 
