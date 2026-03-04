@@ -67,7 +67,7 @@ const photos = Object.entries(imageModules)
   }
 
   .masonry {
-    column-width: 220px;
+    column-count: 4;
     column-gap: 16px;
   }
 
@@ -83,9 +83,21 @@ const photos = Object.entries(imageModules)
     border-radius: 0;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 1024px) {
     .masonry {
-      column-width: 100%;
+      column-count: 3;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .masonry {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .masonry {
+      column-count: 1;
     }
   }
 </style>
