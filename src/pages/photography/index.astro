@@ -1,53 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 
-const photos = [
-  { src: '/images/photography/photo_01.jpg', width: 4857, height: 3263 },
-  { src: '/images/photography/photo_02.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_03.jpg', width: 1723, height: 1078 },
-  { src: '/images/photography/photo_04.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_05.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_06.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_07.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_08.jpg', width: 4842, height: 3218 },
-  { src: '/images/photography/photo_09.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_10.jpg', width: 3596, height: 2419 },
-  { src: '/images/photography/photo_11.jpg', width: 4703, height: 3165 },
-  { src: '/images/photography/photo_12.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_13.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_14.jpg', width: 3712, height: 4993 },
-  { src: '/images/photography/photo_15.jpg', width: 5380, height: 3605 },
-  { src: '/images/photography/photo_16.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_17.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_18.jpg', width: 3712, height: 4766 },
-  { src: '/images/photography/photo_19.jpg', width: 4782, height: 3682 },
-  { src: '/images/photography/photo_20.jpg', width: 3498, height: 5236 },
-  { src: '/images/photography/photo_21.jpg', width: 3649, height: 5473 },
-  { src: '/images/photography/photo_22.jpg', width: 5340, height: 3499 },
-  { src: '/images/photography/photo_23.jpg', width: 5078, height: 3398 },
-  { src: '/images/photography/photo_24.jpg', width: 3712, height: 5568 },
-  { src: '/images/photography/photo_25.jpg', width: 3712, height: 5568 },
-  { src: '/images/photography/photo_26.jpg', width: 3569, height: 5409 },
-  { src: '/images/photography/photo_27.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_28.jpg', width: 5451, height: 3695 },
-  { src: '/images/photography/photo_29.jpg', width: 3712, height: 5568 },
-  { src: '/images/photography/photo_30.jpg', width: 4793, height: 3292 },
-  { src: '/images/photography/photo_31.jpg', width: 4285, height: 2948 },
-  { src: '/images/photography/photo_32.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_33.jpg', width: 4984, height: 3712 },
-  { src: '/images/photography/photo_34.jpg', width: 3712, height: 4074 },
-  { src: '/images/photography/photo_35.jpg', width: 3712, height: 4529 },
-  { src: '/images/photography/photo_36.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_37.jpg', width: 5434, height: 3528 },
-  { src: '/images/photography/photo_38.jpg', width: 5568, height: 3712 },
-  { src: '/images/photography/photo_39.jpg', width: 2184, height: 1454 },
-  { src: '/images/photography/photo_40.jpg', width: 3390, height: 3711 },
-  { src: '/images/photography/photo_41.jpg', width: 2286, height: 1538 },
-  { src: '/images/photography/photo_42.jpg', width: 1673, height: 2595 },
-  { src: '/images/photography/photo_43.jpg', width: 2475, height: 1856 },
-  { src: '/images/photography/photo_44.jpg', width: 1981, height: 1856 },
-  { src: '/images/photography/photo_45.jpg', width: 5568, height: 3712 },
-];
+// 使用 import.meta.glob 导入所有摄影图片（eager 模式直接获取模块）
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/photography/photo_*.jpg',
+  { eager: true }
+);
+
+// 按文件名排序并提取图片元数据
+const photos = Object.entries(imageModules)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+  .map(([, mod]) => mod.default);
 ---
 
 <Layout>
@@ -63,12 +27,14 @@ const photos = [
     <section class="masonry" aria-label="摄影瀑布流">
       {photos.map((photo, index) => (
         <article class="card">
-          <img
+          <Image
             class="photo"
-            src={photo.src}
-            width={photo.width}
-            height={photo.height}
+            src={photo}
             alt={`摄影 ${String(index + 1).padStart(2, '0')}`}
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+            format="webp"
+            quality={80}
             loading="lazy"
             decoding="async"
           />

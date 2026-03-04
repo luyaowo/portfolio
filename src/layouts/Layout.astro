@@ -8,7 +8,7 @@ const {
   lang = "zh-CN"
 } = Astro.props;
 
-const siteUrl = "https://portfolio-iota-two-prscaglsow.vercel.app/";
+const siteUrl = Astro.site?.origin ?? "https://luyao.studio";
 const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageVersion = "1";
 const ogImageUrl = new URL(ogImage, siteUrl);
