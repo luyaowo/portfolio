@@ -144,12 +144,13 @@ class NesEmulator {
     if (!mem) return;
 
     if (this.cheats.invincible) {
-      // Rockman 1 (NES) common RAM addresses:
-      // 0x00A6 lives, 0x006A current HP, 0x0055 i-frame counter.
+      // Rockman 1 (NES) RAM addresses:
+      // 0x00A6 = lives count, 0x006A = current HP (max 0x1C = 28).
       if (mem[0x00A6] < 9) mem[0x00A6] = 9;
       if (mem[0x006A] < 0x1c) mem[0x006A] = 0x1c;
-      // Keep i-frame counter low to avoid constant sprite flicker.
-      if (mem[0x0055] > 0) mem[0x0055] = 0;
+      // NOTE: Do NOT touch 0x0055 — it is the global frame counter / timer
+      // used for enemy animation, movement timing, and game events.
+      // Clearing it causes enemies and bosses to move at abnormal speed.
     }
 
     if (this.cheats.infiniteWeaponEnergy) {
@@ -160,12 +161,13 @@ class NesEmulator {
     }
 
     if (this.cheats.oneHitKill) {
-      // Common boss HP RAM.
+      // Boss HP at 0x06C1.
       if (mem[0x06C1] > 1) {
         mem[0x06C1] = 1;
       }
-      // Enemy HP slots.
-      for (let addr = 0x06D0; addr <= 0x06DF; addr += 1) {
+      // Enemy HP slots (0x06C2–0x06C8 covers the active enemy object HP).
+      // Using a narrower range to avoid overwriting non-HP game data.
+      for (let addr = 0x06C2; addr <= 0x06C8; addr += 1) {
         if (mem[addr] > 1 && mem[addr] <= 0x7f) {
           mem[addr] = 1;
         }
