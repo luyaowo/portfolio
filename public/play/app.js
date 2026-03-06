@@ -3,6 +3,9 @@
  * This is the "encapsulation layer" requested by the user flow.
  */
 class NesEmulator {
+  /** NES NTSC runs at ~60.0988 fps; use 1000/60 ≈ 16.67 ms per frame. */
+  static FRAME_INTERVAL = 1000 / 60;
+
   constructor(canvas, statusEl) {
     this.canvas = canvas;
     this.statusEl = statusEl;
@@ -13,6 +16,7 @@ class NesEmulator {
     this.isRunning = false;
     this.romLoaded = false;
     this.loopHandle = null;
+    this.lastFrameTime = 0;
     this.cheats = {
       invincible: false,
       infiniteWeaponEnergy: false,
@@ -73,13 +77,21 @@ class NesEmulator {
 
     this.isRunning = true;
     this.setStatus("运行中");
+    this.lastFrameTime = performance.now();
 
-    const step = () => {
+    const step = (now) => {
       if (!this.isRunning) return;
+      this.loopHandle = requestAnimationFrame(step);
+
+      const elapsed = now - this.lastFrameTime;
+      if (elapsed < NesEmulator.FRAME_INTERVAL) return;
+
+      // Snap to frame boundary to avoid drift accumulation.
+      this.lastFrameTime = now - (elapsed % NesEmulator.FRAME_INTERVAL);
+
       this.applyCheats();
       this.nes.frame();
       this.applyCheats();
-      this.loopHandle = requestAnimationFrame(step);
     };
 
     this.loopHandle = requestAnimationFrame(step);
