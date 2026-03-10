@@ -15,7 +15,7 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
 <Layout>
   <main class="work">
     <header class="work-header">
-      <h1>work</h1>
+      <h1>Work</h1>
       <p class="intro">
         一些我参与过的设计与产品实践，<br />
         关注在复杂约束下如何做出清晰判断。
@@ -68,7 +68,8 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
   }
 
   .work-header h1 {
-    font-size: 32px;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
     margin: 0 0 12px;
   }
 
