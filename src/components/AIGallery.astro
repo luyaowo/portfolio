@@ -1,0 +1,363 @@
+---
+import type { AIImage } from '../data/ai-gallery';
+
+interface Props {
+  images: AIImage[];
+}
+
+const { images } = Astro.props;
+
+/* 动态导入 src/assets/ai/ 下所有图片 */
+const allImages = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/ai/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true }
+);
+
+function resolveImage(src: string) {
+  const key = `../assets/ai/${src}`;
+  return allImages[key]?.default;
+}
+---
+
+{images.length === 0 ? (
+  <p class="empty">暂无作品，敬请期待。</p>
+) : (
+  <ul class="gallery">
+    {images.map((item) => {
+      const img = resolveImage(item.src);
+      return (
+        <li class="gallery-item">
+          <button
+            type="button"
+            class="gallery-img-btn"
+            data-title={item.title}
+            data-tool={item.tool}
+            data-description={item.description || ''}
+            data-prompt={item.prompt || ''}
+            data-src={img?.src}
+            data-width={img?.width}
+            data-height={img?.height}
+          >
+            {img ? (
+              <img
+                src={img.src}
+                width={img.width}
+                height={img.height}
+                alt={item.title}
+                loading="lazy"
+                decoding="async"
+                class="gallery-img"
+              />
+            ) : (
+              <div class="gallery-placeholder" />
+            )}
+            <div class="gallery-overlay">
+              <span class="view-prompt">查看 Prompt</span>
+            </div>
+          </button>
+          <div class="gallery-meta">
+            <strong class="gallery-title">{item.title}</strong>
+            <span class="gallery-tool">{item.tool}</span>
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+)}
+
+<!-- 模态框 -->
+<div id="ai-modal" class="modal" hidden>
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <button type="button" class="modal-close" aria-label="关闭">×</button>
+    <img id="modal-img" src="" alt="" class="modal-img" />
+    <div class="modal-info">
+      <h3 id="modal-title" class="modal-title"></h3>
+      <p id="modal-tool" class="modal-tool"></p>
+      <p id="modal-desc" class="modal-desc"></p>
+      <div class="modal-prompt-wrapper">
+        <button type="button" class="prompt-toggle">显示 Prompt</button>
+        <pre id="modal-prompt" class="modal-prompt"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('ai-modal');
+  const modalImg = document.getElementById('modal-img') as HTMLImageElement;
+  const modalTitle = document.getElementById('modal-title');
+  const modalTool = document.getElementById('modal-tool');
+  const modalDesc = document.getElementById('modal-desc');
+  const modalPrompt = document.getElementById('modal-prompt');
+  const promptToggle = document.querySelector('.prompt-toggle');
+  const promptWrapper = document.querySelector('.modal-prompt-wrapper');
+  const closeBtn = document.querySelector('.modal-close');
+  const backdrop = document.querySelector('.modal-backdrop');
+
+  // 打开弹窗
+  document.querySelectorAll('.gallery-img-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const data = (btn as HTMLElement).dataset;
+      if (!modal || !modalImg || !modalTitle) return;
+
+      modalImg.src = data.src || '';
+      modalImg.width = Number(data.width) || 0;
+      modalImg.height = Number(data.height) || 0;
+      modalImg.alt = data.title || '';
+      if (modalTitle) modalTitle.textContent = data.title || '';
+      if (modalTool) modalTool.textContent = data.tool || '';
+      if (modalDesc) {
+        modalDesc.textContent = data.description || '';
+        modalDesc.style.display = data.description ? 'block' : 'none';
+      }
+      if (modalPrompt) modalPrompt.textContent = data.prompt || '（无 Prompt）';
+      if (promptWrapper) {
+        (promptWrapper as HTMLElement).style.display = data.prompt ? 'block' : 'none';
+      }
+
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // 关闭弹窗
+  const closeModal = () => {
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  closeBtn?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // 切换 Prompt 显示
+  promptToggle?.addEventListener('click', () => {
+    if (!modalPrompt || !promptToggle) return;
+    const isExpanded = modalPrompt.style.maxHeight !== '0px';
+    modalPrompt.style.maxHeight = isExpanded ? '0' : '1000px';
+    (promptToggle as HTMLElement).textContent = isExpanded ? '显示 Prompt' : '隐藏 Prompt';
+  });
+</script>
+
+<style>
+  .empty {
+    font-size: 15px;
+    opacity: 0.6;
+    text-align: center;
+    padding: 80px 0;
+  }
+
+  .gallery {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .gallery-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .gallery-img-btn {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #e7e2d9;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-img-btn:hover .gallery-img {
+    transform: scale(1.03);
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .gallery-img-btn:hover .gallery-overlay {
+    opacity: 1;
+  }
+
+  .view-prompt {
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+  }
+
+  .gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #e7e2d9;
+  }
+
+  .gallery-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .gallery-title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .gallery-tool {
+    font-size: 13px;
+    opacity: 0.5;
+  }
+
+  /* 模态框 */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal[hidden] {
+    display: none;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .modal-content {
+    position: relative;
+    background: #f6f4f0;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 768px) {
+    .modal-content {
+      flex-direction: row;
+      max-width: 800px;
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .modal-img {
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+  }
+
+  @media (min-width: 768px) {
+    .modal-img {
+      max-width: 400px;
+      max-height: 90vh;
+    }
+  }
+
+  .modal-info {
+    padding: 24px;
+    flex: 1;
+  }
+
+  .modal-title {
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+
+  .modal-tool {
+    font-size: 14px;
+    opacity: 0.5;
+    margin: 0 0 12px;
+  }
+
+  .modal-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    opacity: 0.8;
+  }
+
+  .modal-prompt-wrapper {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 16px;
+  }
+
+  .prompt-toggle {
+    font-size: 13px;
+    color: #1f1c17;
+    background: none;
+    border: 1px solid rgba(31, 28, 23, 0.2);
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+
+  .prompt-toggle:hover {
+    background: rgba(31, 28, 23, 0.05);
+  }
+
+  .modal-prompt {
+    font-size: 13px;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 12px;
+    border-radius: 4px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+</style>
