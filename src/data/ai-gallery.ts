@@ -66,15 +66,4 @@ export const aiGallery: AIImage[] = [
     date: '2026-03-05',
     prompt: 'https://s.mj.run/E4tLsMoO7Y4 A cute cartoon character wearing a helmet with cat ears, two large eyes wearing a eye mask, confident expression, and wearing a emblem on the chest, wearing an aquamarine-colored cloak over its shoulders, blind box, Pop Mart, Pixar, clay material, 3d, c4d, OC render, RTX on, best --niji 6 --s 250 --ar 3:4',
   },
-
-
-
-
-
-
-
-
-
-
-
 ];
