@@ -19,11 +19,10 @@ import Layout from '../../layouts/Layout.astro';
           <span id="guestbook-state">loading</span>
         </div>
         <div class="message-list" id="guestbook-list" aria-live="polite">
-          <article class="message-card is-muted">
-            <p class="message-body">
-              正在读取最近的留言。如果你看到这段文字，说明前端已经开始请求留言接口。
-            </p>
-            <p class="message-meta">Guestbook</p>
+          <article class="message-card is-skeleton" aria-hidden="true">
+            <div class="skeleton-line skeleton-line-wide"></div>
+            <div class="skeleton-line skeleton-line-mid"></div>
+            <div class="skeleton-line skeleton-line-short"></div>
           </article>
         </div>
       </section>
@@ -284,6 +283,29 @@ import Layout from '../../layouts/Layout.astro';
 
   .message-card.is-muted {
     opacity: 0.72;
+  }
+
+  .message-card.is-skeleton {
+    display: grid;
+    gap: 12px;
+  }
+
+  .skeleton-line {
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(31, 28, 23, 0.08);
+  }
+
+  .skeleton-line-wide {
+    width: 88%;
+  }
+
+  .skeleton-line-mid {
+    width: 72%;
+  }
+
+  .skeleton-line-short {
+    width: 28%;
   }
 
   .message-body {
