@@ -23,26 +23,45 @@ type EnvShape = ImportMetaEnv & {
 };
 
 const TABLE_NAME = 'guestbook_messages';
+let supabaseAdmin: SupabaseClient | null | undefined;
 
 function getEnv() {
-  return import.meta.env as EnvShape;
+  return {
+    ...(import.meta.env as EnvShape),
+    SUPABASE_URL: process.env.SUPABASE_URL ?? import.meta.env.SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY:
+      process.env.SUPABASE_SERVICE_ROLE_KEY ?? import.meta.env.SUPABASE_SERVICE_ROLE_KEY,
+    GUESTBOOK_IP_HASH_SALT:
+      process.env.GUESTBOOK_IP_HASH_SALT ?? import.meta.env.GUESTBOOK_IP_HASH_SALT,
+  } satisfies EnvShape;
 }
 
 function getSupabaseAdmin(): SupabaseClient | null {
+  if (supabaseAdmin !== undefined) {
+    return supabaseAdmin;
+  }
+
   const env = getEnv();
-  const url = env.SUPABASE_URL;
-  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = env.SUPABASE_URL?.trim();
+  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY?.trim();
 
   if (!url || !serviceRoleKey) {
+    supabaseAdmin = null;
     return null;
   }
 
-  return createClient(url, serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  });
+  try {
+    supabaseAdmin = createClient(url, serviceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
+  } catch (_error) {
+    supabaseAdmin = null;
+  }
+
+  return supabaseAdmin;
 }
 
 export function isGuestbookConfigured() {
