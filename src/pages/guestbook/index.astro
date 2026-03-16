@@ -66,12 +66,6 @@ import Layout from '../../layouts/Layout.astro';
             </div>
           </form>
         </aside>
-
-        <aside class="guestbook-panel guestbook-note">
-          <h2>How It Works</h2>
-          <p>第一版采用轻量留言模式，降低来访者的操作门槛。</p>
-          <p>留言提交后会先进入审核状态，前台只展示已通过的内容。</p>
-        </aside>
       </div>
     </div>
   </section>
@@ -303,12 +297,6 @@ import Layout from '../../layouts/Layout.astro';
     font-size: 13px;
     opacity: 0.5;
   }
-
-  .guestbook-note {
-    display: grid;
-    gap: 12px;
-  }
-
   .guestbook-form {
     display: grid;
     gap: 18px;
@@ -385,13 +373,6 @@ import Layout from '../../layouts/Layout.astro';
 
   .form-status[data-state='error'] {
     opacity: 0.9;
-  }
-
-  .guestbook-note p {
-    margin: 0;
-    line-height: 1.8;
-    opacity: 0.78;
-    font-size: 15px;
   }
 
   @media (max-width: 800px) {
