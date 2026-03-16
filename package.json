@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/vercel": "^8.2.11",
+    "@supabase/supabase-js": "^2.99.1",
     "@vercel/analytics": "^1.6.1",
     "astro": "^5.16.7",
     "oh-my-opencode": "^3.1.4"

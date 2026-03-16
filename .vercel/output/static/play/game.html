@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NES Rockman 1987 Wrapper</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <h1>NES Rockman 1987 Wrapper</h1>
+      <p>基于 <code>jsnes</code> 的原版 ROM 封装（非重绘重制）</p>
+    </header>
+
+    <section class="controls">
+      <button id="loadDefaultBtn" type="button">加载本地 ROM（/roms/rockman.nes）</button>
+      <label class="file-btn" for="romInput">选择 ROM 文件</label>
+      <input id="romInput" type="file" accept=".nes" />
+      <button id="startBtn" type="button">开始</button>
+      <button id="pauseBtn" type="button">暂停</button>
+      <button id="resetBtn" type="button">重置</button>
+      <button id="stopBtn" type="button">停止</button>
+    </section>
+
+    <section class="screen-wrap">
+      <div class="screen-frame">
+        <canvas id="screen" width="256" height="240" aria-label="NES screen"></canvas>
+      </div>
+      <aside class="panel">
+        <h2>状态</h2>
+        <p id="status">未加载 ROM</p>
+        <h2>按键映射</h2>
+        <ul>
+          <li>左右移动：<code>A D</code></li>
+          <li>上爬：<code>W</code></li>
+          <li>下爬：<code>S</code></li>
+          <li>跳跃：<code>K</code></li>
+          <li>射击：<code>J</code></li>
+          <li>Start：<code>Enter</code></li>
+          <li>Select：<code>Shift</code></li>
+        </ul>
+        <h2>金手指</h2>
+        <ul>
+          <li><label><input id="cheatLives" type="checkbox" /> 无敌模式（不闪烁）</label></li>
+          <li><label><input id="cheatWeapon" type="checkbox" /> 武器能量不减</label></li>
+          <li><label><input id="cheatOneHit" type="checkbox" /> 一击必杀（Boss）</label></li>
+        </ul>
+        <h2>说明</h2>
+        <p>默认加载 <code>/roms/rockman.nes</code> 后会自动运行；若停在标题画面，请按 <code>Enter</code>。</p>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsnes/dist/jsnes.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
