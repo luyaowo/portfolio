@@ -8,6 +8,7 @@ import {
   listApprovedMessages,
   normalizeMessage,
   normalizeNickname,
+  validateAvatarId,
   validateGuestbookInput,
 } from '../../lib/server/guestbook';
 
@@ -53,17 +54,20 @@ export const POST: APIRoute = async ({ request }) => {
     const contentType = request.headers.get('content-type') ?? '';
     let nickname = '';
     let message = '';
+    let avatarId = '';
     let website = '';
 
     if (contentType.includes('application/json')) {
       const body = await request.json();
       nickname = String(body.nickname ?? '');
       message = String(body.message ?? '');
+      avatarId = String(body.avatarId ?? body.avatar_id ?? '');
       website = String(body.website ?? '');
     } else {
       const formData = await request.formData();
       nickname = String(formData.get('nickname') ?? '');
       message = String(formData.get('message') ?? '');
+      avatarId = String(formData.get('avatarId') ?? '');
       website = String(formData.get('website') ?? '');
     }
 
@@ -74,6 +78,7 @@ export const POST: APIRoute = async ({ request }) => {
     const normalizedNickname = normalizeNickname(nickname);
     const normalizedMessage = normalizeMessage(message);
     validateGuestbookInput(normalizedNickname, normalizedMessage);
+    validateAvatarId(avatarId);
 
     const ipHash = hashIpAddress(extractClientIp(request.headers));
     await enforceRateLimit(ipHash);
@@ -81,6 +86,7 @@ export const POST: APIRoute = async ({ request }) => {
     await createPendingMessage({
       nickname: normalizedNickname,
       message: normalizedMessage,
+      avatarId,
       ipHash,
       userAgent: request.headers.get('user-agent'),
     });

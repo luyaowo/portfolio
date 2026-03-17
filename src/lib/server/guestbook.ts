@@ -5,6 +5,7 @@ type GuestbookRow = {
   id: string;
   nickname: string;
   message: string;
+  avatar_id: string;
   created_at: string;
   approved_at: string | null;
 };
@@ -12,6 +13,7 @@ type GuestbookRow = {
 type MessageInput = {
   nickname: string;
   message: string;
+  avatarId: string;
   ipHash: string | null;
   userAgent: string | null;
 };
@@ -23,6 +25,7 @@ type EnvShape = ImportMetaEnv & {
 };
 
 const TABLE_NAME = 'guestbook_messages';
+const VALID_AVATAR_IDS = new Set(['avatar-01', 'avatar-02', 'avatar-03']);
 let supabaseAdmin: SupabaseClient | null | undefined;
 
 function getEnv() {
@@ -86,6 +89,12 @@ export function validateGuestbookInput(nickname: string, message: string) {
   }
 }
 
+export function validateAvatarId(avatarId: string) {
+  if (!VALID_AVATAR_IDS.has(avatarId)) {
+    throw new Error('请选择一个头像。');
+  }
+}
+
 export function hashIpAddress(ipAddress: string | null) {
   if (!ipAddress) {
     return null;
@@ -116,7 +125,7 @@ export async function listApprovedMessages(limit = 20): Promise<GuestbookRow[]> 
 
   const { data, error } = await supabase
     .from(TABLE_NAME)
-    .select('id, nickname, message, created_at, approved_at')
+    .select('id, nickname, message, avatar_id, created_at, approved_at')
     .eq('status', 'approved')
     .eq('is_hidden', false)
     .order('approved_at', { ascending: false, nullsFirst: false })
@@ -167,6 +176,7 @@ export async function createPendingMessage(input: MessageInput) {
   const { error } = await supabase.from(TABLE_NAME).insert({
     nickname: input.nickname,
     message: input.message,
+    avatar_id: input.avatarId,
     status: 'pending',
     ip_hash: input.ipHash,
     user_agent: input.userAgent,

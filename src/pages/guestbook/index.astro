@@ -1,5 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+const avatarOptions = [
+  { id: 'avatar-01', src: '/images/guestbook/avatars/avatar-01.png', alt: '头像 1' },
+  { id: 'avatar-02', src: '/images/guestbook/avatars/avatar-02.png', alt: '头像 2' },
+  { id: 'avatar-03', src: '/images/guestbook/avatars/avatar-03.png', alt: '头像 3' },
+];
 ---
 
 <Layout title="Guestbook · 路遥知玛丽" description="看看别人留下的话，也可以写一句。">
@@ -43,6 +49,24 @@ import Layout from '../../layouts/Layout.astro';
               />
             </label>
 
+            <fieldset class="avatar-field">
+              <legend>选择头像</legend>
+              <div class="avatar-grid">
+                {avatarOptions.map((avatar, index) => (
+                  <label class="avatar-option">
+                    <input
+                      type="radio"
+                      name="avatarId"
+                      value={avatar.id}
+                      checked={index === 0}
+                      required
+                    />
+                    <img src={avatar.src} alt={avatar.alt} loading="lazy" decoding="async" />
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
             <label class="field">
               <span>留言</span>
               <textarea
@@ -76,6 +100,11 @@ import Layout from '../../layouts/Layout.astro';
   const formEl = document.getElementById('guestbook-form');
   const feedbackEl = document.getElementById('guestbook-feedback');
   const submitEl = document.getElementById('guestbook-submit');
+  const avatarMap = {
+    'avatar-01': '/images/guestbook/avatars/avatar-01.png',
+    'avatar-02': '/images/guestbook/avatars/avatar-02.png',
+    'avatar-03': '/images/guestbook/avatars/avatar-03.png',
+  };
   const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
     month: '2-digit',
@@ -92,6 +121,19 @@ import Layout from '../../layouts/Layout.astro';
     const article = document.createElement('article');
     article.className = 'message-card';
 
+    const header = document.createElement('div');
+    header.className = 'message-header';
+
+    const avatar = document.createElement('img');
+    avatar.className = 'message-avatar';
+    avatar.src = avatarMap[message.avatar_id] || avatarMap['avatar-01'];
+    avatar.alt = `${message.nickname} 的头像`;
+    avatar.loading = 'lazy';
+    avatar.decoding = 'async';
+
+    const metaWrap = document.createElement('div');
+    metaWrap.className = 'message-meta-wrap';
+
     const body = document.createElement('p');
     body.className = 'message-body';
     body.textContent = message.message;
@@ -102,7 +144,9 @@ import Layout from '../../layouts/Layout.astro';
     const formattedDate = rawDate ? dateFormatter.format(new Date(rawDate)) : '';
     meta.textContent = formattedDate ? `${message.nickname} · ${formattedDate}` : message.nickname;
 
-    article.append(body, meta);
+    metaWrap.append(meta);
+    header.append(avatar, metaWrap);
+    article.append(header, body);
     return article;
   }
 
@@ -281,6 +325,26 @@ import Layout from '../../layouts/Layout.astro';
     border: 1px solid rgba(31, 28, 23, 0.08);
   }
 
+  .message-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .message-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #ece7de;
+    flex-shrink: 0;
+  }
+
+  .message-meta-wrap {
+    min-width: 0;
+  }
+
   .message-card.is-muted {
     opacity: 0.72;
   }
@@ -309,7 +373,7 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .message-body {
-    margin: 0 0 12px;
+    margin: 0;
     line-height: 1.8;
     font-size: 15px;
   }
@@ -328,6 +392,59 @@ import Layout from '../../layouts/Layout.astro';
   .field {
     display: grid;
     gap: 10px;
+  }
+
+  .avatar-field {
+    display: grid;
+    gap: 16px;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .avatar-field legend {
+    font-size: 14px;
+    opacity: 0.72;
+    padding: 0;
+  }
+
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .avatar-option {
+    display: block;
+    cursor: pointer;
+  }
+
+  .avatar-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .avatar-option img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: rgba(246, 244, 240, 0.92);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .avatar-option input:checked + img {
+    border-color: rgba(31, 28, 23, 0.7);
+    transform: translateY(-1px);
+  }
+
+  .avatar-option input:focus-visible + img {
+    outline: 2px solid rgba(31, 28, 23, 0.18);
+    outline-offset: 3px;
   }
 
   .field span {
