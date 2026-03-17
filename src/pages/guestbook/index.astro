@@ -49,8 +49,8 @@ const avatarOptions = [
               />
             </label>
 
-            <fieldset class="avatar-field">
-              <legend>选择头像</legend>
+            <div class="avatar-field">
+              <span class="avatar-label">选择头像</span>
               <div class="avatar-grid">
                 {avatarOptions.map((avatar, index) => (
                   <label class="avatar-option">
@@ -65,7 +65,7 @@ const avatarOptions = [
                   </label>
                 ))}
               </div>
-            </fieldset>
+            </div>
 
             <label class="field">
               <span>留言</span>
@@ -397,16 +397,12 @@ const avatarOptions = [
   .avatar-field {
     display: grid;
     gap: 16px;
-    border: 0;
-    padding: 0;
-    margin: 0;
     min-width: 0;
   }
 
-  .avatar-field legend {
+  .avatar-label {
     font-size: 14px;
     opacity: 0.72;
-    padding: 0;
   }
 
   .avatar-grid {
