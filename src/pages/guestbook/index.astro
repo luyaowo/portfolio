@@ -119,10 +119,7 @@ const avatarOptions = [
 
   function createMessageCard(message) {
     const article = document.createElement('article');
-    article.className = 'message-card';
-
-    const header = document.createElement('div');
-    header.className = 'message-header';
+    article.className = 'message-card message-entry';
 
     const avatar = document.createElement('img');
     avatar.className = 'message-avatar';
@@ -131,22 +128,29 @@ const avatarOptions = [
     avatar.loading = 'lazy';
     avatar.decoding = 'async';
 
-    const metaWrap = document.createElement('div');
-    metaWrap.className = 'message-meta-wrap';
+    const content = document.createElement('div');
+    content.className = 'message-content';
+
+    const titleRow = document.createElement('div');
+    titleRow.className = 'message-title-row';
+
+    const name = document.createElement('p');
+    name.className = 'message-name';
+    name.textContent = message.nickname;
 
     const body = document.createElement('p');
     body.className = 'message-body';
     body.textContent = message.message;
 
-    const meta = document.createElement('p');
+    const meta = document.createElement('time');
     meta.className = 'message-meta';
     const rawDate = message.approved_at || message.created_at;
     const formattedDate = rawDate ? dateFormatter.format(new Date(rawDate)) : '';
-    meta.textContent = formattedDate ? `${message.nickname} · ${formattedDate}` : message.nickname;
+    meta.textContent = formattedDate;
 
-    metaWrap.append(meta);
-    header.append(avatar, metaWrap);
-    article.append(header, body);
+    titleRow.append(name, meta);
+    content.append(titleRow, body);
+    article.append(avatar, content);
     return article;
   }
 
@@ -315,14 +319,11 @@ const avatarOptions = [
 
   .message-list {
     display: grid;
-    gap: 14px;
+    gap: 28px;
   }
 
   .message-card {
-    padding: 18px;
-    border-radius: 14px;
-    background: rgba(246, 244, 240, 0.95);
-    border: 1px solid rgba(31, 28, 23, 0.08);
+    min-width: 0;
   }
 
   .message-header {
@@ -332,26 +333,56 @@ const avatarOptions = [
     margin-bottom: 12px;
   }
 
+  .message-entry {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+
   .message-avatar {
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     object-fit: cover;
     background: #ece7de;
     flex-shrink: 0;
   }
 
-  .message-meta-wrap {
+  .message-content {
     min-width: 0;
+  }
+
+  .message-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .message-name {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
   }
 
   .message-card.is-muted {
     opacity: 0.72;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(246, 244, 240, 0.95);
+    border: 1px solid rgba(31, 28, 23, 0.08);
   }
 
   .message-card.is-skeleton {
     display: grid;
     gap: 12px;
+    padding: 18px;
+    border-radius: 14px;
+    background: rgba(246, 244, 240, 0.95);
+    border: 1px solid rgba(31, 28, 23, 0.08);
   }
 
   .skeleton-line {
@@ -374,14 +405,15 @@ const avatarOptions = [
 
   .message-body {
     margin: 0;
-    line-height: 1.8;
+    line-height: 1.55;
     font-size: 15px;
   }
 
   .message-meta {
     margin: 0;
-    font-size: 13px;
-    opacity: 0.5;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    opacity: 0.4;
   }
   .guestbook-form {
     display: grid;
