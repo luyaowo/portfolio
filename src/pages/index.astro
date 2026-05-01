@@ -17,6 +17,14 @@ import Layout from '../layouts/Layout.astro';
     </header>
 
     <nav class="primary-nav" aria-label="主要内容入口">
+      <a href="/ai-design" class="nav-card">
+        <strong>AI 设计实践</strong>
+        <span>工具评测、工作流与方法论</span>
+      </a>
+      <a href="/ai" class="nav-card">
+        <strong>Ai</strong>
+        <span>生成式图像与视觉实验</span>
+      </a>
       <a href="/essays" class="nav-card">
         <strong>Essays</strong>
         <span>长期思考与完整文章</span>
@@ -37,10 +45,6 @@ import Layout from '../layouts/Layout.astro';
         <strong>Play</strong>
         <span>代码实验与交互游戏</span>
       </a>
-      <a href="/ai" class="nav-card">
-        <strong>Ai</strong>
-        <span>生成式图像与视觉实验</span>
-      </a>
       <a href="/guestbook" class="nav-card">
         <strong>Guestbook</strong>
         <span>留下你的只言片语</span>
@@ -53,6 +57,8 @@ import Layout from '../layouts/Layout.astro';
   :global(body) {
     background: #f6f4f0;
     color: #1f1c17;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .home {
@@ -60,64 +66,82 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .intro {
-    max-width: 720px;
-    margin: 120px auto 80px;
+    max-width: 640px;
+    margin: 100px auto 64px;
     padding: 0 20px;
+    text-align: left;
   }
 
   .kicker {
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    opacity: 0.6;
+    opacity: 0.45;
     margin-bottom: 16px;
   }
 
   .title {
-    font-size: clamp(28px, 4vw, 42px);
+    font-size: clamp(26px, 3.5vw, 36px);
     line-height: 1.3;
-    margin-bottom: 20px;
+    letter-spacing: -0.012em;
+    margin-bottom: 18px;
     font-weight: 700;
+    text-wrap: balance;
   }
 
   .desc {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.7;
-    opacity: 0.8;
+    opacity: 0.65;
+    text-wrap: pretty;
   }
 
-  .primary-nav {
-    max-width: 900px;
+.primary-nav {
+    max-width: 880px;
     margin: 0 auto 120px;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
   }
 
   .nav-card {
-    border: 1px solid rgba(31, 28, 23, 0.12);
-    border-radius: 16px;
-    padding: 20px;
+    border: 1px solid rgba(31, 28, 23, 0.1);
+    border-radius: 14px;
+    padding: 24px 20px;
     text-decoration: none;
     color: inherit;
-    background: rgba(255, 255, 255, 0.7);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(255, 255, 255, 0.6);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
   }
 
   .nav-card strong {
     display: block;
-    font-size: 16px;
+    font-size: 17px;
+    font-weight: 600;
     margin-bottom: 6px;
   }
 
   .nav-card span {
-    font-size: 14px;
-    opacity: 0.7;
+    font-size: 13px;
+    opacity: 0.6;
   }
 
   .nav-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(31, 28, 23, 0.12);
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(31, 28, 23, 0.1);
+  }
+
+  @media (max-width: 720px) {
+    .intro {
+      margin: 80px auto 0;
+    }
+
+    .primary-nav {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
   }
 </style>

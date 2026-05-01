@@ -1,0 +1,71 @@
+html.kui-scheme--light,
+html.kui-scheme--auto {
+  color-scheme: light;
+
+  --kui-color-scale-slate1: #fbf8f1;
+  --kui-color-scale-slate2: #f7f2e9;
+  --kui-color-scale-slate3: #f1eadf;
+  --kui-color-scale-slate4: #e9dfd0;
+  --kui-color-scale-slate5: #ded1bf;
+  --kui-color-scale-slate6: #cdbda6;
+  --kui-color-scale-slate7: #b8a58c;
+  --kui-color-scale-slate8: #8d7f6f;
+  --kui-color-scale-slate9: #6f6559;
+  --kui-color-scale-slate10: #3c362e;
+  --kui-color-scale-slate11: #1f1c17;
+
+  --kui-color-scale-indigo1: #fff8f2;
+  --kui-color-scale-indigo2: #fff1e7;
+  --kui-color-scale-indigo3: #ffe7d6;
+  --kui-color-scale-indigo4: #ffd8bf;
+  --kui-color-scale-indigo5: #ffc7a3;
+  --kui-color-scale-indigo6: #f0a783;
+  --kui-color-scale-indigo7: #dd8f69;
+  --kui-color-scale-indigo8: #ce7651;
+  --kui-color-scale-indigo9: #c96442;
+  --kui-color-scale-indigo10: #aa4f31;
+  --kui-color-scale-indigo11: #7c3926;
+
+  --kui-color-background-canvas: #fbf8f1;
+  --kui-color-background-surface: #f7f2e9;
+  --kui-color-background-surface-secondary: #f1eadf;
+  --kui-color-background-surface-tertiary: #e9dfd0;
+  --kui-color-border-muted: #eadfce;
+  --kui-color-border-neutral: #dfd0bc;
+  --kui-color-border-emphasis: #cdbda6;
+  --kui-color-alias-border-idle: #d7c8b5;
+  --kui-color-alias-border-hovered: #bda98f;
+  --kui-color-alias-border-focused: #c96442;
+  --kui-color-alias-focus-ring: #c96442;
+  --kui-color-alias-background-hovered: rgba(31, 28, 23, 0.055);
+  --kui-color-alias-background-selected: rgba(201, 100, 66, 0.12);
+  --kui-color-alias-background-selected-hovered: rgba(201, 100, 66, 0.18);
+  --kui-color-background-accent: #ffe7d6;
+  --kui-color-background-accent-emphasis: #c96442;
+  --kui-color-foreground-accent: #7c3926;
+  --kui-color-foreground-neutral: #3c362e;
+  --kui-color-foreground-neutral-emphasis: #1f1c17;
+  --kui-color-foreground-neutral-secondary: #6f6559;
+  --kui-color-foreground-neutral-tertiary: #8d7f6f;
+}
+
+html.kui-scheme--light body,
+html.kui-scheme--auto body {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 231, 214, 0.52), transparent 34rem),
+    linear-gradient(180deg, #fbf8f1 0%, #f7f2e9 100%);
+}
+
+html.kui-scheme--light input,
+html.kui-scheme--light textarea,
+html.kui-scheme--light [contenteditable='true'],
+html.kui-scheme--auto input,
+html.kui-scheme--auto textarea,
+html.kui-scheme--auto [contenteditable='true'] {
+  background-color: #fffdf8;
+}
+
+html.kui-scheme--light [contenteditable='true'],
+html.kui-scheme--auto [contenteditable='true'] {
+  caret-color: #c96442;
+}

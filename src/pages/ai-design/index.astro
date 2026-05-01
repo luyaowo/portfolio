@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('ai-design');
+const sortedPosts = posts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Layout title="AI 设计实践 · 路遥知玛丽" description="AI 工具评测、设计工作流与方法论">
+  <main class="list">
+    <header class="list-header">
+      <h1>AI 设计实践</h1>
+      <p class="intro">
+        AI 工具如何融入设计工作流？<br />
+        这里记录工具评测、实践经验和可能的方法论。
+      </p>
+    </header>
+
+    <ul class="post-list">
+      {sortedPosts.map((post) => (
+        <li class="post-item">
+          <a class="post-card" href={`/ai-design/${post.slug}`}>
+            <h2 class="title">{post.data.title}</h2>
+            {post.data.summary && (
+              <p class="summary">{post.data.summary}</p>
+            )}
+            <time class="date" datetime={post.data.date}>
+              {new Date(post.data.date).toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  .list {
+    max-width: 720px;
+    margin: 56px auto 120px;
+    padding: 0 20px;
+  }
+
+  .list-header {
+    margin-bottom: 48px;
+  }
+
+  .list-header h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 56px;
+  }
+
+  .post-card {
+    display: grid;
+    gap: 4px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .title {
+    font-size: 22px;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .summary {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.75;
+    margin: 0;
+  }
+
+  .date {
+    font-size: 13px;
+    opacity: 0.5;
+  }
+
+  .post-card:hover .title {
+    text-decoration: underline;
+  }
+</style>

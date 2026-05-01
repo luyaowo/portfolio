@@ -28,8 +28,27 @@ const work = defineCollection({
 const notes = defineCollection({
   type: 'content',
   schema: z.object({
+    title: z.string().optional(),
     date: z.date(),
   }),
 });
 
-export const collections = { essays, notes, work };
+const photography = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string().optional(),
+  }),
+});
+
+const aiDesign = defineCollection({
+  type: 'content',
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.date(),
+      summary: z.string().optional(),
+      cover: image().optional(),
+    }),
+});
+
+export const collections = { essays, notes, work, photography, 'ai-design': aiDesign };
