@@ -47,41 +47,43 @@ const photos = Object.entries(imageModules)
 <style>
   .photography {
     max-width: 1280px;
-    margin: 56px auto 120px;
-    padding: 0 20px;
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
   }
 
   .photography-header {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-48);
   }
 
   .photography-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 12px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-12);
   }
 
   .intro {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
   }
 
   .masonry {
     column-count: 4;
-    column-gap: 16px;
+    column-gap: var(--space-16);
   }
 
   .card {
     break-inside: avoid;
-    margin: 0 0 16px;
+    margin: 0 0 var(--space-16);
   }
 
   .photo {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
   }
 
   @media (max-width: 1024px) {

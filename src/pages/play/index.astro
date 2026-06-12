@@ -30,8 +30,8 @@ import Layout from '../../layouts/Layout.astro';
 
 <style>
   :global(body) {
-    background: #f6f4f0;
-    color: #1f1c17;
+    background: var(--color-bg);
+    color: var(--color-text-heading);
   }
 
   .play-page {
@@ -39,46 +39,50 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .page-header {
-    margin: 56px 0 48px;
-    padding: 0 20px;
+    margin: var(--space-56) 0 var(--space-48);
+    padding: 0 var(--space-20);
   }
 
   .page-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 8px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-8);
   }
 
   .subtitle {
-    font-size: 16px;
-    opacity: 0.6;
+    font-size: var(--text-summary);
+    color: var(--color-text-secondary);
   }
 
   .game-wrapper {
-    padding: 0 20px;
-    margin-bottom: 120px;
+    padding: 0 var(--space-20);
+    margin-bottom: var(--space-120);
   }
 
   .game-card {
-    border: 1px solid rgba(31, 28, 23, 0.12);
-    border-radius: 16px;
+    border: var(--divider-subtle);
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.7);
+    background: color-mix(in srgb, var(--color-surface) 78%, transparent);
   }
 
   .game-info {
-    padding: 24px 28px 16px;
+    padding: var(--space-24) var(--space-28) var(--space-16);
   }
 
   .game-info h2 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0 0 8px;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: var(--text-heading-3);
+    font-weight: var(--weight-normal);
+    margin: 0 0 var(--space-8);
   }
 
   .game-info p {
-    font-size: 14px;
-    opacity: 0.6;
+    font-size: var(--text-intro);
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -86,7 +90,7 @@ import Layout from '../../layouts/Layout.astro';
     width: 100%;
     aspect-ratio: 16 / 10;
     background: #111217;
-    border-top: 1px solid rgba(31, 28, 23, 0.08);
+    border-top: var(--divider-subtle);
   }
 
   .game-frame iframe {

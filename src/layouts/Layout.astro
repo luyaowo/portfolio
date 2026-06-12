@@ -13,6 +13,7 @@ const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageVersion = "2";
 const ogImageUrl = new URL(ogImage, siteUrl);
 ogImageUrl.searchParams.set("v", ogImageVersion);
+const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pathname !== '/essays/';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -38,19 +39,18 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		<meta name="twitter:card" content="summary_large_image" />
 	</head>
 	<body>
-		<header class="site-header">
+		<header class="site-header" data-reading-header={isReadingPage ? 'true' : 'false'}>
 			<a href="/" class="brand brand-link">路遥知玛丽</a>
 			<nav class="site-nav" aria-label="主导航">
-				<a href="/" class={Astro.url.pathname === '/' ? 'is-active' : ''}>home</a>
-				<a href="/ai-design" class={Astro.url.pathname.startsWith('/ai-design') ? 'is-active' : ''}>ai-practice</a>
-				<a href="/ai" class={Astro.url.pathname.startsWith('/ai') && !Astro.url.pathname.startsWith('/ai-design') ? 'is-active' : ''}>ai</a>
-				<a href="/essays" class={Astro.url.pathname.startsWith('/essays') ? 'is-active' : ''}>essays</a>
-				<a href="/notes" class={Astro.url.pathname.startsWith('/notes') ? 'is-active' : ''}>notes</a>
-				<a href="/photography" class={Astro.url.pathname.startsWith('/photography') ? 'is-active' : ''}>photography</a>
-				<a href="/work" class={Astro.url.pathname.startsWith('/work') ? 'is-active' : ''}>work</a>
-				<a href="/play" class={Astro.url.pathname.startsWith('/play') ? 'is-active' : ''}>play</a>
-				<a href="/about" class={Astro.url.pathname.startsWith('/about') ? 'is-active' : ''}>about</a>
-				<a href="/links" class={Astro.url.pathname.startsWith('/links') ? 'is-active' : ''}>links</a>
+				<a href="/" class={Astro.url.pathname === '/' ? 'is-active' : ''}>Home</a>
+				<a href="/ai-design" class={Astro.url.pathname.startsWith('/ai-design') ? 'is-active' : ''}>Ai-practice</a>
+				<a href="/ai" class={Astro.url.pathname.startsWith('/ai') && !Astro.url.pathname.startsWith('/ai-design') ? 'is-active' : ''}>Ai-image</a>
+				<a href="/essays" class={Astro.url.pathname.startsWith('/essays') ? 'is-active' : ''}>Essays</a>
+				<a href="/notes" class={Astro.url.pathname.startsWith('/notes') ? 'is-active' : ''}>Notes</a>
+				<a href="/photography" class={Astro.url.pathname.startsWith('/photography') ? 'is-active' : ''}>Photography</a>
+				<a href="/work" class={Astro.url.pathname.startsWith('/work') ? 'is-active' : ''}>Work</a>
+				<a href="/play" class={Astro.url.pathname.startsWith('/play') ? 'is-active' : ''}>Play</a>
+				<a href="/about" class={Astro.url.pathname.startsWith('/about') ? 'is-active' : ''}>About</a>
 			</nav>
 		</header>
 		<main class="site-main">
@@ -58,13 +58,149 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		</main>
 		<footer class="site-footer">
 			<p>&copy; {new Date().getFullYear()} 路遥知玛丽</p>
+			<nav class="footer-links" aria-label="社交链接">
+				<a href="https://github.com/luyaowo" target="_blank" rel="noreferrer" title="GitHub">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+				</a>
+				<span class="wechat-qr-wrap" title="微信公众号">
+					<svg width="22" height="22" viewBox="0 0 1024 1024" fill="currentColor"><path d="M315.827597 316.694849c-9.555633 0-19.058055 3.88754-25.752524 10.635221-6.693446 6.745634-10.635221 16.142655-10.635221 25.752524 0 9.501398 3.883447 19.004843 10.635221 25.752524 6.747681 6.639211 16.196891 10.582009 25.752524 10.582009 9.504468 0 19.007913-3.942799 25.698289-10.635221 6.747681-6.747681 10.637268-16.249079 10.637268-25.699312 0-9.609869-3.889587-19.005866-10.637268-25.752524C334.83551 320.582389 325.332065 316.694849 315.827597 316.694849z"/><path d="M591.231017 512.674359c-7.452739 0-14.852266 3.076058-20.138666 8.316409-5.29254 5.234211-8.372691 12.633738-8.372691 20.136619 0 7.504928 3.080152 14.846126 8.318456 20.138666 5.234211 5.290493 12.739139 8.314363 20.191878 8.314363 7.450692 0 14.84408-3.078105 20.138666-8.314363 5.2864-5.238304 8.31027-12.633738 8.31027-20.138666 0-7.502881-3.076058-14.848173-8.31027-20.136619C606.126262 515.698229 598.623381 512.674359 591.231017 512.674359z"/><path d="M501.38985 389.416104c9.501398 0 19.004843-3.942799 25.756617-10.635221 6.691399-6.747681 10.580986-16.249079 10.580986-25.752524 0-9.609869-3.889587-19.006889-10.580986-25.752524-6.807033-6.694469-16.309454-10.582009-25.756617-10.582009-9.555633 0-19.002796 3.88754-25.753547 10.635221-6.747681 6.745634-10.635221 16.142655-10.635221 25.752524 0 9.501398 3.88754 19.004843 10.635221 25.752524C482.387054 385.473305 491.833193 389.416104 501.38985 389.416104z"/><path d="M803.840276 80.05836 220.104465 80.05836c-77.313853 0-139.941216 62.844304-139.941216 140.426263l0 583.030753c0 77.585029 62.627363 140.427286 139.941216 140.427286L803.892465 943.942663c77.3159 0 139.943262-62.841234 139.943262-140.427286L943.835727 220.484623C943.781492 142.901641 881.150036 80.05836 803.840276 80.05836zM404.263765 658.823973c-32.662911 0-59.013045-6.693446-91.732238-13.118785l-91.508133 45.89119 26.186406-78.768995c-65.543785-45.839001-104.740506-104.84693-104.740506-176.707584 0-124.666324 117.913527-222.707244 261.848707-222.707244 128.762619 0 241.547335 78.335113 264.168542 183.887101-8.312316-0.972141-16.73515-1.564635-25.213241-1.564635-124.390032 0-222.596727 92.862991-222.596727 207.209272 0 19.113313 2.967588 37.360909 8.042163 54.906517C420.621315 658.390092 412.470681 658.823973 404.263765 658.823973zM790.449291 750.551094l19.704784 65.382103-71.803349-39.355333c-26.184359 6.585999-52.5304 13.170974-78.606289 13.170974-124.557854 0-222.654033-85.140099-222.654033-190.041264 0-104.687294 98.097202-190.046381 222.654033-190.046381 117.692492 0 222.432998 85.305875 222.432998 190.046381C882.177436 658.823973 843.035974 711.088314 790.449291 750.551094z"/><path d="M733.869668 512.674359c-7.450692 0-14.85022 3.076058-20.138666 8.316409-5.294586 5.234211-8.318456 12.633738-8.318456 20.136619 0 7.504928 3.082198 14.846126 8.318456 20.138666 5.234211 5.290493 12.68695 8.314363 20.138666 8.314363s14.84408-3.078105 20.136619-8.314363c5.290493-5.238304 8.312316-12.633738 8.312316-20.138666 0-7.502881-3.076058-14.848173-8.312316-20.136619C748.772077 515.698229 741.320361 512.674359 733.869668 512.674359z"/></svg>
+					<img class="wechat-qr" src="/images/wechat-qr.jpeg" alt="微信公众号二维码" width="140" height="140" loading="lazy" />
+				</span>
+				<a href="https://xhslink.com/m/6YY41S0QMoI" target="_blank" rel="noreferrer" title="小红书">
+					<svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor"><path d="M996.152 56.513c-7.986-10.852-17.61-20.885-28.871-28.87C944.143 10.442 916.09 0 885.377 0H138.419c-30.715 0-59.176 10.443-82.314 27.642-10.852 7.986-20.885 17.61-28.87 28.87C10.444 79.448 0.001 107.703 0.001 138.623v746.957c0 30.715 10.442 59.176 27.641 81.905 7.986 10.852 17.61 20.885 28.871 28.87 23.138 17.2 51.19 27.643 81.904 27.643h746.959c30.714 0 59.175-10.443 81.904-27.642 10.852-7.986 20.885-17.61 28.87-28.87 17.2-23.139 27.643-51.19 27.643-81.905V138.622c0-30.92-10.852-59.175-27.642-82.11z m-629.633 410.54c16.38-36.241 34.81-71.87 52.213-107.497h59.995c-14.743 29.28-31.124 57.947-41.566 85.794 24.366-1.433 46.48-2.662 72.484-4.095-13.923 27.847-26.209 52.623-38.494 77.398-1.639 3.276-3.277 6.757-4.915 10.033-12.9 25.8-12.9 26.004 15.767 26.62 3.071 0 5.938 0.41 11.466 1.022-7.985 15.767-15.152 30.1-22.728 44.228-1.229 2.253-4.71 4.915-6.962 4.915-21.09 0-42.385 0.614-63.475-1.639-15.152-1.638-21.09-13.309-15.152-27.642 7.166-17.814 15.766-35.219 23.752-52.828 2.662-6.143 5.528-12.08 9.42-21.09-11.673 0-20.272 0.206-28.872 0-24.776-1.023-33.17-12.285-22.933-35.218zM76.171 658.299c-12.695-22.114-24.16-42.59-35.832-63.065 0-2.458 22.933-72.485 17.814-151.726h63.065s2.253 148.45-45.047 214.791z m147.222-7.985c0.614 37.061-24.98 37.061-24.98 37.061H162.17l-38.085-50.37h39.928v-277.45h59.994c0 90.915-0.204 199.846-0.614 290.76z m87.227 4.71c-28.666-25.186-44.227-100.333-43.818-211.925h59.175c-4.504 58.765 14.538 137.187 14.538 137.187s-17.404 38.495-29.895 74.737z m129.817 26.004c-1.638 3.071-6.757 5.938-10.443 6.142-27.847 0.41-55.9 0.205-87.842 0.205 12.081-24.16 22.114-43.818 30.92-61.018h95.621c-10.647 20.885-19.042 38.085-28.256 54.67z m244.481 6.552h-215.2c10.442-20.68 29.075-57.537 29.075-57.537h61.428V441.87h-38.29v-58.766h138.622v57.947h-37.88v189.196h62.245v57.333z m284.615-43.409c0 43.409-42.385 42.18-42.385 42.18h-55.285l-23.138-49.756 59.995 0.205s0.614-45.047 0-60.609c-0.41-13.105-7.576-21.5-20.886-21.704-26.618-0.615-53.442-0.205-82.722-0.205v132.274h-59.38V555.1h-59.995v-61.222h58.356v-51.804h-38.7v-57.947h39.315v-24.571h59.994l0.41 24.57h47.708s44.024-1.023 44.228 41.77c0.205 12.697 0.41 54.263 0.41 68.187 50.575-0.205 72.075 10.033 72.075 45.25V644.17z m-25.39-200.46H912.2v-30.507c0-11.057 5.528-21.295 14.947-27.233 10.647-6.757 25.39-11.057 39.314 2.252 0.614 0.41 1.024 1.024 1.433 1.638 19.247 20.27 4.095 53.852-23.752 53.852z"/><path d="M805.521 493.878h39.723v-52.01h-40.132z"/></svg>
+				</a>
+				<a href="https://www.instagram.com/luyao_owo/" target="_blank" rel="noreferrer" title="Instagram">
+					<svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor"><path d="M512 0c139.093333 0 156.458667 0.512 211.072 3.072 54.485333 2.517333 91.648 11.093333 124.288 23.808 34.176 12.8 65.152 32.981333 90.709333 59.050667A251.306667 251.306667 0 0 1 997.12 176.64c12.629333 32.597333 21.248 69.802667 23.808 124.288C1023.36 355.541333 1024 372.906667 1024 512s-0.512 156.458667-3.072 211.072c-2.517333 54.485333-11.178667 91.648-23.808 124.288a250.069333 250.069333 0 0 1-59.050667 90.709333 251.733333 251.733333 0 0 1-90.709333 59.050667c-32.64 12.629333-69.802667 21.248-124.288 23.808-54.613333 2.432-71.978667 3.072-211.072 3.072s-156.458667-0.512-211.072-3.072c-54.485333-2.517333-91.648-11.178667-124.288-23.808a250.410667 250.410667 0 0 1-90.709333-59.050667A251.050667 251.050667 0 0 1 26.88 847.36c-12.672-32.64-21.248-69.802667-23.808-124.288C0.64 668.458667 0 651.093333 0 512s0.512-156.458667 3.072-211.072C5.589333 246.4 14.165333 209.28 26.88 176.64c12.8-34.176 32.981333-65.152 59.093333-90.709333A250.709333 250.709333 0 0 1 176.64 26.88C209.28 14.208 246.442667 5.632 300.928 3.072 355.541333 0.64 372.906667 0 512 0z m0 249.088a262.954667 262.954667 0 1 0 0.042667 525.866667A262.954667 262.954667 0 0 0 512 249.088zM512 682.666667a170.581333 170.581333 0 0 1-170.666667-170.666667c0-94.293333 76.373333-170.666667 170.666667-170.666667s170.666667 76.373333 170.666667 170.666667-76.373333 170.666667-170.666667 170.666667z m334.762667-443.904a61.44 61.44 0 1 0-122.88 0 61.525333 61.525333 0 0 0 122.88 0z"/></svg>
+				</a>
+			</nav>
 		</footer>
 		<Analytics />
+		<script is:inline>
+			(() => {
+				const header = document.querySelector('.site-header');
+				if (!header) return;
+
+				let previousY = window.scrollY;
+				let ticking = false;
+
+				const updateHeader = () => {
+					const currentY = window.scrollY;
+					const isScrollingDown = currentY > previousY;
+
+					if (currentY < 40 || !isScrollingDown) {
+						header.classList.remove('is-hidden');
+						header.classList.toggle('is-elevated', currentY >= 40);
+					} else if (currentY > 96 && currentY - previousY > 4) {
+						header.classList.add('is-hidden');
+						header.classList.remove('is-elevated');
+					}
+
+					previousY = currentY;
+					ticking = false;
+				};
+
+				window.addEventListener(
+					'scroll',
+					() => {
+						if (ticking) return;
+						ticking = true;
+						window.requestAnimationFrame(updateHeader);
+					},
+					{ passive: true }
+				);
+			})();
+		</script>
 	</body>
 </html>
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600&family=Public+Sans:wght@300;400;600;700&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400..800&display=swap');
+
+	:global(:root) {
+		--font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', 'PingFang SC', sans-serif;
+		--font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', 'PingFang SC', sans-serif;
+		--font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+		--font-brand: clamp(18px, 2.4vw, 26px);
+
+		--weight-normal: 500;
+		--weight-semibold: 600;
+		--weight-bold: 700;
+
+		--text-body: 18px;
+		--text-heading-1: 30px;
+		--text-heading-2: 24px;
+		--text-heading-3: 20px;
+		--text-title-article: clamp(34px, 4.8vw, 42px);
+		--text-title-page: clamp(28px, 4vw, 42px);
+		--text-title-card: clamp(18px, 1.7vw, 22px);
+		--text-summary: 16px;
+		--text-intro: 14px;
+		--text-meta: 13px;
+		--text-caption: 12px;
+
+		--leading-body: 1.82;
+		--leading-heading: 1.45;
+		--leading-title: 1.28;
+		--leading-text: 1.7;
+		--leading-summary: 1.62;
+		--leading-meta: 1.4;
+
+		--color-bg: #f7f6f2;
+		--color-surface: #fbfaf7;
+		--color-surface-white: #ffffff;
+		--color-text: rgba(48, 48, 46, 0.94);
+		--color-text-heading: rgba(20, 20, 19, 0.99);
+		--color-text-secondary: rgba(94, 93, 89, 0.82);
+		--color-text-tertiary: rgba(94, 93, 89, 0.58);
+		--color-text-inverse: rgba(248, 245, 237, 0.96);
+		--color-border: rgba(94, 93, 89, 0.14);
+		--color-border-strong: rgba(94, 93, 89, 0.22);
+		--color-interactive: rgba(20, 20, 19, 0.98);
+		--color-hover: rgba(94, 93, 89, 0.055);
+		--color-pressed: rgba(94, 93, 89, 0.09);
+		--color-code: rgba(94, 93, 89, 0.08);
+		--color-code-block: #181922;
+		--color-code-block-text: #f6f3ea;
+		--color-link: #8f4a38;
+		--color-link-hover: #6f3528;
+		--color-link-underline: rgba(143, 74, 56, 0.28);
+		--color-link-underline-hover: rgba(111, 53, 40, 0.56);
+
+		--shadow-float: 0 8px 24px rgba(29, 31, 42, 0.06);
+		--shadow-float-soft: 0 6px 18px rgba(29, 31, 42, 0.045);
+		--radius-sm: 4px;
+		--radius-md: 8px;
+		--radius-lg: 10px;
+		--radius-xl: 12px;
+
+		--width-content: 980px;
+		--width-content-narrow: 760px;
+		--width-article: 860px;
+		--width-toc: 260px;
+
+		--space-4: 4px;
+		--space-8: 8px;
+		--space-12: 12px;
+		--space-16: 16px;
+		--space-20: 20px;
+		--space-24: 24px;
+		--space-28: 28px;
+		--space-32: 32px;
+		--space-40: 40px;
+		--space-48: 48px;
+		--space-56: 56px;
+		--space-64: 64px;
+		--space-72: 72px;
+		--space-120: 120px;
+		--size-cover-square: 144px;
+		--size-cover-square-md: 128px;
+		--divider-subtle: 1px solid var(--color-border);
+		--divider-strong: 1px solid var(--color-border-strong);
+		--transition-interactive: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+		--translate-interactive-y: -0.5px;
+		--opacity-timeline-dot: 0.18;
+		--opacity-timeline-dot-active: 0.52;
+	}
 
 	:global(html),
 	:global(body) {
@@ -74,87 +210,168 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 	}
 
 	:global(body) {
-		font-family: 'Public Sans', 'Helvetica Neue', sans-serif;
-		background: #f6f4f0;
-		color: #1f1c17;
+		font-family: var(--font-body);
+		background: var(--color-bg);
+		color: var(--color-text);
+		letter-spacing: 0.04em;
 	}
 
 	:global(.site-header) {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 32px 56px 24px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 50;
+		box-sizing: border-box;
+		min-height: var(--space-56);
+		padding: 12px var(--space-56);
+		background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+		border-bottom: 1px solid transparent;
+		box-shadow: none !important;
+		transform: translateY(0);
+		transition: transform 0.24s ease, box-shadow 0.2s ease;
+		backdrop-filter: blur(16px) saturate(120%);
+		-webkit-backdrop-filter: blur(16px) saturate(120%);
+	}
+
+	:global(.site-header.is-hidden) {
+		transform: translateY(-100%);
+	}
+
+	:global(.site-header.is-elevated) {
+		background: color-mix(in srgb, var(--color-bg) 86%, transparent);
+		border-bottom-color: var(--color-border);
+		box-shadow: var(--shadow-float) !important;
 	}
 
 	:global(.brand) {
-		font-family: 'Public Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-		font-size: clamp(20px, 4vw, 36px);
-		letter-spacing: 0.08em;
-		color: #1f1c17;
-		font-weight: 600;
+		font-family: var(--font-heading);
+		font-size: var(--font-brand);
+		letter-spacing: 0;
+		color: var(--color-text-heading);
+		font-weight: var(--weight-semibold);
 	}
 
 	:global(.brand-link) {
 		text-decoration: none;        /* remove any default underline */
 		border-bottom: 0;             /* no line in normal state */
-		padding-bottom: 4px;
+		padding-bottom: var(--space-4);
 	}
 
 	:global(.brand-link:hover),
 	:global(.brand-link:focus-visible) {
-
+		opacity: 0.88;
 	}
 
 	:global(.site-nav) {
 		display: flex;
-		gap: 20px;
+		gap: var(--space-20);
 		justify-content: flex-end;
 	}
 
 	:global(.site-nav a) {
 		text-decoration: none;
-		color: #1f1c17;
+		color: var(--color-text);
 		border-bottom: 1px solid transparent;
-		padding-bottom: 4px;
+		padding-bottom: var(--space-4);
 	}
 
 	:global(.site-nav a:hover) {
-		border-bottom-color: #1f1c17;
+		border-bottom-color: var(--color-text-secondary);
 	}
 
 	:global(.site-nav a.is-active) {
-		border-bottom-color: #1f1c17;
+		border-bottom-color: var(--color-interactive);
+	}
+
+	:global(.site-header:hover),
+	:global(.site-header:focus-within) {
+		background: color-mix(in srgb, var(--color-bg) 92%, transparent);
 	}
 
 
 	:global(.site-main) {
 		display: grid;
 		justify-items: center;
-		padding: 0 24px 96px;
+		padding: 72px var(--space-24) 96px;
 	}
 
 	:global(.site-footer) {
 		text-align: center;
-		padding: 0 24px 48px;
+		padding: 0 var(--space-24) var(--space-48);
 	}
 
 	:global(.site-footer p) {
-		font-size: 13px;
-		opacity: 0.35;
+		font-size: var(--text-meta);
+		color: var(--color-text-tertiary);
 		margin: 0;
+	}
+
+	:global(.footer-links) {
+		display: flex;
+		justify-content: center;
+		gap: var(--space-16);
+		margin-top: var(--space-16);
+	}
+
+	:global(.footer-links a) {
+		color: var(--color-text-tertiary);
+		transition: color 0.2s ease;
+		display: flex;
+		align-items: center;
+	}
+
+	:global(.footer-links a:hover) {
+		color: var(--color-text);
+	}
+
+	:global(.wechat-qr-wrap) {
+		position: relative;
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+		color: var(--color-text-tertiary);
+		transition: color 0.2s ease;
+	}
+
+	:global(.wechat-qr-wrap:hover) {
+		color: var(--color-text);
+	}
+
+	:global(.wechat-qr) {
+		position: absolute;
+		bottom: var(--space-32);
+		left: 50%;
+		transform: translateX(-50%);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-float);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease;
+	}
+
+	:global(.wechat-qr-wrap:hover .wechat-qr) {
+		opacity: 1;
 	}
 
 	@media (max-width: 720px) {
 		:global(.site-header) {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: 14px;
-			padding: 24px;
+			gap: var(--space-16);
+			padding: var(--space-16) var(--space-24);
 		}
 
 		:global(.site-nav) {
 			flex-wrap: wrap;
 			justify-content: flex-start;
+		}
+
+		:global(.site-main) {
+			padding-top: 136px;
 		}
 	}
 </style>

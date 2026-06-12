@@ -4,10 +4,10 @@ import AIGallery from '../../components/AIGallery.astro';
 import { aiGallery } from '../../data/ai-gallery';
 ---
 
-<Layout title="AI · 路遥知玛丽" description="这里收录一些由模型参与生成的图像实验。">
+<Layout title="Ai 图像 · 路遥知玛丽" description="这里收录一些由模型参与生成的图像实验。">
   <section class="ai-page">
     <header class="ai-header">
-      <h1>Ai</h1>
+      <h1>Ai-image</h1>
       <p class="intro">
         这里收录一些由模型参与生成的图像实验。<br />
         它们既是视觉草图，也是对风格、材质与图像表达方式的持续探索。
@@ -21,23 +21,25 @@ import { aiGallery } from '../../data/ai-gallery';
 <style>
   .ai-page {
     max-width: 960px;
-    margin: 56px auto 120px;
-    padding: 0 20px;
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
   }
 
   .ai-header {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-48);
   }
 
   .ai-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 12px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-12);
   }
 
   .intro {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
   }
 </style>

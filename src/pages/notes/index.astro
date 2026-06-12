@@ -50,23 +50,25 @@ const formatDate = (value: Date) =>
 
 <style>
   .notes {
-    max-width: 720px;
-    margin: 56px auto 120px;
-    padding: 0 20px;
+    max-width: var(--width-content-narrow);
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
     display: grid;
-    gap: 48px;
+    gap: var(--space-48);
   }
 
   .notes-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 12px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-12);
   }
 
   .intro {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -81,8 +83,8 @@ const formatDate = (value: Date) =>
   /* ── each note item: two-column grid ── */
   .note-item {
     display: grid;
-    grid-template-columns: 24px 1fr;
-    column-gap: 20px;
+    grid-template-columns: var(--space-24) 1fr;
+    column-gap: var(--space-20);
   }
 
   /* ── timeline column: dot + line, stretches full height ── */
@@ -97,8 +99,8 @@ const formatDate = (value: Date) =>
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #1f1c17;
-    opacity: 0.25;
+    background: var(--color-text);
+    opacity: var(--opacity-timeline-dot);
     flex-shrink: 0;
     margin-top: 5px;
   }
@@ -106,10 +108,9 @@ const formatDate = (value: Date) =>
   .timeline-line {
     width: 1.5px;
     flex: 1 1 auto;
-    min-height: 40px;
-    background: #1f1c17;
-    opacity: 0.18;
-    margin-top: 6px;
+    min-height: var(--space-40);
+    background: var(--color-border-strong);
+    margin-top: var(--space-8);
   }
 
   /* hide line on last item */
@@ -121,16 +122,16 @@ const formatDate = (value: Date) =>
   .note-item.is-first .timeline-dot {
     width: 11px;
     height: 11px;
-    opacity: 0.9;
-    margin-top: 4px;
+    opacity: var(--opacity-timeline-dot-active);
+    margin-top: var(--space-4);
   }
 
   /* ── content area ── */
   .note-content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding-bottom: 40px;
+    gap: var(--space-12);
+    padding-bottom: var(--space-40);
     min-width: 0;
   }
 
@@ -139,20 +140,20 @@ const formatDate = (value: Date) =>
   }
 
   .note-date {
-    font-size: 14px;
+    font-size: var(--text-intro);
     letter-spacing: 0.04em;
-    opacity: 0.5;
-    line-height: 1.6;
+    color: var(--color-text-tertiary);
+    line-height: var(--leading-summary);
   }
 
   .note-body :global(p) {
     margin: 0;
     line-height: 1.9;
-    opacity: 0.85;
-    font-size: 16px;
+    color: var(--color-text);
+    font-size: var(--text-summary);
   }
 
   .note-body :global(p + p) {
-    margin-top: 8px;
+    margin-top: var(--space-8);
   }
 </style>

@@ -9,6 +9,7 @@ const essays = defineCollection({
       date: z.date(),
       summary: z.string().optional(),
       cover: image().optional(),
+      views: z.number().optional(),
     }),
 });
 

@@ -1,7 +1,7 @@
 ---
 import Layout from './Layout.astro';
 
-const { title, date } = Astro.props;
+const { title, date, headings = [] } = Astro.props;
 const formattedDate =
   date instanceof Date
     ? date.toLocaleDateString('zh-CN', {
@@ -10,82 +10,430 @@ const formattedDate =
         day: 'numeric',
       })
     : date;
+const tocHeadings = headings.filter((heading: { depth: number }) =>
+  heading.depth === 1 || heading.depth === 2
+);
+const hasToc = tocHeadings.length >= 3;
 ---
 
 <Layout>
-  <article class="essay">
-    <header class="essay-header">
-      <h1 class="essay-title">{title}</h1>
-      {date && <time class="essay-date">{formattedDate}</time>}
-    </header>
-    <div class="essay-body">
-      <slot />
-    </div>
-  </article>
+  <div class:list={['essay-shell', { 'has-toc': hasToc }]}>
+    <article class="essay">
+      <header class="essay-header">
+        <h1 class="essay-title">{title}</h1>
+        {date && <time class="essay-date">{formattedDate}</time>}
+      </header>
+      <div class="essay-body">
+        <slot />
+      </div>
+    </article>
+
+    {
+      hasToc && (
+        <aside class="essay-toc" aria-label="文章目录">
+          <nav class="essay-toc-nav">
+            {tocHeadings.map((heading: { depth: number; slug: string; text: string }) => (
+              <a class:list={['essay-toc-link', `depth-${heading.depth}`]} href={`#${heading.slug}`}>
+                {heading.text}
+              </a>
+            ))}
+          </nav>
+        </aside>
+      )
+    }
+  </div>
 </Layout>
 
 <style>
+  .essay-shell {
+    position: relative;
+    width: min(var(--width-article), 100%);
+    margin: var(--space-32) auto var(--space-72);
+  }
+
   .essay {
-    width: min(720px, 100%);
-    margin: 72px auto 64px;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    border-radius: 0;
+    padding: 18px var(--space-16) 52px;
   }
 
   .essay-header {
-    margin-bottom: 24px;
+    margin-bottom: var(--space-32);
   }
 
   .essay-title {
-    font-size: clamp(28px, 4vw, 40px);
-    line-height: 1.2;
-    margin-bottom: 12px;
+    max-width: 760px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-article);
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-title);
+    letter-spacing: 0;
+    margin: 0 0 var(--space-16);
   }
 
   .essay-date {
-    font-size: 14px;
-    opacity: 0.6;
+    color: var(--color-text-tertiary);
+    font-size: var(--text-meta);
+    line-height: var(--leading-meta);
+  }
+
+  .essay-body {
+    color: var(--color-text-heading);
+    font-family: var(--font-body);
+    font-weight: var(--weight-normal);
+    letter-spacing: 0;
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-autospace: ideograph-alpha ideograph-numeric;
   }
 
   .essay-body :global(p) {
-    font-size: 17px;
-    line-height: 1.9;
-    margin: 0 0 12px;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    margin: var(--space-32) 0 0;
+  }
+
+  .essay-body :global(p:has(> img:only-child)) {
+    margin: var(--space-32) 0;
+  }
+
+  .essay-body :global(p:has(> img:only-child) + p:has(> img:only-child)) {
+    margin-top: -18px;
   }
 
   .essay-body :global(img) {
     width: 100%;
     height: auto;
-    max-height: 60vh;
+    max-height: 68vh;
     object-fit: contain;
     display: block;
-    margin: 18px 0;
-    border-radius: 0px;
+    margin: 0;
   }
 
-  @media (max-width: 720px) {
-    .essay-body :global(img) {
-      max-height: 50vh;
-    }
+  .essay-body :global(figure) {
+    margin: var(--space-32) 0;
+  }
+
+  .essay-body :global(figure img) {
+    margin: 0;
+  }
+
+  .essay-body :global(figcaption) {
+    font-family: inherit;
+    margin-top: var(--space-12);
+    color: var(--color-text-tertiary);
+    font-size: var(--text-intro);
+    line-height: var(--leading-text);
+    text-align: center;
+  }
+
+  .essay-body :global(hr) {
+    border: 0;
+    border-top: var(--divider-strong);
+    margin: 48px 0 var(--space-48);
+  }
+
+  .essay-body :global(h1),
+  .essay-body :global(h2) {
+    scroll-margin-top: 96px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+  }
+
+  .essay-body :global(h1) {
+    font-size: var(--text-heading-1);
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-heading);
+    margin: var(--space-40) 0 0;
+    letter-spacing: 0;
   }
 
   .essay-body :global(h2) {
-    font-size: 22px;
-    margin: 36px 0 14px;
+    font-size: var(--text-heading-1);
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-heading);
+    margin: var(--space-40) 0 0;
+    letter-spacing: 0;
   }
 
   .essay-body :global(h3) {
-    font-size: 18px;
-    margin: 28px 0 12px;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: var(--text-heading-2);
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-heading);
+    margin: var(--space-32) 0 0;
+  }
+
+  .essay-body :global(h4) {
+    color: var(--color-text);
+    font-size: var(--text-heading-3);
+    font-weight: var(--weight-normal);
+    line-height: var(--leading-body);
+    margin: var(--space-24) 0 0;
+  }
+
+  .essay-body :global(ul),
+  .essay-body :global(ol) {
+    margin: var(--space-32) 0 0;
+    padding-left: 1.4em;
+  }
+
+  .essay-body :global(li) {
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    margin: var(--space-8) 0 0;
+  }
+
+  .essay-body :global(strong) {
+    font-weight: var(--weight-semibold);
+  }
+
+  .essay-body :global(a) {
+    color: var(--color-link);
+    text-decoration-color: var(--color-link-underline);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.18s ease, text-decoration-color 0.18s ease;
+  }
+
+  .essay-body :global(a:hover),
+  .essay-body :global(a:focus-visible) {
+    color: var(--color-link-hover);
+    text-decoration-color: var(--color-link-underline-hover);
+  }
+
+  .essay-body :global(code) {
+    border-radius: 5px;
+    background: var(--color-code);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    padding: 0.12em 0.34em;
+  }
+
+  .essay-body :global(pre) {
+    overflow-x: auto;
+    margin: var(--space-32) 0;
+    padding: var(--space-16) var(--space-20);
+    background: var(--color-code-block);
+    color: var(--color-code-block-text);
+    font-size: var(--text-intro);
+    line-height: var(--leading-body);
+  }
+
+  .essay-body :global(pre code) {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font-size: inherit;
   }
 
   .essay-body :global(blockquote) {
-    margin: 0;
-    padding: 0;
-    border-left: none;
+    margin: var(--space-32) 0;
+    padding: var(--space-4) 0;
+    border-left: 0;
+    color: color-mix(in srgb, var(--color-text) 86%, transparent);
     font-style: normal;
     background: none;
   }
 
   .essay-body :global(blockquote p) {
-    margin: 0;
+    margin: 0 0 10px;
+  }
+
+  .essay-toc {
+    display: none;
+  }
+
+  .essay-toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+  }
+
+  .essay-toc-link {
+    display: block;
+    overflow: hidden;
+    padding: var(--space-8);
+    border-radius: var(--radius-md);
+    color: color-mix(in srgb, var(--color-text-secondary) 90%, transparent);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-title);
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .essay-toc-link:hover,
+  .essay-toc-link:focus-visible,
+  .essay-toc-link.is-active {
+    color: var(--color-text);
+    background: var(--color-hover);
+    outline: none;
+  }
+
+  .essay-toc-link.is-active {
+    font-weight: var(--weight-semibold);
+  }
+
+  .essay-toc-link.depth-2 {
+    padding-left: var(--space-16);
+    color: var(--color-text-tertiary);
+    font-weight: var(--weight-normal);
+  }
+
+  @media (min-width: 48em) {
+    .essay-shell {
+      margin-top: var(--space-40);
+    }
+
+    .essay {
+      padding: var(--space-24) var(--space-16) 76px;
+    }
+  }
+
+  @media (min-width: 88em) {
+    .essay-toc {
+      display: block;
+      position: absolute;
+      top: var(--space-4);
+      left: calc(100% + 24px);
+      width: var(--width-toc);
+      height: 100%;
+    }
+
+    .essay-toc-nav {
+      position: sticky;
+      top: 88px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .essay-shell {
+      margin-top: var(--space-12);
+    }
+
+    .essay {
+      border-radius: 0;
+      padding: 18px 0 46px;
+    }
+
+    .essay-title {
+      font-size: 31px;
+      line-height: var(--leading-meta);
+    }
+
+    .essay-body :global(p) {
+      font-size: 17px;
+      line-height: 1.86;
+      margin-top: var(--space-28);
+    }
+
+    .essay-body :global(h1) {
+      font-size: 28px;
+      line-height: var(--leading-heading);
+    }
+
+    .essay-body :global(h2) {
+      font-size: 28px;
+      line-height: var(--leading-heading);
+    }
+
+    .essay-body :global(h3) {
+      font-size: 23px;
+      line-height: 1.48;
+    }
+
+    .essay-body :global(li) {
+      font-size: 17px;
+      line-height: 1.86;
+    }
+
+    .essay-body :global(img) {
+      max-height: 50vh;
+    }
+
+    .essay-body :global(p:has(> img:only-child)),
+    .essay-body :global(figure) {
+      margin: var(--space-28) 0;
+    }
+
+    .essay-body :global(p:has(> img:only-child) + p:has(> img:only-child)) {
+      margin-top: -12px;
+    }
+
+    .essay-body :global(figcaption) {
+      font-size: var(--text-meta);
+    }
   }
 </style>
+
+<script is:inline>
+  (() => {
+    const links = Array.from(document.querySelectorAll('.essay-toc-link'));
+    if (!links.length) return;
+
+    const items = links
+      .map((link) => {
+        const id = decodeURIComponent(link.getAttribute('href')?.slice(1) ?? '');
+        return {
+          link,
+          heading: document.getElementById(id),
+        };
+      })
+      .filter((item) => item.heading);
+
+    if (!items.length) return;
+
+    const setActive = (activeLink) => {
+      links.forEach((link) => {
+        const isActive = link === activeLink;
+        link.classList.toggle('is-active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    const updateActive = () => {
+      const pivot = window.innerHeight * 0.22;
+      let active = items[0];
+
+      items.forEach((item) => {
+        if (item.heading.getBoundingClientRect().top <= pivot) {
+          active = item;
+        }
+      });
+
+      setActive(active.link);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        updateActive();
+        ticking = false;
+      });
+    };
+
+    updateActive();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  })();
+</script>

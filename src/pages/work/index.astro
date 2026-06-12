@@ -60,55 +60,59 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
 
 <style>
   .work {
-    max-width: 720px;
-    margin: 56px auto 120px;
-    padding: 0 20px;
+    max-width: var(--width-content-narrow);
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
     display: grid;
-    gap: 48px;
+    gap: var(--space-48);
   }
 
   .work-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 12px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-12);
   }
 
   .intro {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
   .work-list {
     display: grid;
-    gap: 48px;
+    gap: var(--space-48);
   }
 
   .work-item {
     display: grid;
-    gap: 16px;
+    gap: var(--space-16);
   }
 
   .work-card {
     display: grid;
-    gap: 16px;
+    gap: var(--space-16);
     color: inherit;
     text-decoration: none;
   }
 
   .item-header h2 {
-    font-size: 22px;
-    line-height: 1.4;
-    margin: 0 0 4px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-card);
+    line-height: var(--leading-meta);
+    margin: 0 0 var(--space-4);
     letter-spacing: 0;
   }
 
   .item-header p {
     margin: 0;
-    font-size: 14px;
-    line-height: 1.6;
-    opacity: 0.7;
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    color: var(--color-text-secondary);
   }
 
   .item-cover {
@@ -121,15 +125,15 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
     height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
   }
 
   .item-meta {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: var(--text-caption);
     letter-spacing: 0.04em;
-    opacity: 0.6;
+    color: var(--color-text-tertiary);
   }
 
   .work-card:hover .item-header h2 {
@@ -138,12 +142,12 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
 
   @media (max-width: 540px) {
     .work {
-      margin-top: 32px;
+      margin-top: var(--space-32);
     }
 
     .item-meta {
       flex-direction: column;
-      gap: 6px;
+      gap: var(--space-8);
       align-items: flex-start;
     }
   }

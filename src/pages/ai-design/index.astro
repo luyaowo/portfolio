@@ -6,97 +6,232 @@ const posts = await getCollection('ai-design');
 const sortedPosts = posts.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+const formatDate = (value: Date) =>
+  value.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
 ---
 
-<Layout title="AI 设计实践 · 路遥知玛丽" description="AI 工具评测、设计工作流与方法论">
-  <main class="list">
+<Layout title="Ai-practice · 路遥知玛丽" description="AI 工具评测、设计工作流与方法论">
+  <main class="list-page">
     <header class="list-header">
-      <h1>AI 设计实践</h1>
+      <h1>Ai-practice</h1>
       <p class="intro">
         AI 工具如何融入设计工作流？<br />
         这里记录工具评测、实践经验和可能的方法论。
       </p>
     </header>
 
-    <ul class="post-list">
+    <section class="item-list" aria-label="文章列表">
       {sortedPosts.map((post) => (
-        <li class="post-item">
-          <a class="post-card" href={`/ai-design/${post.slug}`}>
-            <h2 class="title">{post.data.title}</h2>
-            {post.data.summary && (
-              <p class="summary">{post.data.summary}</p>
+        <article class="item-row">
+          <a class="item-link" href={`/ai-design/${post.slug}`}>
+            {post.data.cover && (
+              <figure class="cover">
+                <img
+                  src={post.data.cover.src}
+                  width={post.data.cover.width}
+                  height={post.data.cover.height}
+                  alt={post.data.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
             )}
-            <time class="date" datetime={post.data.date}>
-              {new Date(post.data.date).toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
+
+            <div class="content">
+              <div class="text">
+                <h2 class="title">{post.data.title}</h2>
+                {post.data.summary && <p class="summary">{post.data.summary}</p>}
+              </div>
+
+              <footer class="meta">
+                <time class="date" datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date)}
+                </time>
+              </footer>
+            </div>
           </a>
-        </li>
+        </article>
       ))}
-    </ul>
+    </section>
   </main>
 </Layout>
 
 <style>
-  .list {
-    max-width: 720px;
-    margin: 56px auto 120px;
-    padding: 0 20px;
+  .list-page {
+    max-width: var(--width-content-narrow);
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
   }
 
   .list-header {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-48);
   }
 
   .list-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 12px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-12);
   }
 
   .intro {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
-  }
-
-  .post-list {
-    list-style: none;
-    padding: 0;
     margin: 0;
-    display: grid;
-    gap: 56px;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
   }
 
-  .post-card {
+  .item-list {
     display: grid;
-    gap: 4px;
-    text-decoration: none;
+    gap: var(--space-48);
+  }
+
+  .item-row {
+  }
+
+  .item-link {
+    display: grid;
+    grid-template-columns: var(--size-cover-square) minmax(0, 1fr);
+    gap: var(--space-16);
+    align-items: start;
     color: inherit;
+    text-decoration: none;
+  }
+
+  .cover {
+    margin: 0;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--color-hover);
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .content {
+    min-width: 0;
+    display: grid;
+    align-content: space-between;
+    min-height: var(--size-cover-square);
+  }
+
+  .text {
+    padding-top: 1px;
   }
 
   .title {
-    font-size: 22px;
-    line-height: 1.4;
     margin: 0;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-card);
+    line-height: var(--leading-summary);
+    font-weight: var(--weight-normal);
+    letter-spacing: 0;
+    text-wrap: balance;
   }
 
   .summary {
-    font-size: 15px;
-    line-height: 1.6;
-    opacity: 0.75;
-    margin: 0;
+    margin: var(--space-8) 0 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-heading);
+    font-size: var(--text-summary);
+    line-height: var(--leading-summary);
+    text-wrap: pretty;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-16);
+    margin-top: var(--space-8);
+    color: var(--color-text-tertiary);
+    font-size: var(--text-meta);
+    line-height: var(--leading-meta);
   }
 
   .date {
-    font-size: 13px;
-    opacity: 0.5;
+    white-space: nowrap;
   }
 
-  .post-card:hover .title {
+  .item-link:hover .title {
     text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: var(--space-4);
+  }
+
+  @media (max-width: 960px) {
+    .list-page {
+      padding: 0 var(--space-20);
+    }
+
+    .item-link {
+      grid-template-columns: var(--size-cover-square-md) minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+
+    .content {
+      min-height: var(--size-cover-square-md);
+    }
+
+    .summary {
+      font-size: var(--text-summary);
+    }
+
+    .meta {
+      font-size: var(--text-caption);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .list-page {
+      margin-top: var(--space-28);
+      padding: 0 var(--space-16);
+    }
+
+    .list-header {
+      margin-bottom: var(--space-28);
+    }
+
+    .item-link {
+      grid-template-columns: 1fr;
+      gap: var(--space-16);
+    }
+
+    .cover {
+      aspect-ratio: 16 / 10;
+    }
+
+    .content {
+      min-height: auto;
+      gap: var(--space-16);
+    }
+
+    .title {
+      font-size: var(--text-heading-3);
+    }
+
+    .summary {
+      font-size: var(--text-summary);
+      line-height: var(--leading-text);
+      margin-top: var(--space-8);
+    }
+
+    .meta {
+      font-size: var(--text-meta);
+      margin-top: 0;
+    }
   }
 </style>

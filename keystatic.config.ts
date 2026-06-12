@@ -5,6 +5,11 @@ const essayImages = {
   transformFilename: (filename: string) => filename.toLowerCase().replace(/\s+/g, '-'),
 };
 
+const aiDesignImages = {
+  directory: 'src/content/ai-design',
+  transformFilename: (filename: string) => filename.toLowerCase().replace(/\s+/g, '-'),
+};
+
 const workImages = {
   directory: 'src/content/work',
   transformFilename: (filename: string) => filename.toLowerCase().replace(/\s+/g, '-'),
@@ -25,7 +30,7 @@ export default config({
       name: '路遥知玛丽',
     },
     navigation: {
-      内容: ['notes', 'essays', 'work'],
+      内容: ['notes', 'essays', 'aiDesign', 'work'],
     },
   },
   collections: {
@@ -89,6 +94,43 @@ export default config({
           extension: 'md',
           options: {
             image: essayImages,
+          },
+        }),
+      },
+      columns: ['date', 'title'],
+    }),
+    aiDesign: collection({
+      label: 'AI 实践',
+      path: 'src/content/ai-design/*/index',
+      slugField: 'title',
+      format: {
+        contentField: 'content',
+      },
+      schema: {
+        title: fields.slug({
+          name: {
+            label: '标题',
+            validation: { isRequired: true },
+          },
+        }),
+        date: fields.date({
+          label: '日期',
+          validation: { isRequired: true },
+        }),
+        summary: fields.text({
+          label: '摘要',
+          multiline: true,
+        }),
+        cover: fields.image({
+          label: '封面图',
+          directory: aiDesignImages.directory,
+          description: '上传或选择图片。图片会保存到当前文章文件夹，例如 01.jpg。',
+        }),
+        content: fields.markdoc({
+          label: '正文',
+          extension: 'md',
+          options: {
+            image: aiDesignImages,
           },
         }),
       },

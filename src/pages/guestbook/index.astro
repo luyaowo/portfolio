@@ -246,80 +246,84 @@ const avatarOptions = [
 
 <style>
   .guestbook-page {
-    width: min(980px, 100%);
-    margin: 56px auto 120px;
-    padding: 0 20px;
+    width: min(var(--width-content), 100%);
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
   }
 
   .page-header {
     max-width: 640px;
-    margin-bottom: 40px;
+    margin-bottom: var(--space-40);
   }
 
   .eyebrow {
-    font-size: 13px;
+    font-size: var(--text-meta);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    opacity: 0.55;
+    color: var(--color-text-tertiary);
     margin: 0 0 14px;
   }
 
   .page-header h1 {
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
     font-size: clamp(30px, 4vw, 44px);
     line-height: 1.25;
-    margin: 0 0 12px;
+    margin: 0 0 var(--space-12);
   }
 
   .subtitle {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
   .guestbook-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.9fr);
-    gap: 24px;
+    gap: var(--space-24);
     align-items: start;
   }
 
   .guestbook-side {
     display: grid;
-    gap: 24px;
+    gap: var(--space-24);
   }
 
   .guestbook-panel {
-    border: 1px solid rgba(31, 28, 23, 0.12);
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.72);
-    padding: 24px;
+    border: var(--divider-subtle);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+    padding: var(--space-20);
   }
 
   .panel-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 18px;
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
   }
 
   .panel-head h2,
   .guestbook-note h2 {
-    font-size: 18px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-body);
     margin: 0;
   }
 
   .panel-head span {
-    font-size: 12px;
+    font-size: var(--text-caption);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    opacity: 0.45;
+    color: var(--color-text-tertiary);
   }
 
   .message-list {
     display: grid;
-    gap: 28px;
+    gap: var(--space-24);
   }
 
   :global(.message-card) {
@@ -329,23 +333,23 @@ const avatarOptions = [
   :global(.message-header) {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
   }
 
   :global(.message-entry) {
     display: grid;
     grid-template-columns: 46px minmax(0, 1fr);
-    gap: 14px;
+    gap: var(--space-16);
     align-items: start;
   }
 
   :global(.message-avatar) {
-    width: 46px;
-    height: 46px;
+    width: var(--space-48);
+    height: var(--space-48);
     border-radius: 50%;
     object-fit: cover;
-    background: #ece7de;
+    background: color-mix(in srgb, var(--color-surface) 85%, var(--color-bg));
     flex-shrink: 0;
   }
 
@@ -356,39 +360,39 @@ const avatarOptions = [
   :global(.message-title-row) {
     display: flex;
     align-items: baseline;
-    gap: 12px;
+    gap: var(--space-12);
     flex-wrap: wrap;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-8);
   }
 
   :global(.message-name) {
     margin: 0;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.35;
+    color: var(--color-text);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-meta);
   }
 
   :global(.message-card.is-muted) {
-    opacity: 0.72;
-    padding: 18px;
-    border-radius: 14px;
-    background: rgba(246, 244, 240, 0.95);
-    border: 1px solid rgba(31, 28, 23, 0.08);
+    padding: var(--space-16);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 95%, transparent);
+    border: 1px solid var(--color-border);
   }
 
   :global(.message-card.is-skeleton) {
     display: grid;
-    gap: 12px;
-    padding: 18px;
-    border-radius: 14px;
-    background: rgba(246, 244, 240, 0.95);
-    border: 1px solid rgba(31, 28, 23, 0.08);
+    gap: var(--space-12);
+    padding: var(--space-16);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 95%, transparent);
+    border: 1px solid var(--color-border);
   }
 
   :global(.skeleton-line) {
-    height: 10px;
+    height: var(--space-12);
     border-radius: 999px;
-    background: rgba(31, 28, 23, 0.08);
+    background: var(--color-hover);
   }
 
   :global(.skeleton-line-wide) {
@@ -405,42 +409,43 @@ const avatarOptions = [
 
   :global(.message-body) {
     margin: 0;
-    line-height: 1.55;
-    font-size: 15px;
+    line-height: var(--leading-summary);
+    font-size: var(--text-intro);
+    color: var(--color-text);
   }
 
   :global(.message-meta) {
     margin: 0;
-    font-size: 12px;
+    font-size: var(--text-caption);
     letter-spacing: 0.06em;
-    opacity: 0.4;
+    color: var(--color-text-tertiary);
   }
   .guestbook-form {
     display: grid;
-    gap: 18px;
-    margin-top: 18px;
+    gap: var(--space-16);
+    margin-top: var(--space-16);
   }
 
   .field {
     display: grid;
-    gap: 10px;
+    gap: var(--space-12);
   }
 
   .avatar-field {
     display: grid;
-    gap: 16px;
+    gap: var(--space-16);
     min-width: 0;
   }
 
   .avatar-label {
-    font-size: 14px;
-    opacity: 0.72;
+    font-size: var(--text-intro);
+    color: var(--color-text-secondary);
   }
 
   .avatar-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: var(--space-12);
   }
 
   .avatar-option {
@@ -460,34 +465,34 @@ const avatarOptions = [
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid transparent;
-    background: rgba(246, 244, 240, 0.92);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
     box-sizing: border-box;
     transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
   .avatar-option input:checked + img {
-    border-color: rgba(31, 28, 23, 0.7);
+    border-color: var(--color-interactive);
     transform: translateY(-1px);
   }
 
   .avatar-option input:focus-visible + img {
-    outline: 2px solid rgba(31, 28, 23, 0.18);
+    outline: 2px solid var(--color-border-strong);
     outline-offset: 3px;
   }
 
   .field span {
-    font-size: 14px;
-    opacity: 0.72;
+    font-size: var(--text-intro);
+    color: var(--color-text-secondary);
   }
 
   .field input,
   .field textarea {
-    border: 1px solid rgba(31, 28, 23, 0.14);
-    border-radius: 14px;
-    background: rgba(246, 244, 240, 0.92);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
     color: inherit;
     font: inherit;
-    padding: 14px 16px;
+    padding: 14px var(--space-16);
     resize: vertical;
     box-sizing: border-box;
     width: 100%;
@@ -495,8 +500,8 @@ const avatarOptions = [
 
   .field input:focus,
   .field textarea:focus {
-    outline: 2px solid rgba(31, 28, 23, 0.18);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-border-strong);
+    outline-offset: var(--space-4);
   }
 
   .honeypot {
@@ -508,15 +513,15 @@ const avatarOptions = [
 
   .form-actions {
     display: grid;
-    gap: 10px;
+    gap: var(--space-12);
   }
 
   .form-actions button {
     border: none;
-    border-radius: 999px;
-    background: #1f1c17;
-    color: #f6f4f0;
-    padding: 12px 18px;
+    border-radius: var(--radius-lg);
+    background: var(--color-interactive);
+    color: var(--color-surface);
+    padding: 11px var(--space-16);
     font: inherit;
     cursor: pointer;
     width: fit-content;
@@ -529,17 +534,17 @@ const avatarOptions = [
 
   .form-status {
     margin: 0;
-    font-size: 14px;
-    line-height: 1.6;
-    opacity: 0.6;
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    color: var(--color-text-secondary);
   }
 
   .form-status[data-state='success'] {
-    opacity: 0.82;
+    color: var(--color-text);
   }
 
   .form-status[data-state='error'] {
-    opacity: 0.9;
+    color: var(--color-link-hover);
   }
 
   @media (max-width: 800px) {

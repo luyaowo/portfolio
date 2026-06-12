@@ -145,8 +145,8 @@ function resolveImage(src: string) {
 
 <style>
   .empty {
-    font-size: 15px;
-    opacity: 0.6;
+    font-size: var(--text-intro);
+    color: var(--color-text-secondary);
     text-align: center;
     padding: 80px 0;
   }
@@ -157,13 +157,13 @@ function resolveImage(src: string) {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    gap: var(--space-20);
   }
 
   .gallery-item {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-8);
   }
 
   .gallery-img-btn {
@@ -175,14 +175,14 @@ function resolveImage(src: string) {
     background: none;
     cursor: pointer;
     overflow: hidden;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
   }
 
   .gallery-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background: #e7e2d9;
+    background: color-mix(in srgb, var(--color-surface) 90%, var(--color-bg));
     transition: transform 0.3s ease;
   }
 
@@ -206,33 +206,34 @@ function resolveImage(src: string) {
   }
 
   .view-prompt {
-    color: #fff;
-    font-size: 14px;
-    padding: 8px 16px;
+    color: var(--color-text-inverse);
+    font-size: var(--text-intro);
+    padding: 8px var(--space-16);
     background: rgba(0, 0, 0, 0.6);
-    border-radius: 20px;
+    border-radius: var(--space-20);
   }
 
   .gallery-placeholder {
     width: 100%;
     height: 100%;
-    background: #e7e2d9;
+    background: color-mix(in srgb, var(--color-surface) 90%, var(--color-bg));
   }
 
   .gallery-meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-4);
   }
 
   .gallery-title {
-    font-size: 15px;
-    font-weight: 600;
+    color: var(--color-text-heading);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-semibold);
   }
 
   .gallery-tool {
-    font-size: 13px;
-    opacity: 0.5;
+    font-size: var(--text-meta);
+    color: var(--color-text-tertiary);
   }
 
   /* 模态框 */
@@ -257,11 +258,11 @@ function resolveImage(src: string) {
 
   .modal-content {
     position: relative;
-    background: #f6f4f0;
+    background: var(--color-bg);
     max-width: 90vw;
     max-height: 90vh;
     overflow-y: auto;
-    border-radius: 8px;
+    border-radius: var(--radius-xl);
     display: flex;
     flex-direction: column;
   }
@@ -275,12 +276,12 @@ function resolveImage(src: string) {
 
   .modal-close {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: var(--space-12);
+    right: var(--space-12);
     width: 36px;
     height: 36px;
     border: none;
-    background: rgba(255, 255, 255, 0.9);
+    background: color-mix(in srgb, var(--color-surface-white) 90%, transparent);
     border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
@@ -305,54 +306,56 @@ function resolveImage(src: string) {
   }
 
   .modal-info {
-    padding: 24px;
+    padding: var(--space-24);
     flex: 1;
   }
 
   .modal-title {
-    font-size: 20px;
-    margin: 0 0 4px;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: var(--text-heading-3);
+    margin: 0 0 var(--space-4);
   }
 
   .modal-tool {
-    font-size: 14px;
-    opacity: 0.5;
-    margin: 0 0 12px;
+    font-size: var(--text-intro);
+    color: var(--color-text-tertiary);
+    margin: 0 0 var(--space-12);
   }
 
   .modal-desc {
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0 0 16px;
-    opacity: 0.8;
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    margin: 0 0 var(--space-16);
+    color: var(--color-text-secondary);
   }
 
   .modal-prompt-wrapper {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-16);
   }
 
   .prompt-toggle {
-    font-size: 13px;
-    color: #1f1c17;
+    font-size: var(--text-meta);
+    color: var(--color-text);
     background: none;
-    border: 1px solid rgba(31, 28, 23, 0.2);
-    padding: 6px 12px;
-    border-radius: 4px;
+    border: 1px solid var(--color-border-strong);
+    padding: 6px var(--space-12);
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-8);
   }
 
   .prompt-toggle:hover {
-    background: rgba(31, 28, 23, 0.05);
+    background: var(--color-hover);
   }
 
   .modal-prompt {
-    font-size: 13px;
-    line-height: 1.6;
-    background: rgba(0, 0, 0, 0.03);
-    padding: 12px;
-    border-radius: 4px;
+    font-size: var(--text-meta);
+    line-height: var(--leading-summary);
+    background: var(--color-code);
+    padding: var(--space-12);
+    border-radius: var(--radius-sm);
     margin: 0;
     white-space: pre-wrap;
     word-break: break-word;

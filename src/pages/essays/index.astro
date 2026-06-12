@@ -1,5 +1,3 @@
-
-
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
@@ -8,121 +6,242 @@ const essays = await getCollection('essays');
 const sortedEssays = essays.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
+
+const formatDate = (value: Date) =>
+  value.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
 ---
 
-<Layout>
+<Layout title="Essays | 路遥知玛丽">
   <main class="essays">
     <header class="essays-header">
       <h1>Essays</h1>
       <p class="intro">
-        这里收录的是一些需要时间完成的文章，<br />
-        它们并不追求结论，而是记录思考如何发生。
+        写给需要时间消化的内容。<br />
+        更像长文、记录和阶段性判断，不追求一次说完。
       </p>
     </header>
 
-    <ul class="essay-list">
+    <section class="essay-list" aria-label="文章列表">
       {sortedEssays.map((post) => (
-        <li class="essay-item">
-          <a class="essay-card" href={`/essays/${post.slug}`}>
+        <article class="essay-row">
+          <a class="essay-link" href={`/essays/${post.slug}`}>
             {post.data.cover && (
-              <img
-                class="cover"
-                src={post.data.cover.src}
-                width={post.data.cover.width}
-                height={post.data.cover.height}
-                alt={post.data.title}
-                loading="lazy"
-                decoding="async"
-              />
-            )}
-            <h2 class="title">{post.data.title}</h2>
-
-            {post.data.summary && (
-              <p class="summary">{post.data.summary}</p>
+              <figure class="cover">
+                <img
+                  src={post.data.cover.src}
+                  width={post.data.cover.width}
+                  height={post.data.cover.height}
+                  alt={post.data.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
             )}
 
-            <time class="date" datetime={post.data.date}>
-              {new Date(post.data.date).toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </time>
+            <div class="content">
+              <div class="text">
+                <h2 class="title">{post.data.title}</h2>
+                {post.data.summary && <p class="summary">{post.data.summary}</p>}
+              </div>
+
+              <footer class="meta">
+                <time class="date" datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date)}
+                </time>
+                <span class="views">
+                  {typeof post.data.views === 'number'
+                    ? `${post.data.views} 浏览`
+                    : ''}
+                </span>
+              </footer>
+            </div>
           </a>
-        </li>
+        </article>
       ))}
-    </ul>
+    </section>
   </main>
 </Layout>
 
 <style>
   .essays {
-    max-width: 720px;
-    margin: 56px auto 120px;
-    padding: 0 20px;
+    max-width: var(--width-content-narrow);
+    margin: var(--space-56) auto var(--space-120);
+    padding: 0 var(--space-20);
   }
 
   .essays-header {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-48);
   }
 
   .essays-header h1 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    margin: 0 0 12px;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-page);
+    font-weight: var(--weight-semibold);
+    margin: 0 0 var(--space-12);
   }
 
   .intro {
-    font-size: 16px;
-    line-height: 1.7;
-    opacity: 0.75;
+    margin: 0;
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
   }
 
   .essay-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
     display: grid;
-    gap: 56px;
+    gap: var(--space-48);
   }
 
-  .essay-card {
+  .essay-row {
+  }
+
+  .essay-link {
     display: grid;
-    gap: 4px;
-    text-decoration: none;
+    grid-template-columns: var(--size-cover-square) minmax(0, 1fr);
+    gap: var(--space-16);
+    align-items: start;
     color: inherit;
+    text-decoration: none;
   }
 
   .cover {
+    margin: 0;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 360px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background: var(--color-hover);
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 0px;
-    background: #e7e2d9;
-    margin-bottom: 16px;
+    display: block;
+  }
+
+  .content {
+    min-width: 0;
+    display: grid;
+    align-content: space-between;
+    min-height: var(--size-cover-square);
+  }
+
+  .text {
+    padding-top: 1px;
   }
 
   .title {
-    font-size: 22px;
-    line-height: 1.4;
-    margin: 0 0 0px;
+    margin: 0;
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-card);
+    line-height: var(--leading-summary);
+    font-weight: var(--weight-normal);
+    letter-spacing: 0;
+    text-wrap: balance;
   }
 
   .summary {
-    font-size: 15px;
-    line-height: 1.6;
-    opacity: 0.75;
-    margin: 0 0 0px;
+    margin: var(--space-8) 0 0;
+    color: var(--color-text-secondary);
+    font-family: var(--font-heading);
+    font-size: var(--text-summary);
+    line-height: var(--leading-summary);
+    text-wrap: pretty;
   }
 
-  .date {
-    font-size: 13px;
-    opacity: 0.5;
-    margin-top: 0;
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-16);
+    margin-top: var(--space-8);
+    color: var(--color-text-tertiary);
+    font-size: var(--text-meta);
+    line-height: var(--leading-meta);
   }
 
-  .essay-card:hover .title {
+  .date,
+  .views {
+    white-space: nowrap;
+  }
+
+  .views:empty {
+    display: none;
+  }
+
+  .essay-link:hover .title {
     text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: var(--space-4);
+  }
+
+  @media (max-width: 960px) {
+    .essays {
+      padding: 0 var(--space-20);
+    }
+
+    .essay-link {
+      grid-template-columns: var(--size-cover-square-md) minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+
+    .content {
+      min-height: var(--size-cover-square-md);
+    }
+
+    .summary {
+      font-size: var(--text-summary);
+    }
+
+    .meta {
+      font-size: var(--text-caption);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .essays {
+      margin-top: var(--space-28);
+      padding: 0 var(--space-16);
+    }
+
+    .essays-header {
+      margin-bottom: var(--space-28);
+    }
+
+    .essay-link {
+      grid-template-columns: 1fr;
+      gap: var(--space-16);
+    }
+
+    .cover {
+      aspect-ratio: 16 / 10;
+    }
+
+    .content {
+      min-height: auto;
+      gap: var(--space-16);
+    }
+
+    .title {
+      font-size: var(--text-heading-3);
+    }
+
+    .summary {
+      font-size: var(--text-summary);
+      line-height: var(--leading-text);
+      margin-top: var(--space-8);
+    }
+
+    .meta {
+      font-size: var(--text-meta);
+      margin-top: 0;
+    }
   }
 </style>
