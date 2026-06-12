@@ -117,12 +117,13 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400..800&display=swap');
 
 	:global(:root) {
-		--font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', 'PingFang SC', sans-serif;
-		--font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', 'PingFang SC', sans-serif;
+		--font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
+		--font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
 		--font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 		--font-brand: clamp(18px, 2.4vw, 26px);
 
-		--weight-normal: 500;
+		--weight-normal: 400;
+		--weight-medium: 500;
 		--weight-semibold: 600;
 		--weight-bold: 700;
 
