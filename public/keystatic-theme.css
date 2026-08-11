@@ -1,59 +1,63 @@
 html.kui-scheme--light,
-html.kui-scheme--auto {
+html.kui-scheme--auto,
+.kui-theme.kui-scheme--light,
+.kui-theme.kui-scheme--auto {
   color-scheme: light;
 
-  --kui-color-scale-slate1: #fbf8f1;
-  --kui-color-scale-slate2: #f7f2e9;
-  --kui-color-scale-slate3: #f1eadf;
-  --kui-color-scale-slate4: #e9dfd0;
-  --kui-color-scale-slate5: #ded1bf;
-  --kui-color-scale-slate6: #cdbda6;
-  --kui-color-scale-slate7: #b8a58c;
-  --kui-color-scale-slate8: #8d7f6f;
-  --kui-color-scale-slate9: #6f6559;
-  --kui-color-scale-slate10: #3c362e;
-  --kui-color-scale-slate11: #1f1c17;
+  --kui-color-scale-slate1: #fbfaf7;
+  --kui-color-scale-slate2: #f7f6f2;
+  --kui-color-scale-slate3: #efede7;
+  --kui-color-scale-slate4: #e5e1d8;
+  --kui-color-scale-slate5: #d8d2c7;
+  --kui-color-scale-slate6: #c6beb1;
+  --kui-color-scale-slate7: #aaa195;
+  --kui-color-scale-slate8: #81796f;
+  --kui-color-scale-slate9: #625c54;
+  --kui-color-scale-slate10: #403c37;
+  --kui-color-scale-slate11: #24221f;
 
-  --kui-color-scale-indigo1: #fff8f2;
-  --kui-color-scale-indigo2: #fff1e7;
-  --kui-color-scale-indigo3: #ffe7d6;
-  --kui-color-scale-indigo4: #ffd8bf;
-  --kui-color-scale-indigo5: #ffc7a3;
-  --kui-color-scale-indigo6: #f0a783;
-  --kui-color-scale-indigo7: #dd8f69;
-  --kui-color-scale-indigo8: #ce7651;
-  --kui-color-scale-indigo9: #c96442;
-  --kui-color-scale-indigo10: #aa4f31;
-  --kui-color-scale-indigo11: #7c3926;
+  --kui-color-scale-indigo1: #fff8f4;
+  --kui-color-scale-indigo2: #fdf0e9;
+  --kui-color-scale-indigo3: #f8e2d5;
+  --kui-color-scale-indigo4: #f1cdbb;
+  --kui-color-scale-indigo5: #e7b39a;
+  --kui-color-scale-indigo6: #d79575;
+  --kui-color-scale-indigo7: #c87b58;
+  --kui-color-scale-indigo8: #b76142;
+  --kui-color-scale-indigo9: #9c4f37;
+  --kui-color-scale-indigo10: #843f2d;
+  --kui-color-scale-indigo11: #693024;
 
-  --kui-color-background-canvas: #fbf8f1;
-  --kui-color-background-surface: #f7f2e9;
-  --kui-color-background-surface-secondary: #f1eadf;
-  --kui-color-background-surface-tertiary: #e9dfd0;
-  --kui-color-border-muted: #eadfce;
-  --kui-color-border-neutral: #dfd0bc;
-  --kui-color-border-emphasis: #cdbda6;
-  --kui-color-alias-border-idle: #d7c8b5;
-  --kui-color-alias-border-hovered: #bda98f;
-  --kui-color-alias-border-focused: #c96442;
-  --kui-color-alias-focus-ring: #c96442;
-  --kui-color-alias-background-hovered: rgba(31, 28, 23, 0.055);
-  --kui-color-alias-background-selected: rgba(201, 100, 66, 0.12);
-  --kui-color-alias-background-selected-hovered: rgba(201, 100, 66, 0.18);
-  --kui-color-background-accent: #ffe7d6;
-  --kui-color-background-accent-emphasis: #c96442;
-  --kui-color-foreground-accent: #7c3926;
-  --kui-color-foreground-neutral: #3c362e;
-  --kui-color-foreground-neutral-emphasis: #1f1c17;
-  --kui-color-foreground-neutral-secondary: #6f6559;
-  --kui-color-foreground-neutral-tertiary: #8d7f6f;
+  --kui-color-background-canvas: #f7f6f2;
+  --kui-color-background-surface: #fbfaf7;
+  --kui-color-background-surface-secondary: #efede7;
+  --kui-color-background-surface-tertiary: #e5e1d8;
+  --kui-color-border-muted: rgba(48, 48, 46, 0.1);
+  --kui-color-border-neutral: rgba(48, 48, 46, 0.14);
+  --kui-color-border-emphasis: rgba(48, 48, 46, 0.22);
+  --kui-color-alias-border-idle: rgba(48, 48, 46, 0.18);
+  --kui-color-alias-border-hovered: rgba(48, 48, 46, 0.3);
+  --kui-color-alias-border-focused: #9c4f37;
+  --kui-color-alias-focus-ring: rgba(156, 79, 55, 0.42);
+  --kui-color-alias-background-hovered: rgba(48, 48, 46, 0.055);
+  --kui-color-alias-background-selected: rgba(156, 79, 55, 0.1);
+  --kui-color-alias-background-selected-hovered: rgba(156, 79, 55, 0.15);
+  --kui-color-background-accent: #f8e2d5;
+  --kui-color-background-accent-emphasis: #9c4f37;
+  --kui-color-foreground-accent: #693024;
+  --kui-color-foreground-neutral: rgba(48, 48, 46, 0.88);
+  --kui-color-foreground-neutral-emphasis: rgba(20, 20, 19, 0.98);
+  --kui-color-foreground-neutral-secondary: rgba(94, 93, 89, 0.82);
+  --kui-color-foreground-neutral-tertiary: rgba(94, 93, 89, 0.58);
 }
 
 html.kui-scheme--light body,
 html.kui-scheme--auto body {
-  background:
-    radial-gradient(circle at 18% 0%, rgba(255, 231, 214, 0.52), transparent 34rem),
-    linear-gradient(180deg, #fbf8f1 0%, #f7f2e9 100%);
+  background: #f7f6f2;
+  color: rgba(48, 48, 46, 0.88);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Noto Sans SC', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html.kui-scheme--light input,
@@ -67,5 +71,178 @@ html.kui-scheme--auto [contenteditable='true'] {
 
 html.kui-scheme--light [contenteditable='true'],
 html.kui-scheme--auto [contenteditable='true'] {
-  caret-color: #c96442;
+  caret-color: #9c4f37;
+}
+
+html.kui-scheme--light nav,
+html.kui-scheme--auto nav {
+  padding-bottom: 12px;
+}
+
+html.kui-scheme--light nav a,
+html.kui-scheme--auto nav a {
+  border-radius: 6px;
+  transition-property: background-color, color, transform;
+  transition-duration: 140ms;
+  transition-timing-function: ease-out;
+}
+
+html.kui-scheme--light nav a[aria-current='page']::before,
+html.kui-scheme--auto nav a[aria-current='page']::before {
+  width: 2px;
+  background: #9c4f37;
+}
+
+html.kui-scheme--light nav h3,
+html.kui-scheme--auto nav h3 {
+  color: rgba(94, 93, 89, 0.58);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+html.kui-scheme--light main > header,
+html.kui-scheme--auto main > header {
+  background: rgba(251, 250, 247, 0.96);
+  border-bottom-color: rgba(48, 48, 46, 0.1);
+}
+
+html.kui-scheme--light main form label,
+html.kui-scheme--auto main form label {
+  color: rgba(48, 48, 46, 0.82);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+html.kui-scheme--light main form input,
+html.kui-scheme--light main form textarea,
+html.kui-scheme--auto main form input,
+html.kui-scheme--auto main form textarea {
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(48, 48, 46, 0.02);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+html.kui-scheme--light main form input:focus,
+html.kui-scheme--light main form textarea:focus,
+html.kui-scheme--auto main form input:focus,
+html.kui-scheme--auto main form textarea:focus {
+  box-shadow: 0 0 0 3px rgba(156, 79, 55, 0.12);
+}
+
+html.kui-scheme--light main form .ProseMirror,
+html.kui-scheme--auto main form .ProseMirror {
+  min-height: 62vh;
+  padding: 36px clamp(24px, 5vw, 56px);
+  background: #fffdf9;
+  color: rgba(48, 48, 46, 0.9);
+  font-size: 17px;
+  line-height: 1.82;
+}
+
+html.kui-scheme--light main form .ProseMirror p,
+html.kui-scheme--auto main form .ProseMirror p {
+  margin-block: 0 1.45em;
+  text-wrap: pretty;
+}
+
+html.kui-scheme--light main form .ProseMirror h1,
+html.kui-scheme--light main form .ProseMirror h2,
+html.kui-scheme--auto main form .ProseMirror h1,
+html.kui-scheme--auto main form .ProseMirror h2 {
+  color: rgba(20, 20, 19, 0.98);
+  font-family: 'Songti SC', 'Noto Serif SC', serif;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+html.kui-scheme--light main form .ProseMirror blockquote,
+html.kui-scheme--auto main form .ProseMirror blockquote {
+  margin-inline: 0;
+  padding: 16px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: #f3f0e9;
+  color: rgba(94, 93, 89, 0.9);
+}
+
+html.kui-scheme--light [role='grid'],
+html.kui-scheme--auto [role='grid'] {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(48, 48, 46, 0.1);
+}
+
+.luyao-editor-tools {
+  margin-top: auto;
+  padding: 16px 4px 4px;
+  border-top: 1px solid var(--kui-color-border-muted);
+}
+
+.luyao-editor-tools__label {
+  display: block;
+  margin: 0 12px 8px;
+  color: var(--kui-color-foreground-neutral-tertiary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.luyao-editor-tools__link {
+  display: flex;
+  min-height: 40px;
+  padding: 0 12px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--kui-color-foreground-neutral);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.luyao-editor-tools__badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f8e2d5;
+  color: #693024;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.luyao-editor-tools__link:focus-visible {
+  outline: 2px solid var(--kui-color-alias-focus-ring);
+  outline-offset: 2px;
+}
+
+.luyao-editor-tools__link:active,
+html.kui-scheme--light button:active,
+html.kui-scheme--light a[role='button']:active,
+html.kui-scheme--auto button:active,
+html.kui-scheme--auto a[role='button']:active {
+  transform: scale(0.96);
+}
+
+@media (hover: hover) {
+  .luyao-editor-tools__link:hover {
+    background: var(--kui-color-alias-background-hovered);
+  }
+}
+
+@media (max-width: 720px) {
+  html.kui-scheme--light main form .ProseMirror,
+  html.kui-scheme--auto main form .ProseMirror {
+    min-height: 56vh;
+    padding: 24px 18px;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.kui-scheme--light nav a,
+  html.kui-scheme--auto nav a {
+    transition-duration: 0.01ms;
+  }
 }

@@ -1,0 +1,990 @@
+---
+export const prerender = false;
+
+if (import.meta.env.PROD) {
+  return Astro.redirect('/');
+}
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>导入文章 · 路遥知玛丽</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="back-link" href="/keystatic" aria-label="返回内容编辑器">
+        <span aria-hidden="true">←</span>
+        <span>内容编辑器</span>
+      </a>
+      <span class="local-badge">仅本地</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">写作工具 / Import</p>
+        <h1 id="page-title">导入一篇文章</h1>
+        <p>选择 Markdown 或文章文件夹，核对信息后写入网站。不会覆盖已有文章。</p>
+      </section>
+
+      <form id="import-form" class="workspace">
+        <div class="flow">
+          <section class="step" aria-labelledby="step-file">
+            <div class="step-heading">
+              <span class="step-number">01</span>
+              <div>
+                <h2 id="step-file">选择文件</h2>
+                <p>支持 Bear、Notion、Obsidian 导出的 Markdown，以及随文图片。</p>
+              </div>
+            </div>
+
+            <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="选择或拖入 Markdown 文件">
+              <div class="file-mark" aria-hidden="true">MD</div>
+              <div>
+                <strong>拖入 Markdown 和随文图片</strong>
+                <span>也可以使用下方按钮选择</span>
+              </div>
+              <div class="file-actions">
+                <button id="pick-markdown" class="button secondary" type="button">选择文件</button>
+                <button id="pick-folder" class="button text-button" type="button">选择文件夹</button>
+              </div>
+            </div>
+            <input id="markdown-input" class="visually-hidden" type="file" accept=".md,.markdown,text/markdown" />
+            <input id="folder-input" class="visually-hidden" type="file" webkitdirectory multiple />
+
+            <div id="selection-summary" class="selection-summary" hidden>
+              <div>
+                <strong id="selected-markdown"></strong>
+                <span id="selected-details"></span>
+              </div>
+              <button id="clear-selection" class="quiet-action" type="button">重新选择</button>
+            </div>
+          </section>
+
+          <section class="step" aria-labelledby="step-details">
+            <div class="step-heading">
+              <span class="step-number">02</span>
+              <div>
+                <h2 id="step-details">核对文章信息</h2>
+                <p>已尝试从 frontmatter 读取，你可以在导入前修改。</p>
+              </div>
+            </div>
+
+            <div class="fields">
+              <label class="field full">
+                <span>内容类型</span>
+                <select id="collection" name="collection">
+                  <option value="essays">Essays · 长文</option>
+                  <option value="ai-design">AI 实践</option>
+                  <option value="notes">Notes · 短笔记</option>
+                  <option value="work">Work · 设计项目</option>
+                </select>
+              </label>
+
+              <label class="field full">
+                <span>标题</span>
+                <input id="title" name="title" type="text" required placeholder="文章标题" />
+              </label>
+
+              <label class="field">
+                <span>日期</span>
+                <input id="date" name="date" type="date" required />
+              </label>
+
+              <label id="slug-field" class="field">
+                <span>Slug</span>
+                <input id="slug" name="slug" type="text" required placeholder="article-slug" />
+                <small>用于文章网址和文件夹名称</small>
+              </label>
+
+              <label id="summary-field" class="field full">
+                <span>摘要</span>
+                <textarea id="summary" name="summary" rows="3" placeholder="可选，建议写一句文章简介"></textarea>
+              </label>
+
+              <label id="cover-field" class="field full">
+                <span>封面图</span>
+                <select id="cover" name="cover">
+                  <option value="">不设置封面</option>
+                </select>
+                <small>选择随文章导入的一张图片</small>
+              </label>
+
+              <label id="meta-left-field" class="field" hidden>
+                <span>左侧元信息</span>
+                <input id="meta-left" name="metaLeft" type="text" placeholder="例如：产品体验设计" />
+              </label>
+
+              <label id="meta-right-field" class="field" hidden>
+                <span>右侧元信息</span>
+                <input id="meta-right" name="metaRight" type="text" placeholder="例如：2026" />
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <aside class="summary-panel" aria-labelledby="import-summary-title">
+          <div class="summary-sticky">
+            <p class="eyebrow">导入检查</p>
+            <h2 id="import-summary-title">准备情况</h2>
+            <dl>
+              <div>
+                <dt>正文</dt>
+                <dd id="check-markdown" data-state="waiting">等待选择</dd>
+              </div>
+              <div>
+                <dt>图片</dt>
+                <dd id="check-images">0 张</dd>
+              </div>
+              <div>
+                <dt>保存位置</dt>
+                <dd id="check-path">Essays</dd>
+              </div>
+            </dl>
+
+            <p class="safety-note">同名 Slug 已存在时会停止导入，原文章不会被修改。</p>
+            <button id="submit-button" class="button primary" type="submit" disabled>导入文章</button>
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+
+            <div id="success-actions" class="success-actions" hidden>
+              <a id="open-editor" class="button primary" href="/keystatic">在编辑器中打开</a>
+              <button id="import-another" class="button secondary" type="button">继续导入</button>
+            </div>
+          </div>
+        </aside>
+      </form>
+    </main>
+
+    <script>
+      const form = document.querySelector('#import-form');
+      const markdownInput = document.querySelector('#markdown-input');
+      const folderInput = document.querySelector('#folder-input');
+      const dropZone = document.querySelector('#drop-zone');
+      const collectionInput = document.querySelector('#collection');
+      const titleInput = document.querySelector('#title');
+      const dateInput = document.querySelector('#date');
+      const slugInput = document.querySelector('#slug');
+      const summaryInput = document.querySelector('#summary');
+      const coverInput = document.querySelector('#cover');
+      const metaLeftInput = document.querySelector('#meta-left');
+      const metaRightInput = document.querySelector('#meta-right');
+      const submitButton = document.querySelector('#submit-button');
+      const formMessage = document.querySelector('#form-message');
+      const successActions = document.querySelector('#success-actions');
+      const openEditor = document.querySelector('#open-editor');
+      const selectionSummary = document.querySelector('#selection-summary');
+      const selectedMarkdown = document.querySelector('#selected-markdown');
+      const selectedDetails = document.querySelector('#selected-details');
+      const checkMarkdown = document.querySelector('#check-markdown');
+      const checkImages = document.querySelector('#check-images');
+      const checkPath = document.querySelector('#check-path');
+
+      let markdownFile = null;
+      let imageFiles = [];
+      const pendingStorageKey = 'luyao-import-pending';
+
+      const today = new Date();
+      dateInput.value = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+
+      function parseScalar(value) {
+        const text = value.trim();
+        if ((text.startsWith('"') && text.endsWith('"')) || (text.startsWith("'") && text.endsWith("'"))) {
+          try { return JSON.parse(text); } catch { return text.slice(1, -1); }
+        }
+        return text;
+      }
+
+      function parseMarkdown(source) {
+        const normalised = source.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+        const data = {};
+        let body = normalised;
+        if (normalised.startsWith('---\n')) {
+          const closing = normalised.match(/\n(?:---|\.\.\.)[ \t]*\n/);
+          if (closing && closing.index !== undefined) {
+            const frontmatter = normalised.slice(4, closing.index);
+            body = normalised.slice(closing.index + closing[0].length);
+            for (const line of frontmatter.split('\n')) {
+              const match = line.match(/^([A-Za-z][\w-]*):\s*(.*)$/);
+              if (match) data[match[1]] = parseScalar(match[2]);
+            }
+          }
+        }
+        return { data, body };
+      }
+
+      function makeSlug(value) {
+        const ascii = value
+          .normalize('NFKD')
+          .toLowerCase()
+          .replace(/[^a-z0-9._-]+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^[._-]+|[._-]+$/g, '');
+        return ascii || `article-${dateInput.value}`;
+      }
+
+      function isImage(file) {
+        return file.type.startsWith('image/') || /\.(avif|gif|jpe?g|png|webp)$/i.test(file.name);
+      }
+
+      function originalPath(file) {
+        return file.webkitRelativePath || file.name;
+      }
+
+      function refreshCoverOptions(preferred = coverInput.value) {
+        coverInput.innerHTML = '<option value="">不设置封面</option>';
+        for (const image of imageFiles) {
+          const option = document.createElement('option');
+          option.value = originalPath(image).replace(/\\/g, '/');
+          option.textContent = image.name;
+          coverInput.appendChild(option);
+        }
+        const match = imageFiles.find((image) => {
+          const path = originalPath(image).replace(/\\/g, '/');
+          return path === preferred || image.name === preferred || path.endsWith(`/${preferred}`);
+        });
+        if (match) coverInput.value = originalPath(match).replace(/\\/g, '/');
+      }
+
+      async function acceptFiles(files) {
+        const list = Array.from(files);
+        const markdownFiles = list.filter((file) => /\.md(?:own)?$/i.test(file.name));
+        if (!markdownFiles.length) {
+          setMessage('没有找到 Markdown 文件，请重新选择。', 'error');
+          return;
+        }
+        if (markdownFiles.length > 1) {
+          setMessage('检测到多个 Markdown 文件，目前一次只导入一篇文章。', 'error');
+          return;
+        }
+
+        markdownFile = markdownFiles[0];
+        imageFiles = list.filter(isImage);
+        const source = await markdownFile.text();
+        const { data, body } = parseMarkdown(source);
+        const firstHeading = body.match(/^#\s+(.+)$/m)?.[1]?.trim();
+        const filename = markdownFile.name.replace(/\.md(?:own)?$/i, '');
+
+        titleInput.value = data.title || firstHeading || filename;
+        if (data.date && /^\d{4}-\d{2}-\d{2}$/.test(data.date)) dateInput.value = data.date;
+        summaryInput.value = data.summary || '';
+        metaLeftInput.value = data.metaLeft || '';
+        metaRightInput.value = data.metaRight || '';
+        slugInput.value = makeSlug(data.slug || filename);
+        refreshCoverOptions(data.cover || '');
+
+        selectedMarkdown.textContent = markdownFile.name;
+        selectedDetails.textContent = `${Math.max(1, Math.round(markdownFile.size / 1024))} KB · ${imageFiles.length} 张图片`;
+        selectionSummary.hidden = false;
+        dropZone.hidden = true;
+        checkMarkdown.textContent = '已读取';
+        checkMarkdown.dataset.state = 'ready';
+        checkImages.textContent = `${imageFiles.length} 张`;
+        submitButton.disabled = false;
+        delete slugInput.dataset.edited;
+        setMessage('', '');
+        updateCollectionFields();
+      }
+
+      function resetSelection() {
+        sessionStorage.removeItem(pendingStorageKey);
+        markdownFile = null;
+        imageFiles = [];
+        markdownInput.value = '';
+        folderInput.value = '';
+        selectionSummary.hidden = true;
+        dropZone.hidden = false;
+        checkMarkdown.textContent = '等待选择';
+        checkMarkdown.dataset.state = 'waiting';
+        checkImages.textContent = '0 张';
+        submitButton.disabled = true;
+        successActions.hidden = true;
+        submitButton.hidden = false;
+        form.reset();
+        delete slugInput.dataset.edited;
+        dateInput.value = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+        refreshCoverOptions('');
+        updateCollectionFields();
+        setMessage('', '');
+      }
+
+      function updateCollectionFields() {
+        const value = collectionInput.value;
+        const isNote = value === 'notes';
+        const isWork = value === 'work';
+        document.querySelector('#slug-field').hidden = isNote;
+        document.querySelector('#summary-field').hidden = isNote;
+        document.querySelector('#cover-field').hidden = isNote;
+        document.querySelector('#meta-left-field').hidden = !isWork;
+        document.querySelector('#meta-right-field').hidden = !isWork;
+        slugInput.required = !isNote;
+        metaLeftInput.required = isWork;
+        metaRightInput.required = isWork;
+        coverInput.required = isWork;
+        summaryInput.required = isWork;
+        checkPath.textContent = {
+          essays: 'Essays',
+          'ai-design': 'AI 实践',
+          notes: 'Notes',
+          work: 'Work',
+        }[value];
+      }
+
+      function setMessage(message, state) {
+        formMessage.textContent = message;
+        formMessage.dataset.state = state;
+      }
+
+      function showSuccess(result) {
+        setMessage(`已保存到 ${result.path}`, 'success');
+        openEditor.href = result.editorUrl;
+        submitButton.hidden = true;
+        successActions.hidden = false;
+      }
+
+      async function restorePendingImport() {
+        const raw = sessionStorage.getItem(pendingStorageKey);
+        if (!raw) return;
+
+        let pending;
+        try {
+          pending = JSON.parse(raw);
+        } catch {
+          sessionStorage.removeItem(pendingStorageKey);
+          return;
+        }
+
+        setMessage('正在确认刚才的导入结果。', 'working');
+        try {
+          const query = new URLSearchParams({ collection: pending.collection, slug: pending.slug });
+          const response = await fetch(`/api/import-article?${query}`);
+          if (response.status === 404) {
+            sessionStorage.removeItem(pendingStorageKey);
+            setMessage('', '');
+            return;
+          }
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || '无法确认导入结果。');
+          showSuccess(result);
+        } catch (error) {
+          setMessage(error instanceof Error ? error.message : '无法确认导入结果。', 'error');
+        }
+      }
+
+      document.querySelector('#pick-markdown').addEventListener('click', () => markdownInput.click());
+      document.querySelector('#pick-folder').addEventListener('click', () => folderInput.click());
+      document.querySelector('#clear-selection').addEventListener('click', resetSelection);
+      document.querySelector('#import-another').addEventListener('click', resetSelection);
+      openEditor.addEventListener('click', () => sessionStorage.removeItem(pendingStorageKey));
+      markdownInput.addEventListener('change', () => acceptFiles(markdownInput.files));
+      folderInput.addEventListener('change', () => acceptFiles(folderInput.files));
+      collectionInput.addEventListener('change', updateCollectionFields);
+      titleInput.addEventListener('input', () => {
+        if (!slugInput.dataset.edited) slugInput.value = makeSlug(titleInput.value);
+      });
+      slugInput.addEventListener('input', () => { slugInput.dataset.edited = 'true'; });
+
+      dropZone.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          markdownInput.click();
+        }
+      });
+      for (const eventName of ['dragenter', 'dragover']) {
+        dropZone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          dropZone.dataset.dragging = 'true';
+        });
+      }
+      for (const eventName of ['dragleave', 'drop']) {
+        dropZone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          delete dropZone.dataset.dragging;
+        });
+      }
+      dropZone.addEventListener('drop', (event) => acceptFiles(event.dataTransfer.files));
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!markdownFile || !form.reportValidity()) return;
+
+        submitButton.disabled = true;
+        submitButton.textContent = '正在导入…';
+        setMessage('正在整理文章和图片。', 'working');
+
+        const payload = new FormData();
+        payload.set('collection', collectionInput.value);
+        payload.set('title', titleInput.value);
+        payload.set('date', dateInput.value);
+        payload.set('slug', slugInput.value);
+        payload.set('summary', summaryInput.value);
+        payload.set('cover', coverInput.value);
+        payload.set('metaLeft', metaLeftInput.value);
+        payload.set('metaRight', metaRightInput.value);
+        payload.set('markdown', markdownFile, markdownFile.name);
+        payload.set('imageOriginalPaths', JSON.stringify(imageFiles.map(originalPath)));
+        for (const image of imageFiles) payload.append('images', image, image.name);
+
+        const pendingSlug = collectionInput.value === 'notes' ? dateInput.value : slugInput.value;
+        sessionStorage.setItem(pendingStorageKey, JSON.stringify({
+          collection: collectionInput.value,
+          slug: pendingSlug,
+        }));
+
+        try {
+          const response = await fetch('/api/import-article', { method: 'POST', body: payload });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || '导入失败，请重试。');
+
+          showSuccess(result);
+        } catch (error) {
+          sessionStorage.removeItem(pendingStorageKey);
+          setMessage(error instanceof Error ? error.message : '导入失败，请重试。', 'error');
+          submitButton.disabled = false;
+        } finally {
+          submitButton.textContent = '导入文章';
+        }
+      });
+
+      updateCollectionFields();
+      restorePendingImport();
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    color-scheme: light;
+    --canvas: #f7f6f2;
+    --surface: #fbfaf7;
+    --paper: #fffdf9;
+    --text: rgba(48, 48, 46, 0.9);
+    --text-strong: rgba(20, 20, 19, 0.98);
+    --text-secondary: rgba(94, 93, 89, 0.78);
+    --text-tertiary: rgba(94, 93, 89, 0.56);
+    --border: rgba(48, 48, 46, 0.12);
+    --border-strong: rgba(48, 48, 46, 0.2);
+    --accent: #9c4f37;
+    --accent-strong: #693024;
+    --accent-soft: #f8e2d5;
+    --error: #a33d32;
+    --success: #3f6b4f;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Noto Sans SC', sans-serif;
+    background: var(--canvas);
+    color: var(--text);
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--canvas);
+  }
+
+  button,
+  input,
+  select,
+  textarea { font: inherit; }
+
+  button,
+  a { touch-action: manipulation; }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role='button']:focus-visible {
+    outline: 2px solid rgba(156, 79, 55, 0.46);
+    outline-offset: 2px;
+  }
+
+  .topbar {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    display: flex;
+    min-height: 56px;
+    padding: 0 clamp(20px, 4vw, 56px);
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(251, 250, 247, 0.96);
+  }
+
+  .back-link {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .back-link span:first-child { font-size: 18px; }
+
+  .local-badge {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  main {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 64px 0 96px;
+  }
+
+  .intro {
+    max-width: 700px;
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  p { margin-top: 0; }
+
+  h1 {
+    margin-bottom: 16px;
+    color: var(--text-strong);
+    font-family: 'Songti SC', 'Noto Serif SC', serif;
+    font-size: clamp(34px, 5vw, 48px);
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .intro > p:last-child {
+    margin-bottom: 0;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .flow { min-width: 0; }
+
+  .step {
+    padding: 0 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .step + .step { padding-top: 48px; }
+
+  .step-heading {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .step-number {
+    padding-top: 4px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.05em;
+  }
+
+  .step-heading h2,
+  .summary-panel h2 {
+    margin-bottom: 6px;
+    color: var(--text-strong);
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+
+  .step-heading p {
+    margin-bottom: 0;
+    color: var(--text-tertiary);
+    font-size: 13px;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .drop-zone {
+    display: grid;
+    min-height: 152px;
+    padding: 28px;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: center;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    cursor: pointer;
+    transition-property: background-color, border-color, transform;
+    transition-duration: 160ms;
+    transition-timing-function: ease-out;
+  }
+
+  .drop-zone[data-dragging='true'] {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .file-mark {
+    display: grid;
+    width: 52px;
+    height: 64px;
+    place-items: end center;
+    padding-bottom: 10px;
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    box-shadow: 0 1px 3px rgba(48, 48, 46, 0.13);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.05em;
+  }
+
+  .drop-zone strong,
+  .drop-zone span {
+    display: block;
+  }
+
+  .drop-zone strong {
+    margin-bottom: 6px;
+    color: var(--text-strong);
+    font-size: 15px;
+  }
+
+  .drop-zone span {
+    color: var(--text-tertiary);
+    font-size: 12px;
+  }
+
+  .file-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .button,
+  .quiet-action {
+    border: 0;
+    cursor: pointer;
+    transition-property: background-color, color, box-shadow, transform;
+    transition-duration: 140ms;
+    transition-timing-function: ease-out;
+  }
+
+  .button:active,
+  .quiet-action:active,
+  .back-link:active,
+  .drop-zone:active { transform: scale(0.96); }
+
+  .button {
+    display: inline-flex;
+    min-height: 42px;
+    padding: 0 16px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .button.primary {
+    width: 100%;
+    background: var(--text-strong);
+    box-shadow: 0 1px 2px rgba(20, 20, 19, 0.2);
+    color: #f8f5ed;
+  }
+
+  .button.secondary {
+    border: 1px solid var(--border-strong);
+    background: var(--paper);
+    color: var(--text);
+  }
+
+  .button.text-button {
+    padding-inline: 10px;
+    background: transparent;
+    color: var(--text-secondary);
+  }
+
+  .button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+  }
+
+  .selection-summary {
+    display: flex;
+    min-height: 76px;
+    padding: 16px 18px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-radius: var(--radius-md);
+    background: var(--paper);
+    box-shadow: 0 1px 3px rgba(48, 48, 46, 0.1);
+  }
+
+  .selection-summary strong,
+  .selection-summary span { display: block; }
+
+  .selection-summary strong {
+    margin-bottom: 4px;
+    color: var(--text-strong);
+    font-size: 14px;
+  }
+
+  .selection-summary span {
+    color: var(--text-tertiary);
+    font-size: 12px;
+  }
+
+  .quiet-action {
+    min-width: 72px;
+    min-height: 40px;
+    padding: 0 10px;
+    background: transparent;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 18px;
+  }
+
+  .field {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .field.full { grid-column: 1 / -1; }
+
+  .field > span {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .field small {
+    color: var(--text-tertiary);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--paper);
+    color: var(--text-strong);
+    font-size: 14px;
+  }
+
+  input,
+  select {
+    min-height: 44px;
+    padding: 0 12px;
+  }
+
+  textarea {
+    min-height: 92px;
+    padding: 11px 12px;
+    line-height: 1.65;
+    resize: vertical;
+  }
+
+  input::placeholder,
+  textarea::placeholder { color: rgba(94, 93, 89, 0.42); }
+
+  .summary-panel {
+    min-width: 0;
+    padding-left: 32px;
+    border-left: 1px solid var(--border);
+  }
+
+  .summary-sticky {
+    position: sticky;
+    top: 88px;
+  }
+
+  .summary-panel dl { margin: 28px 0; }
+
+  .summary-panel dl > div {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .summary-panel dt { color: var(--text-tertiary); }
+
+  .summary-panel dd {
+    margin: 0;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .summary-panel dd[data-state='ready'] {
+    color: var(--success);
+    font-weight: 650;
+  }
+
+  .safety-note {
+    margin-bottom: 20px;
+    color: var(--text-tertiary);
+    font-size: 11px;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .form-message {
+    min-height: 20px;
+    margin: 12px 0 0;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .form-message[data-state='error'] { color: var(--error); }
+  .form-message[data-state='success'] { color: var(--success); }
+
+  .success-actions {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .visually-hidden {
+    position: fixed;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  [hidden] { display: none !important; }
+
+  @media (hover: hover) {
+    .drop-zone:hover {
+      border-color: var(--accent);
+      background: #fbf5f0;
+    }
+
+    .button.secondary:hover,
+    .quiet-action:hover { background: #efede7; }
+
+    .button.primary:hover { background: #34312d; }
+  }
+
+  @media (max-width: 900px) {
+    .workspace {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .summary-panel {
+      padding: 32px 0 0;
+      border-top: 1px solid var(--border);
+      border-left: 0;
+    }
+
+    .summary-sticky { position: static; }
+    .summary-panel .button { width: auto; }
+  }
+
+  @media (max-width: 720px) {
+    .topbar { background: var(--surface); }
+
+    main {
+      width: min(100% - 32px, 1180px);
+      padding: 40px 0 64px;
+    }
+
+    .intro { margin-bottom: 36px; }
+
+    .workspace { gap: 32px; }
+
+    .drop-zone {
+      grid-template-columns: 44px minmax(0, 1fr);
+      padding: 20px;
+      gap: 16px;
+    }
+
+    .file-mark {
+      width: 44px;
+      height: 54px;
+    }
+
+    .file-actions {
+      grid-column: 1 / -1;
+      justify-content: flex-start;
+    }
+
+    .fields { grid-template-columns: 1fr; }
+    .field.full { grid-column: auto; }
+
+    .step { padding-bottom: 36px; }
+    .step + .step { padding-top: 36px; }
+  }
+
+  @media (max-width: 360px) {
+    .file-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .file-actions .button { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drop-zone,
+    .button,
+    .quiet-action { transition-duration: 0.01ms; }
+  }
+</style>

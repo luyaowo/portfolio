@@ -6,6 +6,7 @@
     "clean": "rm -rf .astro node_modules/.vite",
     "dev": "astro dev",
     "build": "astro build",
+    "test:blog-editor": "zsh scripts/test-blog-editor-launcher.sh",
     "preview": "astro preview",
     "astro": "astro"
   },
