@@ -179,7 +179,7 @@ Harness 把 Observation 加入 Context，并更新任务状态。下一次调用
 
 前面的图站在任务执行的角度，展示 Agent Loop 中反复发生了什么。其中“系统执行 Action”这一格，落到程序里并不是一个简单动作。Harness 还要解析模型输出、执行系统规则，并根据不同结果让循环继续、暂停或结束：
 
-![Harness 根据模型输出和系统规则运行 Agent Loop](./exec-0bac4656-a76b-469b-8750-81ffdea06401.png)
+![Harness 根据模型输出和系统规则运行 Agent Loop](./agent-loop-harness.webp)
 
 *图 1：这不是另一套 Loop，而是同一套 Agent Loop 落到程序后，Harness 需要处理的控制分支。*
 
