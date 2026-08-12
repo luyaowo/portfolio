@@ -303,6 +303,7 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 
 	:global(.site-main) {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		justify-items: center;
 		padding: 72px var(--space-24) 96px;
 	}

@@ -3,8 +3,6 @@ title: 你不知道的大模型：深入认识 Claude Code
 date: 2026-08-12
 cover: cover.png
 ---
-# 你不知道的大模型：深入认识 Claude Code
-
 ## 引子：Claude Code 不只是终端里的代码聊天框
 
 第一次打开 Claude Code，它很像一个装进终端的聊天框。但它还可以读取项目、执行操作、连接工具，并在多个界面中工作。

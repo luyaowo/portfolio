@@ -437,11 +437,19 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   @media (min-width: 88em) {
+    .essay-shell.has-toc {
+      display: grid;
+      grid-template-columns: minmax(0, var(--width-article)) var(--width-toc);
+      column-gap: var(--space-24);
+      align-items: start;
+      width: min(
+        calc(var(--width-article) + var(--space-24) + var(--width-toc)),
+        100%
+      );
+    }
+
     .essay-toc {
       display: block;
-      position: absolute;
-      top: var(--space-4);
-      left: calc(100% + 24px);
       width: var(--width-toc);
       height: 100%;
     }
