@@ -128,10 +128,11 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 		--weight-bold: 700;
 
 		--text-body: 18px;
+		--text-article-body: 17px;
 		--text-heading-1: 30px;
 		--text-heading-2: 24px;
 		--text-heading-3: 20px;
-		--text-title-article: clamp(34px, 4.8vw, 42px);
+		--text-title-article: clamp(32px, 4.2vw, 40px);
 		--text-title-page: clamp(28px, 4vw, 42px);
 		--text-title-card: clamp(18px, 1.7vw, 22px);
 		--text-summary: 16px;
@@ -140,6 +141,9 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 		--text-caption: 12px;
 
 		--leading-body: 1.82;
+		--leading-article-body: 1.72;
+		--leading-article-heading: 1.35;
+		--leading-title-article: 1.22;
 		--leading-heading: 1.45;
 		--leading-title: 1.28;
 		--leading-text: 1.7;
@@ -177,6 +181,7 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 		--width-content: 980px;
 		--width-content-narrow: 760px;
 		--width-article: 860px;
+		--width-article-text: 712px;
 		--width-toc: 260px;
 
 		--space-4: 4px;
@@ -193,6 +198,8 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 		--space-64: 64px;
 		--space-72: 72px;
 		--space-120: 120px;
+		--space-article-paragraph: 18px;
+		--space-article-media: 28px;
 		--size-cover-square: 144px;
 		--size-cover-square-md: 128px;
 		--divider-subtle: 1px solid var(--color-border);
@@ -362,17 +369,29 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 		:global(.site-header) {
 			flex-direction: column;
 			align-items: flex-start;
-			gap: var(--space-16);
-			padding: var(--space-16) var(--space-24);
+			gap: var(--space-12);
+			padding: var(--space-12) var(--space-24);
 		}
 
 		:global(.site-nav) {
-			flex-wrap: wrap;
+			width: 100%;
+			flex-wrap: nowrap;
 			justify-content: flex-start;
+			gap: var(--space-16);
+			overflow-x: auto;
+			scrollbar-width: none;
+		}
+
+		:global(.site-nav::-webkit-scrollbar) {
+			display: none;
+		}
+
+		:global(.site-nav a) {
+			flex: 0 0 auto;
 		}
 
 		:global(.site-main) {
-			padding-top: 136px;
+			padding-top: 112px;
 		}
 	}
 </style>

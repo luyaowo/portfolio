@@ -60,17 +60,18 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-header {
+    width: min(100%, var(--width-article-text));
+    margin-inline: auto;
     margin-bottom: var(--space-32);
   }
 
   .essay-title {
-    max-width: 760px;
     color: var(--color-text-heading);
     font-family: var(--font-heading);
     font-size: var(--text-title-article);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-title);
-    letter-spacing: 0;
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-title-article);
+    letter-spacing: -0.015em;
     margin: 0 0 var(--space-16);
   }
 
@@ -81,11 +82,11 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-body {
-    color: var(--color-text-heading);
+    color: var(--color-text);
     font-family: var(--font-body);
     font-weight: var(--weight-normal);
     letter-spacing: 0;
-    line-height: var(--leading-body);
+    line-height: var(--leading-article-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-autospace: ideograph-alpha ideograph-numeric;
@@ -94,17 +95,18 @@ const hasToc = tocHeadings.length >= 3;
   .essay-body :global(p) {
     font-family: inherit;
     font-weight: inherit;
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
-    margin: var(--space-32) 0 0;
+    font-size: var(--text-article-body);
+    line-height: var(--leading-article-body);
+    margin: var(--space-article-paragraph) 0 0;
   }
 
   .essay-body :global(p:has(> img:only-child)) {
-    margin: var(--space-32) 0;
+    width: min(100%, var(--width-article-text));
+    margin: var(--space-article-media) auto;
   }
 
   .essay-body :global(p:has(> img:only-child) + p:has(> img:only-child)) {
-    margin-top: -18px;
+    margin-top: -14px;
   }
 
   .essay-body :global(img) {
@@ -117,7 +119,8 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-body :global(figure) {
-    margin: var(--space-32) 0;
+    width: min(100%, var(--width-article-text));
+    margin: var(--space-article-media) auto;
   }
 
   .essay-body :global(figure img) {
@@ -136,7 +139,7 @@ const hasToc = tocHeadings.length >= 3;
   .essay-body :global(hr) {
     border: 0;
     border-top: var(--divider-strong);
-    margin: 48px 0 var(--space-48);
+    margin: var(--space-48) 0;
   }
 
   .essay-body :global(h1),
@@ -148,49 +151,112 @@ const hasToc = tocHeadings.length >= 3;
 
   .essay-body :global(h1) {
     font-size: var(--text-heading-1);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-heading);
-    margin: var(--space-40) 0 0;
-    letter-spacing: 0;
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-article-heading);
+    margin: var(--space-56) 0 0;
+    letter-spacing: -0.012em;
   }
 
   .essay-body :global(h2) {
-    font-size: var(--text-heading-1);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-heading);
-    margin: var(--space-40) 0 0;
-    letter-spacing: 0;
+    font-size: var(--text-heading-2);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-article-heading);
+    margin: var(--space-48) 0 0;
+    letter-spacing: -0.008em;
   }
 
   .essay-body :global(h3) {
     color: var(--color-text);
     font-family: var(--font-heading);
-    font-size: var(--text-heading-2);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-heading);
-    margin: var(--space-32) 0 0;
+    font-size: var(--text-heading-3);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-article-heading);
+    margin: var(--space-40) 0 0;
   }
 
   .essay-body :global(h4) {
     color: var(--color-text);
-    font-size: var(--text-heading-3);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-body);
-    margin: var(--space-24) 0 0;
+    font-size: var(--text-article-body);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-article-body);
+    margin: var(--space-32) 0 0;
   }
 
   .essay-body :global(ul),
   .essay-body :global(ol) {
-    margin: var(--space-32) 0 0;
+    margin: var(--space-article-paragraph) 0 0;
     padding-left: 1.4em;
+  }
+
+  .essay-body :global(ul) {
+    padding-left: 1.25em;
+  }
+
+  .essay-body :global(ul li::marker) {
+    color: var(--color-text-tertiary);
+  }
+
+  .essay-body :global(ol) {
+    counter-reset: article-step;
+    list-style: none;
+    padding: var(--space-4) var(--space-20);
+    border: var(--divider-subtle);
+    border-radius: var(--radius-xl);
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
   }
 
   .essay-body :global(li) {
     font-family: inherit;
     font-weight: inherit;
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
+    font-size: var(--text-article-body);
+    line-height: var(--leading-article-body);
     margin: var(--space-8) 0 0;
+  }
+
+  .essay-body :global(ul > li + li) {
+    margin-top: var(--space-12);
+  }
+
+  .essay-body :global(ol > li) {
+    position: relative;
+    counter-increment: article-step;
+    margin: 0;
+    padding: var(--space-20) 0 var(--space-20) 48px;
+    border-bottom: var(--divider-subtle);
+  }
+
+  .essay-body :global(ol > li:last-child) {
+    border-bottom: 0;
+  }
+
+  .essay-body :global(ol > li::before) {
+    content: counter(article-step);
+    position: absolute;
+    top: var(--space-20);
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-text-heading);
+    color: var(--color-text-inverse);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-semibold);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .essay-body :global(ol > li > p) {
+    width: 100%;
+    margin: 0;
+  }
+
+  .essay-body :global(ol > li > p + p) {
+    margin-top: var(--space-4);
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
   }
 
   .essay-body :global(strong) {
@@ -212,9 +278,10 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-body :global(code) {
-    border-radius: 5px;
-    background: var(--color-code);
-    color: var(--color-text);
+    border: 1px solid color-mix(in srgb, var(--color-link) 18%, transparent);
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--color-link) 7%, transparent);
+    color: var(--color-link);
     font-family: var(--font-mono);
     font-size: 0.88em;
     padding: 0.12em 0.34em;
@@ -222,12 +289,12 @@ const hasToc = tocHeadings.length >= 3;
 
   .essay-body :global(pre) {
     overflow-x: auto;
-    margin: var(--space-32) 0;
+    margin: var(--space-article-media) 0;
     padding: var(--space-16) var(--space-20);
     background: var(--color-code-block);
     color: var(--color-code-block-text);
     font-size: var(--text-intro);
-    line-height: var(--leading-body);
+    line-height: var(--leading-article-body);
   }
 
   .essay-body :global(pre code) {
@@ -238,16 +305,81 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-body :global(blockquote) {
-    margin: var(--space-32) 0;
-    padding: var(--space-4) 0;
-    border-left: 0;
-    color: color-mix(in srgb, var(--color-text) 86%, transparent);
+    margin: var(--space-article-media) 0;
+    padding: var(--space-16) var(--space-20);
+    border: var(--divider-subtle);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
     font-style: normal;
-    background: none;
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
   }
 
   .essay-body :global(blockquote p) {
     margin: 0 0 10px;
+  }
+
+  .essay-body :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .essay-body :global(blockquote strong) {
+    color: var(--color-text-heading);
+  }
+
+  .essay-body :global(table) {
+    width: min(100%, var(--width-article-text));
+    margin: var(--space-article-media) auto;
+    border: var(--divider-subtle);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow: hidden;
+  }
+
+  .essay-body :global(th),
+  .essay-body :global(td) {
+    padding: var(--space-12) var(--space-16);
+    border-bottom: var(--divider-subtle);
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+
+  .essay-body :global(th) {
+    background: var(--color-hover);
+    color: var(--color-text-heading);
+    font-weight: var(--weight-semibold);
+  }
+
+  .essay-body :global(td) {
+    color: var(--color-text-secondary);
+  }
+
+  .essay-body :global(tbody tr:last-child td) {
+    border-bottom: 0;
+  }
+
+  .essay-body :global(p:not(:has(> img:only-child))),
+  .essay-body :global(h1),
+  .essay-body :global(h2),
+  .essay-body :global(h3),
+  .essay-body :global(h4),
+  .essay-body :global(ul),
+  .essay-body :global(ol),
+  .essay-body :global(pre),
+  .essay-body :global(blockquote),
+  .essay-body :global(hr),
+  .essay-body :global(figcaption) {
+    width: min(100%, var(--width-article-text));
+    box-sizing: border-box;
+    margin-inline: auto;
+  }
+
+  .essay-body > :global(:first-child) {
+    margin-top: 0;
   }
 
   .essay-toc {
@@ -330,35 +462,57 @@ const hasToc = tocHeadings.length >= 3;
       padding: 18px 0 46px;
     }
 
+    .essay-header {
+      margin-bottom: var(--space-28);
+    }
+
     .essay-title {
-      font-size: 31px;
-      line-height: var(--leading-meta);
+      font-size: 30px;
+      line-height: 1.25;
     }
 
     .essay-body :global(p) {
-      font-size: 17px;
-      line-height: 1.86;
-      margin-top: var(--space-28);
+      font-size: var(--text-article-body);
+      line-height: 1.75;
+      margin-top: var(--space-article-paragraph);
     }
 
     .essay-body :global(h1) {
-      font-size: 28px;
-      line-height: var(--leading-heading);
+      font-size: 26px;
+      line-height: var(--leading-article-heading);
     }
 
     .essay-body :global(h2) {
-      font-size: 28px;
-      line-height: var(--leading-heading);
+      font-size: 22px;
+      line-height: var(--leading-article-heading);
     }
 
     .essay-body :global(h3) {
-      font-size: 23px;
-      line-height: 1.48;
+      font-size: 19px;
+      line-height: var(--leading-article-heading);
     }
 
     .essay-body :global(li) {
-      font-size: 17px;
-      line-height: 1.86;
+      font-size: var(--text-article-body);
+      line-height: 1.75;
+    }
+
+    .essay-body :global(ol) {
+      padding-inline: var(--space-16);
+    }
+
+    .essay-body :global(ol > li) {
+      padding-left: 44px;
+    }
+
+    .essay-body :global(table) {
+      table-layout: fixed;
+      font-size: var(--text-intro);
+    }
+
+    .essay-body :global(th),
+    .essay-body :global(td) {
+      padding: 10px var(--space-8);
     }
 
     .essay-body :global(img) {
@@ -367,7 +521,7 @@ const hasToc = tocHeadings.length >= 3;
 
     .essay-body :global(p:has(> img:only-child)),
     .essay-body :global(figure) {
-      margin: var(--space-28) 0;
+      margin: var(--space-24) auto;
     }
 
     .essay-body :global(p:has(> img:only-child) + p:has(> img:only-child)) {

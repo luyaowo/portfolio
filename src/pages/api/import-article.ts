@@ -94,6 +94,13 @@ function replaceEvery(source: string, search: string, replacement: string) {
   return search && search !== replacement ? source.split(search).join(replacement) : source;
 }
 
+function normaliseFolderImageReferences(markdown: string) {
+  return markdown.replace(
+    /(!\[[^\]]*\]\()\.\/([^\s)]+\.(?:avif|gif|jpe?g|png|webp)(?:[?#][^\s)]*)?)(\))/gi,
+    '$1$2$3',
+  );
+}
+
 function resolveEntry(collectionName: CollectionName, slug: string) {
   const collection = COLLECTIONS[collectionName];
   const root = process.cwd();
@@ -195,6 +202,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   let body = stripFrontmatter(await markdownFile.text());
+  if (collection.folderEntry) body = normaliseFolderImageReferences(body);
   const usedNames = new Set<string>();
   const imageEntries = imageFiles.map((file, index) => {
     const originalPath = (originalPaths[index] || file.name).replace(/\\/g, '/');

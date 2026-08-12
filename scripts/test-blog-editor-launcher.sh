@@ -29,5 +29,6 @@ assert_contains "$applescript_file" "?launch=" "app opens a fresh URL"
 assert_contains "$starter_file" "optimize deps directory" "starter detects stale Vite chunks"
 assert_contains "$starter_file" "--force" "repair start rebuilds Vite caches"
 assert_contains "$starter_file" "node_modules/.bin/astro dev" "starter owns a directly managed Astro process"
+assert_contains "$starter_file" "/opt/homebrew/bin:/usr/local/bin" "starter provides Node paths for macOS app launches"
 
 /bin/zsh -n "$starter_file"

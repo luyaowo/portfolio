@@ -7,6 +7,7 @@ runtime_dir="$HOME/Library/Logs/LuyaoBlogEditor"
 log_file="$runtime_dir/dev.log"
 pid_file="$runtime_dir/server.pid"
 target_url="http://127.0.0.1:4321/keystatic"
+runtime_path="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 /bin/mkdir -p "$runtime_dir"
 
@@ -22,7 +23,7 @@ project_server_pid() {
 	[[ "$candidate_pid" == <-> ]] || return 1
 
 	process_command=$(/bin/ps -p "$candidate_pid" -o command= 2>/dev/null || true)
-	[[ "$process_command" == *"$project_dir/node_modules/.bin/astro dev"* ]] || return 1
+	[[ "$process_command" == *"$project_dir/node_modules/.bin/astro dev"* || "$process_command" == *"$project_dir/node_modules/astro/astro.js dev"* ]] || return 1
 
 	print -r -- "$candidate_pid"
 }
@@ -51,7 +52,7 @@ start_project_server() {
 
 	: > "$log_file"
 	cd "$project_dir"
-	/usr/bin/nohup "$project_dir/node_modules/.bin/astro" dev --host 127.0.0.1 --port 4321 --force >"$log_file" 2>&1 </dev/null &
+	/usr/bin/nohup /usr/bin/env PATH="$runtime_path" "$project_dir/node_modules/.bin/astro" dev --host 127.0.0.1 --port 4321 --force >"$log_file" 2>&1 </dev/null &
 	server_pid=$!
 	print -r -- "$server_pid" > "$pid_file"
 
