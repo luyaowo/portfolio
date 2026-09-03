@@ -13,8 +13,9 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await post.render();
 const { title, date } = post.data;
+const articleClass = post.slug === "token" ? "essay-technical-longread" : undefined;
 ---
 
-<EssayLayout title={title} date={date} headings={headings}>
+<EssayLayout title={title} date={date} headings={headings} articleClass={articleClass}>
   <Content />
 </EssayLayout>
