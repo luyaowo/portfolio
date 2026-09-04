@@ -87,7 +87,6 @@
 
 - [ ] 间距 token 只保留了实际用到的 14 个，将来如果用到 `--space-36` 可以随时加
 - [ ] 颜色 token `--color-link-underline`、`--color-pressed` 只用了一次，可以考虑删掉 token 直接用值
-- [ ] `qiaomu-blog-opensource/` 应该作为 git submodule 而不是普通目录
 
 ### 想换字体时
 

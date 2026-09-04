@@ -27,7 +27,7 @@ if (import.meta.env.PROD) {
       <section class="intro" aria-labelledby="page-title">
         <p class="eyebrow">写作工具 / Import</p>
         <h1 id="page-title">导入一篇文章</h1>
-        <p>选择 Markdown 或文章文件夹，核对信息后写入网站。不会覆盖已有文章。</p>
+        <p>选择多张图片、Markdown 或文章文件夹，核对信息后写入网站。不会覆盖已有文章。</p>
       </section>
 
       <form id="import-form" class="workspace">
@@ -37,22 +37,24 @@ if (import.meta.env.PROD) {
               <span class="step-number">01</span>
               <div>
                 <h2 id="step-file">选择文件</h2>
-                <p>支持 Bear、Notion、Obsidian 导出的 Markdown，以及随文图片。</p>
+                <p>可以直接选择多张图片，也支持 Bear、Notion、Obsidian 导出的 Markdown。</p>
               </div>
             </div>
 
             <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="选择或拖入 Markdown 文件">
-              <div class="file-mark" aria-hidden="true">MD</div>
+              <div class="file-mark" aria-hidden="true">FILE</div>
               <div>
-                <strong>拖入 Markdown 和随文图片</strong>
+                <strong>拖入图片、Markdown 或项目文件夹</strong>
                 <span>也可以使用下方按钮选择</span>
               </div>
               <div class="file-actions">
-                <button id="pick-markdown" class="button secondary" type="button">选择文件</button>
+                <button id="pick-images" class="button secondary" type="button">选择多张图片</button>
+                <button id="pick-markdown" class="button text-button" type="button">选择 Markdown</button>
                 <button id="pick-folder" class="button text-button" type="button">选择文件夹</button>
               </div>
             </div>
             <input id="markdown-input" class="visually-hidden" type="file" accept=".md,.markdown,text/markdown" />
+            <input id="image-input" class="visually-hidden" type="file" accept=".avif,.gif,.jpeg,.jpg,.png,.webp,image/avif,image/gif,image/jpeg,image/png,image/webp" multiple />
             <input id="folder-input" class="visually-hidden" type="file" webkitdirectory multiple />
 
             <div id="selection-summary" class="selection-summary" hidden>
@@ -161,6 +163,7 @@ if (import.meta.env.PROD) {
     <script>
       const form = document.querySelector('#import-form');
       const markdownInput = document.querySelector('#markdown-input');
+      const imageInput = document.querySelector('#image-input');
       const folderInput = document.querySelector('#folder-input');
       const dropZone = document.querySelector('#drop-zone');
       const collectionInput = document.querySelector('#collection');
@@ -233,6 +236,22 @@ if (import.meta.env.PROD) {
         return file.webkitRelativePath || file.name;
       }
 
+      function naturalImageOrder(files) {
+        const collator = new Intl.Collator('zh-CN', { numeric: true, sensitivity: 'base' });
+        return [...files].sort((a, b) => collator.compare(originalPath(a), originalPath(b)));
+      }
+
+      function imageDraftMarkdown(files) {
+        return files
+          .map((file, index) => `![项目图片 ${String(index + 1).padStart(2, '0')}](<${originalPath(file).replace(/\\/g, '/')}>)`)
+          .join('\n\n');
+      }
+
+      function imageFolderName(files) {
+        const path = originalPath(files[0]).replace(/\\/g, '/');
+        return path.includes('/') ? path.split('/')[0] : '';
+      }
+
       function refreshCoverOptions(preferred = coverInput.value) {
         coverInput.innerHTML = '<option value="">不设置封面</option>';
         for (const image of imageFiles) {
@@ -251,8 +270,9 @@ if (import.meta.env.PROD) {
       async function acceptFiles(files) {
         const list = Array.from(files);
         const markdownFiles = list.filter((file) => /\.md(?:own)?$/i.test(file.name));
-        if (!markdownFiles.length) {
-          setMessage('没有找到 Markdown 文件，请重新选择。', 'error');
+        const selectedImages = list.filter(isImage);
+        if (!markdownFiles.length && !selectedImages.length) {
+          setMessage('没有找到 Markdown 或支持的图片，请重新选择。', 'error');
           return;
         }
         if (markdownFiles.length > 1) {
@@ -260,8 +280,39 @@ if (import.meta.env.PROD) {
           return;
         }
 
+        if (!markdownFiles.length) {
+          imageFiles = naturalImageOrder(selectedImages);
+          markdownFile = new File(
+            [imageDraftMarkdown(imageFiles)],
+            'work-images.md',
+            { type: 'text/markdown' },
+          );
+          const folderName = imageFolderName(imageFiles);
+
+          collectionInput.value = 'work';
+          titleInput.value = folderName;
+          summaryInput.value = '';
+          metaLeftInput.value = '';
+          metaRightInput.value = '';
+          slugInput.value = folderName ? makeSlug(folderName) : '';
+          delete slugInput.dataset.edited;
+          refreshCoverOptions(originalPath(imageFiles[0]).replace(/\\/g, '/'));
+
+          selectedMarkdown.textContent = '已生成图片项目初稿';
+          selectedDetails.textContent = `${imageFiles.length} 张图片 · 已按文件名排序`;
+          selectionSummary.hidden = false;
+          dropZone.hidden = true;
+          checkMarkdown.textContent = '已生成';
+          checkMarkdown.dataset.state = 'ready';
+          checkImages.textContent = `${imageFiles.length} 张`;
+          submitButton.disabled = false;
+          updateCollectionFields();
+          setMessage('已根据图片生成 Work 初稿，请核对封面和项目资料。', 'success');
+          return;
+        }
+
         markdownFile = markdownFiles[0];
-        imageFiles = list.filter(isImage);
+        imageFiles = selectedImages;
         const source = await markdownFile.text();
         const { data, body } = parseMarkdown(source);
         const firstHeading = body.match(/^#\s+(.+)$/m)?.[1]?.trim();
@@ -293,6 +344,7 @@ if (import.meta.env.PROD) {
         markdownFile = null;
         imageFiles = [];
         markdownInput.value = '';
+        imageInput.value = '';
         folderInput.value = '';
         selectionSummary.hidden = true;
         dropZone.hidden = false;
@@ -373,11 +425,13 @@ if (import.meta.env.PROD) {
         }
       }
 
+      document.querySelector('#pick-images').addEventListener('click', () => imageInput.click());
       document.querySelector('#pick-markdown').addEventListener('click', () => markdownInput.click());
       document.querySelector('#pick-folder').addEventListener('click', () => folderInput.click());
       document.querySelector('#clear-selection').addEventListener('click', resetSelection);
       document.querySelector('#import-another').addEventListener('click', resetSelection);
       openEditor.addEventListener('click', () => sessionStorage.removeItem(pendingStorageKey));
+      imageInput.addEventListener('change', () => acceptFiles(imageInput.files));
       markdownInput.addEventListener('change', () => acceptFiles(markdownInput.files));
       folderInput.addEventListener('change', () => acceptFiles(folderInput.files));
       collectionInput.addEventListener('change', updateCollectionFields);
@@ -691,6 +745,7 @@ if (import.meta.env.PROD) {
   .file-actions {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
   }
 
