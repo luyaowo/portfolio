@@ -46,7 +46,6 @@ const isReadingPage = Astro.url.pathname.startsWith('/essays/') && Astro.url.pat
 				<a href="/ai-design" class={Astro.url.pathname.startsWith('/ai-design') ? 'is-active' : ''}>Ai-practice</a>
 				<a href="/ai" class={Astro.url.pathname.startsWith('/ai') && !Astro.url.pathname.startsWith('/ai-design') ? 'is-active' : ''}>Ai-image</a>
 				<a href="/essays" class={Astro.url.pathname.startsWith('/essays') ? 'is-active' : ''}>Essays</a>
-				<a href="/notes" class={Astro.url.pathname.startsWith('/notes') ? 'is-active' : ''}>Notes</a>
 				<a href="/photography" class={Astro.url.pathname.startsWith('/photography') ? 'is-active' : ''}>Photography</a>
 				<a href="/work" class={Astro.url.pathname.startsWith('/work') ? 'is-active' : ''}>Work</a>
 				<a href="/play" class={Astro.url.pathname.startsWith('/play') ? 'is-active' : ''}>Play</a>
