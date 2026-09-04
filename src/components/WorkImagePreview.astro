@@ -1,0 +1,250 @@
+<dialog id="work-image-preview" class="work-image-preview" aria-label="作品图片预览">
+  <div class="preview-stage">
+    <img class="preview-image" src="" alt="" />
+  </div>
+
+  <button type="button" class="preview-control preview-close" aria-label="关闭图片预览">
+    <span aria-hidden="true">×</span>
+  </button>
+  <button type="button" class="preview-control preview-previous" aria-label="查看上一张图片">
+    <span aria-hidden="true">‹</span>
+  </button>
+  <button type="button" class="preview-control preview-next" aria-label="查看下一张图片">
+    <span aria-hidden="true">›</span>
+  </button>
+  <p class="preview-counter" aria-live="polite"></p>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#work-image-preview');
+  const previewImage = dialog?.querySelector<HTMLImageElement>('.preview-image');
+  const closeButton = dialog?.querySelector<HTMLButtonElement>('.preview-close');
+  const previousButton = dialog?.querySelector<HTMLButtonElement>('.preview-previous');
+  const nextButton = dialog?.querySelector<HTMLButtonElement>('.preview-next');
+  const counter = dialog?.querySelector<HTMLElement>('.preview-counter');
+  const images = Array.from(document.querySelectorAll<HTMLImageElement>('.essay-body img'))
+    .filter((image) => !image.closest('a'));
+
+  if (!dialog || !previewImage || !closeButton || !previousButton || !nextButton || !counter || images.length === 0) {
+    dialog?.remove();
+  } else {
+    let currentIndex = 0;
+    let activeTrigger: HTMLImageElement | null = null;
+    let previousBodyOverflow = '';
+
+    const updatePreview = (index: number) => {
+      currentIndex = (index + images.length) % images.length;
+      const source = images[currentIndex];
+
+      previewImage.src = source.currentSrc || source.src;
+      previewImage.alt = source.alt || `作品图片 ${currentIndex + 1}`;
+      counter.textContent = `${currentIndex + 1} / ${images.length}`;
+      previousButton.hidden = images.length < 2;
+      nextButton.hidden = images.length < 2;
+    };
+
+    const openPreview = (index: number, trigger: HTMLImageElement) => {
+      activeTrigger = trigger;
+      updatePreview(index);
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      dialog.showModal();
+      closeButton.focus({ preventScroll: true });
+    };
+
+    const closePreview = () => {
+      if (dialog.open) dialog.close();
+    };
+
+    images.forEach((image, index) => {
+      image.dataset.workPreview = '';
+      image.tabIndex = 0;
+      image.setAttribute('role', 'button');
+      image.setAttribute('aria-haspopup', 'dialog');
+      image.setAttribute('aria-label', `${image.alt || `作品图片 ${index + 1}`}，点击放大`);
+
+      image.addEventListener('click', () => openPreview(index, image));
+      image.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        openPreview(index, image);
+      });
+    });
+
+    closeButton.addEventListener('click', closePreview);
+    previousButton.addEventListener('click', () => updatePreview(currentIndex - 1));
+    nextButton.addEventListener('click', () => updatePreview(currentIndex + 1));
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) closePreview();
+    });
+
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closePreview();
+    });
+
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = previousBodyOverflow;
+      previewImage.removeAttribute('src');
+      activeTrigger?.focus({ preventScroll: true });
+      activeTrigger = null;
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!dialog.open) return;
+      if (event.key === 'ArrowLeft' && images.length > 1) updatePreview(currentIndex - 1);
+      if (event.key === 'ArrowRight' && images.length > 1) updatePreview(currentIndex + 1);
+    });
+  }
+</script>
+
+<style>
+  :global(.essay-body img[data-work-preview]) {
+    cursor: zoom-in;
+    touch-action: manipulation;
+  }
+
+  :global(.essay-body img[data-work-preview]:focus-visible) {
+    outline: 2px solid var(--color-link);
+    outline-offset: 4px;
+  }
+
+  .work-image-preview {
+    position: fixed;
+    inset: 0;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+    border: 0;
+    background: transparent;
+    color: rgba(248, 245, 237, 0.9);
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .work-image-preview::backdrop {
+    background: rgba(11, 11, 10, 0.94);
+  }
+
+  .preview-stage {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .preview-image {
+    display: block;
+    width: auto;
+    max-width: min(94vw, 1920px);
+    height: auto;
+    max-height: calc(100dvh - 80px);
+    object-fit: contain;
+    pointer-events: auto;
+    touch-action: pinch-zoom;
+    user-select: none;
+  }
+
+  .preview-control {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(248, 245, 237, 0.9);
+    cursor: pointer;
+    line-height: 1;
+    transition: background-color 0.16s ease, transform 0.12s ease;
+    touch-action: manipulation;
+  }
+
+  .preview-control:active {
+    transform: scale(0.96);
+  }
+
+  .preview-control:focus-visible {
+    outline: 2px solid rgba(248, 245, 237, 0.78);
+    outline-offset: 3px;
+  }
+
+  .preview-close {
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    font-size: 30px;
+    font-weight: var(--weight-normal);
+  }
+
+  .preview-previous,
+  .preview-next {
+    top: 50%;
+    margin-top: -22px;
+    font-size: 36px;
+    font-weight: var(--weight-normal);
+  }
+
+  .preview-previous {
+    left: max(16px, env(safe-area-inset-left));
+  }
+
+  .preview-next {
+    right: max(16px, env(safe-area-inset-right));
+  }
+
+  .preview-counter {
+    position: fixed;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    left: 50%;
+    margin: 0;
+    color: rgba(248, 245, 237, 0.72);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    line-height: var(--leading-meta);
+    transform: translateX(-50%);
+  }
+
+  @media (hover: hover) {
+    .preview-control:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .work-image-preview {
+      padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right));
+    }
+
+    .preview-image {
+      max-width: calc(100vw - 24px);
+      max-height: calc(100dvh - 112px);
+    }
+
+    .preview-previous,
+    .preview-next {
+      top: auto;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      margin-top: 0;
+    }
+
+    .preview-counter {
+      bottom: max(26px, calc(env(safe-area-inset-bottom) + 14px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .preview-control {
+      transition: none;
+    }
+  }
+</style>
