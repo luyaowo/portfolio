@@ -98,19 +98,19 @@ import Layout from '../layouts/Layout.astro';
     text-wrap: pretty;
   }
 
-.primary-nav {
-    max-width: 880px;
+  .primary-nav {
+    max-width: var(--width-content);
     margin: 0 auto var(--space-120);
     padding: 0 var(--space-20);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-16);
   }
 
   .nav-card {
     border: var(--divider-subtle);
     border-radius: var(--radius-xl);
-    padding: 22px var(--space-20);
+    padding: var(--space-28) var(--space-24);
     text-decoration: none;
     color: inherit;
     background: color-mix(in srgb, var(--color-surface) 76%, transparent);
@@ -121,7 +121,7 @@ import Layout from '../layouts/Layout.astro';
   .nav-card strong {
     display: block;
     color: var(--color-text);
-    font-size: var(--text-summary);
+    font-size: var(--text-body);
     font-weight: var(--weight-semibold);
     margin-bottom: var(--space-8);
   }
@@ -129,11 +129,13 @@ import Layout from '../layouts/Layout.astro';
   .nav-card span {
     display: block;
     text-wrap: pretty;
-    font-size: var(--text-meta);
-    color: var(--color-text-secondary);
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    color: color-mix(in srgb, var(--color-text-secondary) 80%, var(--color-text));
   }
 
-  .nav-card:hover {
+  .nav-card:hover,
+  .nav-card:focus-visible {
     background: var(--color-surface);
     transform: translateY(var(--translate-interactive-y));
     box-shadow: var(--shadow-float-soft);
@@ -145,8 +147,17 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .primary-nav {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-inline: 0;
       gap: var(--space-12);
+    }
+
+    .nav-card {
+      padding: var(--space-24) var(--space-16);
+    }
+
+    .nav-card strong {
+      font-size: clamp(var(--text-summary), 4.6vw, var(--text-body));
     }
   }
 </style>
