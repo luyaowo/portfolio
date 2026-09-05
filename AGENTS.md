@@ -13,6 +13,7 @@ src/
 │   ├── essays/      # /essays 列表 + [...slug] 文章详情
 │   ├── notes/       # /notes 笔记列表
 │   ├── ai-design/   # /ai-design AI 实践
+│   ├── design-study/ # /design-study 设计研习
 │   ├── ai/          # /ai AI 图像画廊
 │   ├── work/        # /work 设计项目
 │   ├── photography/ # /photography 摄影
@@ -28,6 +29,7 @@ src/
 │   ├── essays/      # 长文，每篇一个文件夹
 │   ├── notes/       # 短笔记，单文件
 │   ├── ai-design/   # AI 实践文章
+│   ├── design-study/ # 设计原理、界面组件与研究笔记
 │   └── work/        # 设计项目
 ├── assets/          # 图片资源（photography/, ai/）
 ├── styles/          # 全局样式（typography.css, theme.css, base.css）
@@ -70,6 +72,8 @@ date: 2026-01-01
 ```
 
 **AI Design**：`src/content/ai-design/<slug>/index.md`，格式同 Essays。
+
+**Design Study**：`src/content/design-study/<slug>/index.md`，格式同 Essays；用于设计原理、界面组件与研究笔记。首页与主导航位于 Work 之后。
 
 **Work**：`src/content/work/<slug>/index.md`，额外需要 `metaLeft`、`metaRight`、`summary`、`cover`。
 

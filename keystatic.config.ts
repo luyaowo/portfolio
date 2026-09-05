@@ -15,6 +15,11 @@ const workImages = {
   transformFilename: (filename: string) => filename.toLowerCase().replace(/\s+/g, '-'),
 };
 
+const designStudyImages = {
+  directory: 'src/content/design-study',
+  transformFilename: (filename: string) => filename.toLowerCase().replace(/\s+/g, '-'),
+};
+
 const noteImages = {
   directory: 'src/content/notes',
   publicPath: '.',
@@ -30,7 +35,7 @@ export default config({
       name: '路遥知玛丽',
     },
     navigation: {
-      内容: ['notes', 'essays', 'aiDesign', 'work'],
+      内容: ['notes', 'essays', 'designStudy', 'aiDesign', 'work'],
     },
   },
   collections: {
@@ -132,6 +137,30 @@ export default config({
           options: {
             image: aiDesignImages,
           },
+        }),
+      },
+      columns: ['date', 'title'],
+    }),
+    designStudy: collection({
+      label: 'Design Study · 设计研习',
+      path: 'src/content/design-study/*/index',
+      slugField: 'title',
+      format: { contentField: 'content' },
+      schema: {
+        title: fields.slug({
+          name: { label: '标题', validation: { isRequired: true } },
+        }),
+        date: fields.date({ label: '日期', validation: { isRequired: true } }),
+        summary: fields.text({ label: '摘要', multiline: true }),
+        cover: fields.image({
+          label: '封面图',
+          directory: designStudyImages.directory,
+          description: '上传或选择图片。图片会保存到当前文章文件夹，例如 01.jpg。',
+        }),
+        content: fields.markdoc({
+          label: '正文',
+          extension: 'md',
+          options: { image: designStudyImages },
         }),
       },
       columns: ['date', 'title'],

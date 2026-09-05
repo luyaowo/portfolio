@@ -7,6 +7,7 @@ export const prerender = false;
 const COLLECTIONS = {
   essays: { directory: 'src/content/essays', folderEntry: true, keystaticKey: 'essays' },
   'ai-design': { directory: 'src/content/ai-design', folderEntry: true, keystaticKey: 'aiDesign' },
+  'design-study': { directory: 'src/content/design-study', folderEntry: true, keystaticKey: 'designStudy' },
   notes: { directory: 'src/content/notes', folderEntry: false, keystaticKey: 'notes' },
   work: { directory: 'src/content/work', folderEntry: true, keystaticKey: 'work' },
 } as const;

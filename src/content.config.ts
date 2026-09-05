@@ -52,4 +52,15 @@ const aiDesign = defineCollection({
     }),
 });
 
-export const collections = { essays, notes, work, photography, 'ai-design': aiDesign };
+const designStudy = defineCollection({
+  type: 'content',
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.date(),
+      summary: z.string().optional(),
+      cover: image().optional(),
+    }),
+});
+
+export const collections = { essays, notes, work, photography, 'ai-design': aiDesign, 'design-study': designStudy };
