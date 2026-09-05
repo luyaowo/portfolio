@@ -1,41 +1,37 @@
 ---
-title: Material You-Dynamic
-date: 2022-03-02
+title: Material You 第一期
+date: 2021-12-13
 summary: Material Design 3 更新解读——动态色彩、Design tokens、适应性设计,从谷歌 I/O 大会的短片到组件自适应的完整笔记。
 cover: cover.webp
 ---
 
 ![Material You 动态色彩封面](cover.webp)
 
-早在今年5月份,谷歌 I/O 大会就提出了 Material You 的介绍短片,当时 MD 官网上写着将于今年秋天正式推出 Guideline,今天打开 MD 官网竟然发现更新了!!!
-
-从2014年推出第一代 Material design,到2018年推出第二代 Material design,再到今年推出的第三代 Material design,此次更新包括新的视觉风格和一些组件的更新,具体大概分动态色彩、折叠屏设计规范、design tokens 的引用等这几个模块。
+早在今年五月份,谷歌 io 大会就提出了 Material You 的介绍短片,当时 MD 官网上写着将于今年秋天正式推出 Guideline,前段时间打开 MD 官网竟然发现更新了!!!从 2014 年推出第一代 Material design,到 2018 年推出第二代 Material design,再到今年推出的第三代 Material design,每次更新,谷歌总能给我们带来些新的东西。Material design 3 又被称为 Material You,此次新增了新的视觉风格和一些组件的更新,分为 **动态色彩**、**design tokens**、**折叠屏设计规范** 这几个模块。
 
 ### 动态色彩
 
 利用自定义配色方案获得个性化用户体验
 
+### 设计令牌
+
+通过一种类似代码的方式,简化工作流程,提高产品一致性
+
 ### 大屏幕引导
 
 从 mobile 到 tablet 到 desktop 屏幕尺寸的无缝过渡,并特别针对可折叠屏幕进行了相关设计规范制定
-
-### 设计令牌
-
-通过一种方式,简化工作流程,提高产品一致性
 
 首先 M3 讲述了代码库的迁移,包括颜色、暗色主题、形状样式、排版、布局、以及动效等,主要是安卓层面的代码,这里不多赘述。
 
 MD 此次更新,增加了许多新的名词,在 **Foundations 中,MD** 专门介绍了这些名词,这些名词如果不联系相关内容看很容易一头雾水,所以接下来还是一起去看一下主要的新增概念。
 
-### Customizing Material(个性化)
+### 动态色彩
 
-Material You 的动态色彩可以采用系统配色、用户自定义颜色和图片生成的颜色
+此次更新非常重要的内容就是新增了 **Dynamic color(动态色彩)** 概念,通过这个方式,用户可以采用喜欢的颜色来生成界面配色方案,更好地满足了设备的个性化和产品的品牌化。
 
 ![动态色彩定制示意](dynamic-colors.gif)
 
-### 颜色生成器
-
-此次更新,MD 在 Figma 中开发了一款名为 Material Theme Builder 的插件,通过这个插件,可以基于 MD 的颜色框架生成所有模块的配色
+那么如何构建这些动态配色方案呢?此次更新,MD 在 Figma 中开发了一款名为 **Material Theme Builder** 的颜色生成器插件,通过此插件,可以基于 MD 的颜色框架生成自定义配色。
 
 ![Material Theme Builder 插件](theme-builder.webp)
 
@@ -47,17 +43,9 @@ Material You 的动态色彩可以采用系统配色、用户自定义颜色和�
 
 ![Source color 取色器](source-color.webp)
 
-或者可以自定义颜色,然后生成一套配色方案;并且可以增加额外颜色
+或者可以自定义颜色,然后生成一套配色方案;
 
 ![自定义 Key Colors](key-colors.webp)
-
-在 MD 的颜色配色框架中,把颜色分成了五个模块,包括:
-
-- Primary(主色)
-- Secondary(辅助色)
-- Tertiary(第三层级色)
-- Neutral(中性色)
-- Neutral Variant(中性色变体,中性色加一点点主色的饱和度)
 
 ### Design Tokens 设计令牌
 
@@ -115,6 +103,8 @@ border-radius: 12px;
 
 ![Hover 图层样式示例](hover-styles-2.webp)
 
+**☆ 总结一下**
+
 传统的做法是物体 A,每个种类的 A,都新建一个 A 的样式,到最后,A 的样式不断增加越来越多。
 
 ![传统做法:样式不断新增](old-way.webp)
@@ -123,24 +113,26 @@ border-radius: 12px;
 
 ![Design tokens 的做法](token-way.webp)
 
-从设计角度看,界面构成可以简化为(形、色、字、质、构、动),即形状、颜色、字体、图层样式、间距、动效。因此 design tokens 属性可以从这些类型中提取。
+那么属性一共有哪些呢,从设计角度看,界面构成可以简化为(形、色、字、质、构、动),即形状、颜色、字体、图层样式、间距、动效。因此 design tokens 属性可以从这些类型中提取。
 
 > Abdul Wahid 做的有关于 Figma 的 design tokens 的畅想方案
 
 ![Figma Design tokens 面板](figma-tokens-panel.webp)
 
-到这里基本对 design tokens 的由来有了一定的理解,那么到底 design tokens 怎么表述,或者有什么优点?
+到这里基本对 design tokens 的由来有了一定的理解,那么到底 design tokens 怎么命名?
 
-Salesforce 定义了 design tokens:
+**salesforce 定义了 design tokens:**
 
 > 设计令牌是设计系统的可视化设计原子——具体来说,它们是存储可视化设计属性的命名实体。我们使用它们来代替硬编码值(例如颜色的十六进制值或用于间距的像素值),以便为 UI 开发维护可扩展且一致的视觉系统。
 
-1、design tokens 是一种自定义命名
-2、design tokens 不受平台影响,并将各个平台保持统一(web、android、ios)
+我们从中分析可以得出
+
+- **design tokens 是一种自定义命名**
+- **design tokens 不受平台影响**,并将各个平台保持统一(web、android、ios)
 
 我们拆开来看
 
-**1、design tokens 命名**
+**一、design tokens 命名**
 
 design tokens 命名是名称 + 属性
 
@@ -162,11 +154,15 @@ design tokens 命名是名称 + 属性
 
 下面逐一来分析
 
-1、reference tokens,为了方便,简称 ref。个人觉得它就和我们平常命名间距的 XS / S / M / L / XL 差不多,代表(4px / 8px / 12px / 16px / 24px),相当于元素的角色,ref 包括设计系统中可用的所有样式的选项,通常连接一个数值。例如 `md.ref.palette.primary.100 = #4CD9C`
+**1.1 reference tokens**
+
+为了方便,简称 ref。个人觉得它就和我们平常命名间距的 XS / S / M / L / XL 差不多,代表(4px / 8px / 12px / 16px / 24px),相当于元素的角色,ref 包括设计系统中可用的所有样式的选项,通常连接一个数值。例如 `md.ref.palette.primary.100 = #4CD9C`
 
 ![Reference tokens](ref-token.webp)
 
-2、system tokens,以下简称 sys。相当于引用令牌,一般来说,sys 一般指向 ref 令牌而不直接表述所有值。sys 其实就是说明 ref 的设计属性,是作为 container?还是 background?还是 shadow?例如 `md.sys.color.primary-container`
+**1.2 system tokens**
+
+以下简称 sys。相当于引用令牌,一般来说,sys 一般指向 ref 令牌而不直接表述所有值。sys 其实就是说明 ref 的设计属性,是作为 container?还是 background?还是 shadow?例如 `md.sys.color.primary-container`
 
 ![System tokens](sys-token.webp)
 
@@ -174,18 +170,22 @@ design tokens 命名是名称 + 属性
 
 - 元素就是组件的构成元素,例如卡片中包括(icon、text、avatar 等)
 - 设计属性就是样式(颜色、边框、阴影、圆角、大小、文字)
-- 角色就是(S、M、L)
-- 状态就是 normal / hover / press
+- 角色就是(S、M、L),即某一属性的所有内容的编号代称
+- 状态就是 normal / hover / press 等交互状态
 
-3、component tokens,以下简称 comp。相当于组件令牌,就是表述设计属性的所属元素(container、text、icon、state……),`md.comp.fab.container.color`
+**1.3 component tokens**
+
+以下简称 comp。相当于组件令牌,就是表述设计属性的所属元素(container、text、icon、state……),`md.comp.fab.container.color`
 
 ![Component tokens](comp-token.webp)
 
-**2、design tokens 不受平台影响**
+**二、design tokens 不受平台影响**
 
 design tokens 实际就相当于方程中的 X,只是一种变量,X 本身的属性是不改变的,但是赋予的值却可以各种各样,而这种值表现在代码中就是各个平台的表述方式。
 
 就正如苹果,英语叫 apple、汉语叫苹果,都是苹果,只是用各自平台的语言表述罢了。这就避免了设计师常用的 #AAAAAA 进制式颜色表述方式之间的色值转换误差。
+
+所以建立好 design tokens 后,应用在哪个平台,就翻译成哪个平台的语言,这样,就保证了各个终端产品的统一性。
 
 ![跨平台统一表述](cross-platform.webp)
 
@@ -200,8 +200,6 @@ design tokens 实际就相当于方程中的 X,只是一种变量,X 本身的属
 ![Foldable 断点](breakpoints-2.webp)
 
 此外,material 举例了一些屏幕布局适配方法。
-
-### 第一种是组件适配
 
 **1、组件缩放**
 
@@ -225,7 +223,7 @@ design tokens 实际就相当于方程中的 X,只是一种变量,X 本身的属
 
 **3、组件交换**
 
-由于屏幕尺寸不同,对应的交互方式和组件的选取方式也各有差异。先不提导航,底部弹窗在干嘛 😅。不玩梗了,就是常见的移动端选择是底部弹窗,而在 pc 端就是下拉菜单。
+由于屏幕尺寸不同,对应的交互方式和组件的选取方式也各有差异。常见的移动端选择是底部弹窗,而在 pc 端就是下拉菜单。
 
 如下图,移动端 Bottom navigation,到平板端的 Navigation rail,到 pc 端的 Navigation drawer;MD 总结了一些组件的转换,主要是导航和弹窗。
 
@@ -257,11 +255,18 @@ design tokens 实际就相当于方程中的 X,只是一种变量,X 本身的属
 
 第三是适应性设计,这里主要讲了一些组件的自适应,后续还有折叠屏一大部分内容。
 
+本期就讲这么些吧!
+
 **参考文章**
 
-- [Material Design 3](https://m3.material.io/)
-- [Design Tokens 文档](https://docs.tokens.studio/)
-- [Design Tokens 知乎专栏](https://zhuanlan.zhihu.com/p/32548767)
-- [人人都是产品经理:Design Tokens](http://www.woshipm.com/pd/4539006.html)
-- [Figma Design Tokens 实践](https://blog.prototypr.io/making-design-tokens-a-single-source-of-truth-for-figma-tool-76618abdeb88)
-- [站酷:Design Tokens](https://www.zcool.com.cn/article/ZMTIwODgzNg==.html)
+[Material Design 3](https://m3.material.io/)
+
+https://docs.tokens.studio/
+
+https://zhuanlan.zhihu.com/p/32548767
+
+http://www.woshipm.com/pd/4539006.html
+
+https://blog.prototypr.io/making-design-tokens-a-single-source-of-truth-for-figma-tool-76618abdeb88
+
+https://www.zcool.com.cn/article/ZMTIwODgzNg==.html
