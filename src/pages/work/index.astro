@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 const projects = await getCollection('work');
@@ -12,8 +13,8 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
   typeof cover === 'string' ? { src: cover } : cover;
 ---
 
-<Layout>
-  <main class="work">
+<Layout title="Work · 路遥知玛丽" description="设计作品与项目实践">
+  <section class="work">
     <header class="work-header">
       <h1>Work</h1>
       <p class="intro">
@@ -35,14 +36,13 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
             </header>
 
             <figure class="item-cover">
-              <img
-                src={cover.src}
-                width={cover.width}
-                height={cover.height}
-                alt={project.data.title}
-                loading="lazy"
-                decoding="async"
-              />
+              {typeof project.data.cover === 'string' ? (
+                <img src={cover.src} alt={project.data.title} loading="lazy" decoding="async" />
+              ) : (
+                <Image src={project.data.cover} alt={project.data.title}
+                  widths={[400, 800, 1200, 1600]} sizes="(max-width: 800px) calc(100vw - 88px), 760px"
+                  format="webp" quality={80} loading="lazy" decoding="async" />
+              )}
             </figure>
 
             <footer class="item-meta">
@@ -55,7 +55,7 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
         );
       })}
     </section>
-  </main>
+  </section>
 </Layout>
 
 <style>

@@ -1,7 +1,13 @@
 ---
 import Layout from './Layout.astro';
+import RelatedArticles from '../components/RelatedArticles.astro';
+import { getImage } from 'astro:assets';
 
-const { title, date, headings = [], articleClass } = Astro.props;
+const { title, date, headings = [], articleClass, summary, cover, publishedDate, collection, currentSlug } = Astro.props;
+const shareImage = cover && typeof cover !== 'string'
+  ? await getImage({ src: cover, width: Math.min(1200, cover.width), format: 'jpeg', quality: 85 })
+  : undefined;
+const ogImage = shareImage?.src ?? (typeof cover === 'string' ? cover : undefined);
 const formattedDate =
   date instanceof Date
     ? date.toLocaleDateString('zh-CN', {
@@ -16,16 +22,30 @@ const tocHeadings = headings.filter((heading: { depth: number }) =>
 const hasToc = tocHeadings.length >= 3;
 ---
 
-<Layout>
+<Layout title={`${title} · 路遥知玛丽`} description={summary} ogImage={ogImage}
+  ogType="article" ogImageWidth={shareImage?.attributes.width} ogImageHeight={shareImage?.attributes.height}
+  publishedTime={publishedDate?.toISOString()}>
+
   <div class:list={['essay-shell', { 'has-toc': hasToc }]}>
     <article class:list={["essay", articleClass]}>
       <header class="essay-header">
         <h1 class="essay-title">{title}</h1>
-        {date && <time class="essay-date">{formattedDate}</time>}
+        {date && <time class="essay-date" datetime={publishedDate?.toISOString()}>{formattedDate}</time>}
       </header>
+      {hasToc && (
+        <details class="essay-toc-mobile">
+          <summary>文章目录</summary>
+          <nav aria-label="文章目录">
+            {tocHeadings.map((heading: { slug: string; text: string }) => (
+              <a class="essay-toc-link" href={`#${heading.slug}`}>{heading.text}</a>
+            ))}
+          </nav>
+        </details>
+      )}
       <div class="essay-body">
         <slot />
       </div>
+      {collection && <div class="essay-related"><RelatedArticles collection={collection} excludeSlug={currentSlug} limit={2} heading="继续阅读" /></div>}
     </article>
 
     {
@@ -196,15 +216,6 @@ const hasToc = tocHeadings.length >= 3;
     color: var(--color-text-tertiary);
   }
 
-  .essay-body :global(ol) {
-    counter-reset: article-step;
-    list-style: none;
-    padding: var(--space-4) var(--space-20);
-    border: var(--divider-subtle);
-    border-radius: var(--radius-xl);
-    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
-  }
-
   .essay-body :global(li) {
     font-family: inherit;
     font-weight: inherit;
@@ -217,47 +228,11 @@ const hasToc = tocHeadings.length >= 3;
     margin-top: var(--space-12);
   }
 
-  .essay-body :global(ol > li) {
-    position: relative;
-    counter-increment: article-step;
-    margin: 0;
-    padding: var(--space-20) 0 var(--space-20) 48px;
-    border-bottom: var(--divider-subtle);
-  }
-
-  .essay-body :global(ol > li:last-child) {
-    border-bottom: 0;
-  }
-
-  .essay-body :global(ol > li::before) {
-    content: counter(article-step);
-    position: absolute;
-    top: var(--space-20);
-    left: 0;
-    display: grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--color-text-heading);
-    color: var(--color-text-inverse);
-    font-size: var(--text-intro);
-    font-weight: var(--weight-semibold);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .essay-body :global(ol > li > p) {
-    width: 100%;
-    margin: 0;
-  }
-
-  .essay-body :global(ol > li > p + p) {
-    margin-top: var(--space-4);
-    color: var(--color-text-secondary);
-    font-size: 15px;
-    line-height: 1.65;
-  }
+  .essay-body :global(ol > li + li) { margin-top: var(--space-12); }
+  .essay-body :global(ol > li::marker) { color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+  .essay-body :global(li > p) { margin-top: var(--space-8); }
+  .essay-body :global(blockquote ol),
+  .essay-body :global(blockquote ul) { margin-top: var(--space-12); }
 
   .essay-body :global(strong) {
     font-weight: var(--weight-semibold);
@@ -298,6 +273,8 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-body :global(pre code) {
+    border: 0;
+    border-radius: 0;
     padding: 0;
     background: transparent;
     color: inherit;
@@ -419,21 +396,6 @@ const hasToc = tocHeadings.length >= 3;
     max-height: 82vh;
   }
 
-  .essay-technical-longread .essay-body :global(ol) {
-    padding-block: var(--space-8);
-    border-radius: var(--radius-lg);
-  }
-
-  .essay-technical-longread .essay-body :global(ol > li) {
-    padding-block: var(--space-16);
-  }
-
-  .essay-technical-longread .essay-body :global(ol > li::before) {
-    top: var(--space-16);
-    width: 28px;
-    height: 28px;
-  }
-
   .essay-toc {
     display: none;
   }
@@ -455,8 +417,8 @@ const hasToc = tocHeadings.length >= 3;
     font-weight: var(--weight-semibold);
     line-height: var(--leading-title);
     text-decoration: none;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
     transition: color 0.2s ease, background-color 0.2s ease;
   }
 
@@ -469,14 +431,21 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   .essay-toc-link.is-active {
+    color: var(--color-text-heading);
+    box-shadow: inset 2px 0 var(--color-link);
     font-weight: var(--weight-semibold);
   }
 
-  .essay-toc-link.depth-2 {
-    padding-left: var(--space-16);
-    color: var(--color-text-tertiary);
+  .essay-toc-link.depth-2:not(.is-active) {
+    padding-left: var(--space-8);
+    color: var(--color-text-secondary);
     font-weight: var(--weight-medium);
   }
+
+  .essay-toc-mobile, .essay-related { width: min(100%, var(--width-article-text)); margin-inline: auto; }
+  .essay-toc-mobile { box-sizing: border-box; margin-bottom: var(--space-28); border-block: var(--divider-subtle); }
+  .essay-toc-mobile summary { cursor: pointer; padding: var(--space-16) 0; font-size: var(--text-summary); color: var(--color-text-secondary); }
+  .essay-toc-mobile nav { padding-bottom: var(--space-16); }
 
   @media (min-width: 48em) {
     .essay-shell {
@@ -489,6 +458,7 @@ const hasToc = tocHeadings.length >= 3;
   }
 
   @media (min-width: 88em) {
+    .essay-toc-mobile { display: none; }
     .essay-shell.has-toc {
       display: grid;
       grid-template-columns: minmax(0, var(--width-article)) var(--width-toc);
@@ -509,6 +479,9 @@ const hasToc = tocHeadings.length >= 3;
     .essay-toc-nav {
       position: sticky;
       top: 88px;
+      max-height: calc(100vh - 112px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
   }
 
@@ -557,22 +530,19 @@ const hasToc = tocHeadings.length >= 3;
       line-height: 1.75;
     }
 
-    .essay-body :global(ol) {
-      padding-inline: var(--space-16);
-    }
-
-    .essay-body :global(ol > li) {
-      padding-left: 44px;
-    }
-
+    /* Keep multi-column comparisons readable without widening the page. */
     .essay-body :global(table) {
-      table-layout: fixed;
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      table-layout: auto;
       font-size: var(--text-intro);
+      overscroll-behavior-inline: contain;
     }
-
-    .essay-body :global(th),
-    .essay-body :global(td) {
-      padding: 10px var(--space-8);
+    .essay-body :global(th), .essay-body :global(td) {
+      min-width: var(--width-table-cell-min);
+      padding: var(--space-12);
+      overflow-wrap: normal;
     }
 
     .essay-body :global(img) {
@@ -624,20 +594,7 @@ const hasToc = tocHeadings.length >= 3;
       max-height: none;
     }
 
-    .essay-technical-longread .essay-body :global(table) {
-      display: block;
-      width: 100%;
-      overflow-x: auto;
-      table-layout: auto;
-      overscroll-behavior-inline: contain;
-      -webkit-overflow-scrolling: touch;
-    }
 
-    .essay-technical-longread .essay-body :global(th),
-    .essay-technical-longread .essay-body :global(td) {
-      min-width: 124px;
-      overflow-wrap: normal;
-    }
   }
 </style>
 
@@ -646,7 +603,13 @@ const hasToc = tocHeadings.length >= 3;
     const links = Array.from(document.querySelectorAll('.essay-toc-link'));
     if (!links.length) return;
 
-    const items = links
+    links.forEach(link => link.addEventListener('click', () => {
+      const disclosure = link.closest('details');
+      if (disclosure) disclosure.open = false;
+    }));
+
+    const uniqueLinks = links.filter((link, index) => links.findIndex(other => other.getAttribute('href') === link.getAttribute('href')) === index);
+    const items = uniqueLinks
       .map((link) => {
         const id = decodeURIComponent(link.getAttribute('href')?.slice(1) ?? '');
         return {
@@ -660,7 +623,7 @@ const hasToc = tocHeadings.length >= 3;
 
     const setActive = (activeLink) => {
       links.forEach((link) => {
-        const isActive = link === activeLink;
+        const isActive = link.getAttribute('href') === activeLink.getAttribute('href');
         link.classList.toggle('is-active', isActive);
         if (isActive) {
           link.setAttribute('aria-current', 'true');

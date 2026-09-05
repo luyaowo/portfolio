@@ -19,7 +19,6 @@
     "@keystatic/core": "^0.5.50",
     "@supabase/supabase-js": "^2.99.1",
     "@vercel/analytics": "^1.6.1",
-    "astro": "^5.16.7",
-    "oh-my-opencode": "^3.1.4"
+    "astro": "^5.16.7"
   }
 }
