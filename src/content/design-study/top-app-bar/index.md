@@ -1,8 +1,9 @@
 ---
 title: Top app bar-顶部导航
-date: 2023-10-12
+date: 2022-10-11
 summary: 顶部导航栏的整理——作用、解构(容器/导航图标/标题/操作项)、布局样式、滚动交互与 Tabs 标签页规则。
 cover: cover.webp
+order: 12
 ---
 
 ![Top app bar 封面](cover.webp)

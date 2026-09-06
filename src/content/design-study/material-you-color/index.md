@@ -1,8 +1,9 @@
 ---
 title: Material You 第二期-Color
-date: 2024-02-01
+date: 2022-02-13
 summary: 从光的波粒二象性讲到色彩模型与配色——把色彩最基础的知识系统整理一遍,作为理解 Material You 新规范色彩部分的储备。
 cover: cover.webp
+order: 4
 ---
 
 ![Material You 第二期封面](cover.webp)

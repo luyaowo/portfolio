@@ -1,8 +1,9 @@
 ---
 title: Material You-图标
-date: 2023-12-21
+date: 2022-07-10
 summary: 系统图标设计的要点整理——网格与关键线、描边与圆角、注意事项与视觉平衡,以及 MD3 图标定义的更新。
 cover: cover.webp
+order: 7
 ---
 
 ![Material You 图标封面](cover.webp)

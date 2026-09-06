@@ -60,6 +60,8 @@ const designStudy = defineCollection({
       date: z.date(),
       summary: z.string().optional(),
       cover: image().optional(),
+      /** 手动排序序号,优先于 date */
+      order: z.number().optional(),
     }),
 });
 

@@ -12,7 +12,15 @@ interface Props {
 }
 const { title, description, collection, posts, toggle = false } = Astro.props;
 const defaultView = 'list';
-const sortedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+/** 优先按 frontmatter 的 order 字段排序(手动顺序),否则按 date 降序 */
+const sortedPosts = [...posts].sort((a, b) => {
+  const ao = (a.data as { order?: number }).order;
+  const bo = (b.data as { order?: number }).order;
+  if (typeof ao === 'number' && typeof bo === 'number') return ao - bo;
+  if (typeof ao === 'number') return -1;
+  if (typeof bo === 'number') return 1;
+  return b.data.date.getTime() - a.data.date.getTime();
+});
 const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
 ---
 <Layout title={`${title} · 路遥知玛丽`} description={description}>

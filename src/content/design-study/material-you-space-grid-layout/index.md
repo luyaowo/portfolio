@@ -1,8 +1,9 @@
 ---
 title: Material You-间距/网格/布局
-date: 2023-12-07
+date: 2022-10-21
 summary: 从字体排版与瑞士平面设计风格讲起,梳理间距(8px/4px 网格、软硬网格、元素/内容优先)、网格系统与四种布局样式——静态、流式、自适应、响应式。
 cover: cover.webp
+order: 8
 ---
 
 ![Material You 间距网格布局封面](cover.webp)

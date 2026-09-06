@@ -1,8 +1,9 @@
 ---
 title: Navigation-导航
-date: 2023-10-26
+date: 2023-07-06
 summary: App 导航的整理——从 Material Design 的横向/前向/后退导航,到 iOS 的 Tab bar / 层级式导航 / 模态,附录屏动图演示。
 cover: cover.webp
+order: 11
 ---
 
 ![Navigation 导航封面](cover.webp)

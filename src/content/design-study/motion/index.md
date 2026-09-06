@@ -3,6 +3,7 @@ title: motion-动效
 date: 2024-03-10
 summary: 动效设计的资料收藏——交互动效指南、动效落地方案、动效输出格式对比。
 cover: cover.webp
+order: 2
 ---
 
 ![motion 动效封面](cover.webp)

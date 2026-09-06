@@ -1,8 +1,9 @@
 ---
 title: Card-卡片
-date: 2023-05-25
+date: 2023-01-31
 summary: 卡片的整理——什么是卡片、结构、使用场景(信息流/瀑布流/横向滑动/内容集合/卡券)、设计规则与注意事项。
 cover: cover.webp
+order: 22
 ---
 
 ![Card 卡片封面](cover.webp)

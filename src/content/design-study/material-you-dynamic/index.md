@@ -1,8 +1,9 @@
 ---
 title: Material You 第一期
-date: 2024-02-15
+date: 2021-12-13
 summary: Material Design 3 更新解读——动态色彩、Design tokens、适应性设计,从谷歌 I/O 大会的短片到组件自适应的完整笔记。
 cover: cover.webp
+order: 3
 ---
 
 ![Material You 动态色彩封面](cover.webp)
