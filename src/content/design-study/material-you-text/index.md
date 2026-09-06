@@ -1,6 +1,6 @@
 ---
 title: Material You - 字体
-date: 2022-06-23
+date: 2024-01-04
 summary: UI 设计中字体排版的整理——从字体五维度(家族、主字体、字阶行高、字重、颜色),到中西文混排规则与排版原则,再到 MD3 的文字层级更新。
 cover: cover.webp
 ---

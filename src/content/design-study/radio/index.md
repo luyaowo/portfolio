@@ -1,6 +1,6 @@
 ---
 title: Material You-单/复选
-date: 2022-10-09
+date: 2023-07-20
 summary: Radio/Checkbox/Switch 单复选框与开关的整理——定义、注意事项(底部浮层、选择胶囊替代)与多类样式参考。
 cover: cover.webp
 ---
