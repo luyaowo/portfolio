@@ -7,19 +7,40 @@ interface Props {
   description: string;
   collection: 'essays' | 'ai-design' | 'design-study';
   posts: Array<CollectionEntry<'essays'> | CollectionEntry<'ai-design'> | CollectionEntry<'design-study'>>;
+  /** 提供网格/列表切换;默认列表视图 */
+  toggle?: boolean;
 }
-const { title, description, collection, posts } = Astro.props;
+const { title, description, collection, posts, toggle = false } = Astro.props;
+const defaultView = 'list';
 const sortedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
 ---
 <Layout title={`${title} · 路遥知玛丽`} description={description}>
-  <section class="list-page">
+  <section class="list-page" data-collection={collection} data-default-view={defaultView}>
     <header class="list-header">
-      <h1>{title}</h1>
-      <p class="intro"><slot /></p>
+      <div class="header-row">
+        <div class="header-text">
+          <h1>{title}</h1>
+          <p class="intro"><slot /></p>
+        </div>
+        {toggle && (
+          <div class="view-toggle" role="group" aria-label="视图切换">
+            <button type="button" class="toggle-btn" data-view="grid" aria-pressed="true" title="网格视图" aria-label="网格视图">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+                <path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z" />
+              </svg>
+            </button>
+            <button type="button" class="toggle-btn" data-view="list" aria-pressed="false" title="列表视图" aria-label="列表视图">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+                <path d="M2 2h12v2.5H2V2zm0 4.75h12v2.5H2v-2.5zm0 4.75h12V14H2v-2.5z" />
+              </svg>
+            </button>
+          </div>
+        )}
+      </div>
     </header>
     {sortedPosts.length === 0 && <p class="empty-state">文章整理中。</p>}
-    <section class="item-list" aria-label="文章列表">
+    <section class:list={['item-list', { 'is-grid': toggle && defaultView === 'grid' }]} aria-label="文章列表">
       {sortedPosts.map((post) => (
         <article>
           <a class:list={['item-link', { 'without-cover': !post.data.cover }]} href={`/${collection}/${post.slug}`}>
@@ -45,6 +66,27 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
       ))}
     </section>
   </section>
+
+  {toggle && (
+    <script is:inline>
+      (() => {
+        const root = document.querySelector('.list-page');
+        if (!root) return;
+        const buttons = root.querySelectorAll('.toggle-btn');
+        const list = root.querySelector('.item-list');
+        const key = 'list-view-' + root.dataset.collection;
+        const apply = (view) => {
+          list.classList.toggle('is-grid', view === 'grid');
+          buttons.forEach((b) => b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'));
+          try { localStorage.setItem(key, view); } catch {}
+        };
+        let saved = null;
+        try { saved = localStorage.getItem(key); } catch {}
+        apply(saved || root.dataset.defaultView);
+        buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.view)));
+      })();
+    </script>
+  )}
 </Layout>
 
 <style>
@@ -58,6 +100,50 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
 
   .list-header {
     margin-bottom: var(--space-48);
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-16);
+  }
+
+  .header-text {
+    min-width: 0;
+  }
+
+  .view-toggle {
+    display: flex;
+    flex-shrink: 0;
+    padding: var(--space-4);
+    gap: var(--space-4);
+    border: var(--divider-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+  }
+
+  .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+  }
+
+  .toggle-btn:hover {
+    color: var(--color-text-primary);
+  }
+
+  .toggle-btn[aria-pressed="true"] {
+    background: var(--color-hover);
+    color: var(--color-text-primary);
   }
 
   .list-header h1 {
@@ -175,6 +261,39 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
     text-underline-offset: var(--space-4);
   }
 
+  /* 网格视图:一行三卡 */
+  .item-list.is-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-32) var(--space-24);
+  }
+
+  .is-grid .item-link {
+    display: block;
+  }
+
+  .is-grid .cover {
+    aspect-ratio: 16 / 10;
+    margin-bottom: var(--space-12);
+  }
+
+  .is-grid .content {
+    display: block;
+    min-height: auto;
+  }
+
+  .is-grid .title {
+    font-size: var(--text-title-card);
+  }
+
+  .is-grid .summary {
+    display: none;
+  }
+
+  .is-grid .meta {
+    margin-top: var(--space-8);
+    justify-content: flex-start;
+  }
+
   @media (max-width: 960px) {
     .list-page {
       padding: 0 var(--space-20);
@@ -196,6 +315,10 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
     .meta {
       font-size: var(--text-caption);
     }
+
+    .item-list.is-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media (max-width: 720px) {
@@ -211,6 +334,14 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
     .item-link {
       grid-template-columns: 1fr;
       gap: var(--space-16);
+    }
+
+    .item-list.is-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .header-row {
+      flex-direction: column;
     }
 
     .cover {

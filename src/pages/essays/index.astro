@@ -3,6 +3,6 @@ import ArticleList from '../../components/ArticleList.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('essays');
 ---
-<ArticleList title="Essays" description="长文、记录和阶段性思考" collection="essays" posts={posts}>
+<ArticleList title="Essays" description="长文、记录和阶段性思考" collection="essays" posts={posts} toggle>
   写给需要时间消化的内容。<br />更像长文、记录和阶段性判断，不追求一次说完。
 </ArticleList>

@@ -3,6 +3,6 @@ import ArticleList from '../../components/ArticleList.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('design-study');
 ---
-<ArticleList title="Design Study" description="设计原理与理论思考" collection="design-study" posts={posts}>
+<ArticleList title="Design Study" description="设计原理与理论思考" collection="design-study" posts={posts} toggle>
   设计原理与理论思考。
 </ArticleList>
