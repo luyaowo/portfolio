@@ -8,8 +8,9 @@ import Layout from '../layouts/Layout.astro';
     <header class="intro">
       <p class="kicker">Design · Observation · Writing</p>
       <h1 class="title">
-        我通过设计理解复杂系统，<br />
-        也通过影像与文字记录那些无法被效率化的瞬间。
+        <span class="title-line">我通过设计理解复杂系统，</span>
+        <span class="title-line">也通过影像与文字，</span>
+        <span class="title-line">记录那些无法被效率化的瞬间。</span>
       </h1>
       <p class="desc">
         这里是一个长期更新的个人站点，用于沉淀设计思考、视觉记录与阶段性写作。
@@ -17,7 +18,7 @@ import Layout from '../layouts/Layout.astro';
     </header>
 
     <nav class="primary-nav" aria-label="主要内容入口">
-      <a href="/work" class="nav-card">
+      <a href="/work" class="nav-card nav-card-work">
         <strong>Work</strong>
         <span>设计作品与项目实践</span>
       </a>
@@ -26,11 +27,11 @@ import Layout from '../layouts/Layout.astro';
         <span>设计原理与理论思考</span>
       </a>
       <a href="/ai-design" class="nav-card">
-        <strong>Ai-practice</strong>
+        <strong>AI Practice</strong>
         <span>AI 工具评测与实践研究</span>
       </a>
       <a href="/ai" class="nav-card">
-        <strong>Ai-image</strong>
+        <strong>AI Images</strong>
         <span>生成式图像与视觉实验</span>
       </a>
       <a href="/essays" class="nav-card">
@@ -76,7 +77,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: var(--text-caption);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-text-tertiary);
+    color: var(--color-text-secondary);
     margin-bottom: var(--space-16);
   }
 
@@ -94,7 +95,7 @@ import Layout from '../layouts/Layout.astro';
   .desc {
     font-size: var(--text-intro);
     line-height: var(--leading-text);
-    color: var(--color-text-secondary);
+    color: color-mix(in srgb, var(--color-text-secondary) 80%, var(--color-text));
     text-wrap: pretty;
   }
 
@@ -105,6 +106,18 @@ import Layout from '../layouts/Layout.astro';
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-16);
+  }
+
+  .title-line {
+    display: block;
+  }
+
+  .nav-card-work {
+    border: var(--divider-strong);
+  }
+
+  .nav-card-work strong {
+    color: var(--color-text-heading);
   }
 
   .nav-card {
@@ -143,7 +156,11 @@ import Layout from '../layouts/Layout.astro';
 
   @media (max-width: 720px) {
     .intro {
-      margin: 80px auto 0;
+      margin: var(--space-56) auto var(--space-40);
+    }
+
+    .title-line {
+      display: inline;
     }
 
     .primary-nav {
