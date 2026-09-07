@@ -1,5 +1,6 @@
 ---
-title: Material You-Chips
+title: 标签组件 Chips · Material You
+tags: [界面组件]
 date: 2022-10-08
 summary: 选择胶囊(Chips)的整理——解构(容器/图标/文本/删除)、四种功能类型(Choice/Filter/Input/Action)与不同样式。
 cover: cover.webp

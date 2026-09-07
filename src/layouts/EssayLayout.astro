@@ -1,6 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import RelatedArticles from '../components/RelatedArticles.astro';
+import WorkImagePreview from '../components/WorkImagePreview.astro';
 import { getImage } from 'astro:assets';
 
 const { title, date, headings = [], articleClass, summary, cover, publishedDate, collection, currentSlug } = Astro.props;
@@ -62,6 +63,7 @@ const hasToc = tocHeadings.length >= 3;
       )
     }
   </div>
+  <WorkImagePreview />
 </Layout>
 
 <style>

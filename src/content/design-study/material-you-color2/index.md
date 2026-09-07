@@ -1,5 +1,6 @@
 ---
-title: Material You-第三期
+title: 色彩应用 · Material You
+tags: [设计基础]
 date: 2022-03-08
 summary: MD3 颜色应用——从色调调色板、关键色与中性色的角色划分,到用颜色深浅替代阴影的高程系统,以及一套 Material You 风格配色的实践。
 cover: cover.webp

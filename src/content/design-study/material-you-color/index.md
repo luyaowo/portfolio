@@ -1,5 +1,6 @@
 ---
-title: Material You 第二期-Color
+title: 色彩基础 Color · Material You
+tags: [设计基础]
 date: 2022-02-13
 summary: 从光的波粒二象性讲到色彩模型与配色——把色彩最基础的知识系统整理一遍,作为理解 Material You 新规范色彩部分的储备。
 cover: cover.webp

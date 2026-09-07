@@ -1,5 +1,6 @@
 ---
-title: Material You-单/复选
+title: 单选、复选与开关 · Material You
+tags: [界面组件]
 date: 2022-10-09
 summary: Radio/Checkbox/Switch 单复选框与开关的整理——定义、注意事项(底部浮层、选择胶囊替代)与多类样式参考。
 cover: cover.webp
@@ -14,11 +15,11 @@ Radio 翻译为收音机,Switch 为开关。
 
 ## Radio / Checkbox / Switch
 
-#### Radio button:当存在两个或多个互斥选项的列表且用户只能选择其中一个
+### Radio button:当存在两个或多个互斥选项的列表且用户只能选择其中一个
 
-#### Checkbox:当有一个或多个独立选项,用户可以选择任意数量的选项,包括(none / one / several)
+### Checkbox:当有一个或多个独立选项,用户可以选择任意数量的选项,包括(none / one / several)
 
-#### Switch:有两个互斥选项且始终有一个默认数值,切换选择立即生效
+### Switch:有两个互斥选项且始终有一个默认数值,切换选择立即生效
 
 ## 1. 定义
 

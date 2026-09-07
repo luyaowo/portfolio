@@ -1,5 +1,6 @@
 ---
-title: Menus-菜单
+title: 菜单 Menus
+tags: [界面组件]
 date: 2023-01-11
 summary: 下拉菜单的整理——Dropdown Menus 与 Select 的区别、触发条件、结构、类型(普通/筛选)与使用场景。
 cover: cover.webp

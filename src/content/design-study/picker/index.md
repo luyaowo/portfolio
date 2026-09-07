@@ -1,5 +1,6 @@
 ---
-title: Picker-选择器
+title: 选择器 Picker
+tags: [界面组件]
 date: 2023-01-11
 summary: 选择器的整理——基础选择器(Data pickers、Time pickers)与地区选择器。
 cover: cover.webp

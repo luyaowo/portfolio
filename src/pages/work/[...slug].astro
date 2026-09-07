@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import EssayLayout from '../../layouts/EssayLayout.astro';
-import WorkImagePreview from '../../components/WorkImagePreview.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('work');
@@ -21,5 +20,3 @@ const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padSt
 <EssayLayout summary={summary} cover={cover} publishedDate={date} collection="work" currentSlug={post.slug} title={title} date={formattedDate}>
   <Content />
 </EssayLayout>
-
-<WorkImagePreview />

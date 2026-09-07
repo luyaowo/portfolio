@@ -1,5 +1,6 @@
 ---
-title: Material You-分割线
+title: 分割线 · Material You
+tags: [界面组件]
 date: 2022-10-10
 summary: 页面分割方式的整理——留白分割、线性分割、卡片分割三种方式,以及分割选择优先级(留白 → 线性 → 卡片)。
 cover: cover.webp

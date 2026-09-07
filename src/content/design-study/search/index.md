@@ -1,5 +1,6 @@
 ---
-title: Search -搜索
+title: 搜索 Search
+tags: [界面组件]
 date: 2023-01-18
 summary: 搜索模块的完整整理——搜索前(入口与框样式)、搜索中(激活与输入)、搜索后(结果展示/辅助/容错/空态)以及交互过渡,含动图演示。
 cover: cover.webp

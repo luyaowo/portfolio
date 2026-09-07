@@ -1,5 +1,6 @@
 ---
-title: Tab bar-底部导航
+title: 底部导航 Tab Bar
+tags: [界面组件]
 date: 2022-11-29
 summary: 底部导航栏的整理——作用(定位与品牌)、解构(容器尺寸/样式/分割、图标与文字)、以及动效类型。
 cover: cover.webp

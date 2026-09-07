@@ -1,4 +1,4 @@
-<dialog id="work-image-preview" class="work-image-preview" aria-label="作品图片预览">
+<dialog id="article-image-preview" class="work-image-preview" aria-label="文章图片预览">
   <div class="preview-stage">
     <img class="preview-image" src="" alt="" />
   </div>
@@ -16,7 +16,7 @@
 </dialog>
 
 <script>
-  const dialog = document.querySelector<HTMLDialogElement>('#work-image-preview');
+  const dialog = document.querySelector<HTMLDialogElement>('#article-image-preview');
   const previewImage = dialog?.querySelector<HTMLImageElement>('.preview-image');
   const closeButton = dialog?.querySelector<HTMLButtonElement>('.preview-close');
   const previousButton = dialog?.querySelector<HTMLButtonElement>('.preview-previous');
@@ -37,7 +37,7 @@
       const source = images[currentIndex];
 
       previewImage.src = source.currentSrc || source.src;
-      previewImage.alt = source.alt || `作品图片 ${currentIndex + 1}`;
+      previewImage.alt = source.alt || `文章图片 ${currentIndex + 1}`;
       counter.textContent = `${currentIndex + 1} / ${images.length}`;
       previousButton.hidden = images.length < 2;
       nextButton.hidden = images.length < 2;
@@ -57,11 +57,11 @@
     };
 
     images.forEach((image, index) => {
-      image.dataset.workPreview = '';
+      image.dataset.imagePreview = '';
       image.tabIndex = 0;
       image.setAttribute('role', 'button');
       image.setAttribute('aria-haspopup', 'dialog');
-      image.setAttribute('aria-label', `${image.alt || `作品图片 ${index + 1}`}，点击放大`);
+      image.setAttribute('aria-label', `${image.alt || `文章图片 ${index + 1}`}，点击放大`);
 
       image.addEventListener('click', () => openPreview(index, image));
       image.addEventListener('keydown', (event) => {
@@ -100,12 +100,12 @@
 </script>
 
 <style>
-  :global(.essay-body img[data-work-preview]) {
+  :global(.essay-body img[data-image-preview]) {
     cursor: zoom-in;
     touch-action: manipulation;
   }
 
-  :global(.essay-body img[data-work-preview]:focus-visible) {
+  :global(.essay-body img[data-image-preview]:focus-visible) {
     outline: 2px solid var(--color-link);
     outline-offset: 4px;
   }

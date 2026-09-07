@@ -1,5 +1,6 @@
 ---
-title: Material You-Dialog
+title: 对话框 Dialog · Material You
+tags: [界面组件]
 date: 2022-09-26
 summary: 弹窗体系的完整整理——弹窗构成、模态/非模态分类、Dialog/Sheet/Popover/Toast 各类型与设计规范。
 cover: cover.webp

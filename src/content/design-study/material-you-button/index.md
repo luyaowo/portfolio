@@ -1,5 +1,6 @@
 ---
-title: Material You-按钮
+title: 按钮 · Material You
+tags: [界面组件]
 date: 2022-09-13
 summary: 按钮组件的基础整理——从定义(Action/Select)与解构(形状、尺寸、颜色、样式、内容),到优先级、状态、使用场景与 Toggle 按钮。
 cover: cover.webp

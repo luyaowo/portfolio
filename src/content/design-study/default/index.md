@@ -1,5 +1,6 @@
 ---
-title: Default-空状态
+title: 空状态 Default
+tags: [界面组件]
 date: 2023-05-10
 summary: 缺省页(空状态)的整理——定义、组成(纯提示/提示+引导/图型+引导)、插画与配色风格、设计原则。
 cover: cover.webp

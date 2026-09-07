@@ -9,8 +9,10 @@ interface Props {
   posts: Array<CollectionEntry<'essays'> | CollectionEntry<'ai-design'> | CollectionEntry<'design-study'>>;
   /** 提供网格/列表切换;默认列表视图 */
   toggle?: boolean;
+  /** 提供轻量标签筛选;顺序即页面展示顺序 */
+  tags?: string[];
 }
-const { title, description, collection, posts, toggle = false } = Astro.props;
+const { title, description, collection, posts, toggle = false, tags = [] } = Astro.props;
 const defaultView = 'list';
 /** 优先按 frontmatter 的 order 字段排序(手动顺序),否则按 date 降序 */
 const sortedPosts = [...posts].sort((a, b) => {
@@ -33,12 +35,12 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
         </div>
         {toggle && (
           <div class="view-toggle" role="group" aria-label="视图切换">
-            <button type="button" class="toggle-btn" data-view="grid" aria-pressed="true" title="网格视图" aria-label="网格视图">
+            <button type="button" class="toggle-btn" data-view="grid" aria-pressed="false" title="网格视图" aria-label="网格视图">
               <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
                 <path d="M1 1h6v6H1V1zm8 0h6v6H9V1zM1 9h6v6H1V9zm8 0h6v6H9V9z" />
               </svg>
             </button>
-            <button type="button" class="toggle-btn" data-view="list" aria-pressed="false" title="列表视图" aria-label="列表视图">
+            <button type="button" class="toggle-btn" data-view="list" aria-pressed="true" title="列表视图" aria-label="列表视图">
               <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
                 <path d="M2 2h12v2.5H2V2zm0 4.75h12v2.5H2v-2.5zm0 4.75h12V14H2v-2.5z" />
               </svg>
@@ -47,10 +49,18 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
         )}
       </div>
     </header>
+    {tags.length > 0 && (
+      <nav class="tag-filters" aria-label="按标签筛选文章">
+        <button type="button" class="tag-filter" data-tag="all" aria-pressed="true">全部</button>
+        {tags.map((tag) => (
+          <button type="button" class="tag-filter" data-tag={tag} aria-pressed="false">{tag}</button>
+        ))}
+      </nav>
+    )}
     {sortedPosts.length === 0 && <p class="empty-state">文章整理中。</p>}
     <section class:list={['item-list', { 'is-grid': toggle && defaultView === 'grid' }]} aria-label="文章列表">
       {sortedPosts.map((post) => (
-        <article>
+        <article data-tags={((post.data as { tags?: string[] }).tags ?? []).join('|')}>
           <a class:list={['item-link', { 'without-cover': !post.data.cover }]} href={`/${collection}/${post.slug}`}>
             {post.data.cover && (
               <figure class:list={['cover', { contain: collection !== 'essays' }]}>
@@ -75,12 +85,13 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
     </section>
   </section>
 
-  {toggle && (
+  {(toggle || tags.length > 0) && (
     <script is:inline>
       (() => {
         const root = document.querySelector('.list-page');
         if (!root) return;
         const buttons = root.querySelectorAll('.toggle-btn');
+        const tagButtons = root.querySelectorAll('.tag-filter');
         const list = root.querySelector('.item-list');
         const key = 'list-view-' + root.dataset.collection;
         const apply = (view) => {
@@ -92,6 +103,17 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
         try { saved = localStorage.getItem(key); } catch {}
         apply(saved || root.dataset.defaultView);
         buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.view)));
+
+        tagButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const selectedTag = button.dataset.tag;
+            tagButtons.forEach((item) => item.setAttribute('aria-pressed', item === button ? 'true' : 'false'));
+            list.querySelectorAll(':scope > article').forEach((article) => {
+              const articleTags = (article.dataset.tags || '').split('|');
+              article.hidden = selectedTag !== 'all' && !articleTags.includes(selectedTag);
+            });
+          });
+        });
       })();
     </script>
   )}
@@ -108,6 +130,55 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
 
   .list-header {
     margin-bottom: var(--space-48);
+  }
+
+  .tag-filters {
+    display: flex;
+    gap: var(--space-8);
+    margin: calc(-1 * var(--space-20)) 0 var(--space-40);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tag-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tag-filter {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 var(--space-12);
+    border: var(--divider-subtle);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--text-meta);
+    cursor: pointer;
+  }
+
+  .tag-filter:hover {
+    color: var(--color-text-heading);
+    border-color: var(--color-border-strong);
+  }
+
+  .tag-filter[aria-pressed="true"] {
+    border-color: var(--color-interactive);
+    background: var(--color-interactive);
+    color: var(--color-bg);
+  }
+
+  .tag-filter:active {
+    transform: scale(0.97);
+  }
+
+  .tag-filter:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+
+  .item-list > article[hidden] {
+    display: none;
   }
 
   .header-row {
@@ -146,12 +217,12 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
   }
 
   .toggle-btn:hover {
-    color: var(--color-text-primary);
+    color: var(--color-text-heading);
   }
 
   .toggle-btn[aria-pressed="true"] {
     background: var(--color-hover);
-    color: var(--color-text-primary);
+    color: var(--color-text-heading);
   }
 
   .list-header h1 {
@@ -339,12 +410,34 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
       margin-bottom: var(--space-28);
     }
 
-    .item-link {
-      grid-template-columns: 1fr;
-      gap: var(--space-16);
+    .tag-filters {
+      margin: calc(-1 * var(--space-12)) calc(-1 * var(--space-16)) var(--space-28);
+      padding-inline: var(--space-16);
     }
 
+    .tag-filter {
+      min-height: 40px;
+    }
+
+    .view-toggle {
+      display: none;
+    }
+
+    .item-list,
     .item-list.is-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-28);
+    }
+
+    .item-link,
+    .is-grid .item-link {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: var(--space-12);
+    }
+
+    .item-link.without-cover,
+    .is-grid .item-link.without-cover {
       grid-template-columns: 1fr;
     }
 
@@ -352,28 +445,39 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
       flex-direction: column;
     }
 
-    .cover {
-      aspect-ratio: 16 / 10;
+    .cover,
+    .is-grid .cover {
+      aspect-ratio: 4 / 3;
+      margin-bottom: 0;
     }
 
-    .content {
-      min-height: auto;
-      gap: var(--space-16);
+    .content,
+    .is-grid .content {
+      display: grid;
+      min-height: 66px;
+      gap: var(--space-4);
     }
 
-    .title {
-      font-size: var(--text-heading-3);
+    .title,
+    .is-grid .title {
+      font-size: var(--text-title-card);
     }
 
-    .summary {
+    .summary,
+    .is-grid .summary {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       font-size: var(--text-summary);
       line-height: var(--leading-text);
-      margin-top: var(--space-8);
+      margin-top: var(--space-4);
     }
 
-    .meta {
+    .meta,
+    .is-grid .meta {
       font-size: var(--text-meta);
-      margin-top: 0;
+      margin-top: var(--space-4);
     }
   }
 </style>

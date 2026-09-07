@@ -1,5 +1,6 @@
 ---
-title: Filter-筛选
+title: 筛选 Filter
+tags: [界面组件]
 date: 2023-07-06
 summary: 筛选样式的整理——Tab 筛选、下拉菜单筛选、弹窗筛选与高级筛选,及各自适用场景。
 cover: cover.webp

@@ -1,5 +1,6 @@
 ---
-title: Top app bar-顶部导航
+title: 顶部导航 Top App Bar
+tags: [界面组件]
 date: 2022-10-11
 summary: 顶部导航栏的整理——作用、解构(容器/导航图标/标题/操作项)、布局样式、滚动交互与 Tabs 标签页规则。
 cover: cover.webp

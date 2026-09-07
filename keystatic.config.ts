@@ -157,6 +157,13 @@ export default config({
           directory: designStudyImages.directory,
           description: '上传或选择图片。图片会保存到当前文章文件夹，例如 01.jpg。',
         }),
+        tags: fields.array(
+          fields.text({ label: '标签', validation: { isRequired: true } }),
+          {
+            label: '标签分类',
+            itemLabel: (props) => props.value,
+          },
+        ),
         content: fields.markdoc({
           label: '正文',
           extension: 'md',
