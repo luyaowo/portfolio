@@ -3,7 +3,7 @@ title: Figma 约束与自动布局
 date: 2022-11-07
 summary: Figma 的 Constraints 与 Auto Layout 整理——Box 模型与 Frame 概念、单个元素与多模块的自动布局、方向/间距/填充/对齐等详解、Resizing 与 Constraints 使用。
 cover: cover.webp
-order: 25
+order: 14
 ---
 
 ![Figma 约束与自动布局封面](cover.webp)

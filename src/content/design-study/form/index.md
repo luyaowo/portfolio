@@ -3,7 +3,7 @@ title: Form 表单
 date: 2023-01-30
 summary: 表单的整理——构成、结构(标签布局/按钮/单步分步)、细节(必填选填/默认选项/号码规律/跳转/智能录入)与总结。
 cover: cover.webp
-order: 16
+order: 8
 ---
 
 ![Form 表单封面](cover.webp)
