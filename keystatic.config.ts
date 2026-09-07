@@ -68,7 +68,7 @@ export default config({
       columns: ['date', 'title'],
     }),
     essays: collection({
-      label: 'Essays',
+      label: '长期思考和个人随笔',
       path: 'src/content/essays/*/index',
       slugField: 'title',
       format: {
