@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { privateHeaders, protectStats } from '../lib/server/stats.mjs';
+export const prerender = false;
+const denied = protectStats(Astro.request);
+if (denied) return denied;
+for (const [key, value] of Object.entries(privateHeaders)) Astro.response.headers.set(key, value);
+---
+<Layout title="网站统计 · 路遥知玛丽" privatePage={true}>
+  <section class="stats">
+    <header class="intro">
+      <p class="eyebrow">PRIVATE · LUYAO.STUDIO</p>
+      <h1>来过这里的人</h1>
+      <p class="muted">看看最近的访问，也看看哪些文字被读到了。</p>
+    </header>
+    <div class="toolbar">
+      <div class="ranges" aria-label="统计时间范围">
+        <button data-days="1" aria-pressed="false">今天</button>
+        <button data-days="7" aria-pressed="true">近 7 天</button>
+        <button data-days="30" aria-pressed="false">近 30 天</button>
+      </div>
+      <button id="refresh" class="refresh">刷新数据 ↻</button>
+    </div>
+    <p id="status" role="status" aria-live="polite">正在读取访问数据…</p>
+    <div id="report" aria-busy="true">
+      <div class="metrics">
+        <article><p>访客数 <span>Visitors</span></p><strong id="visitors">—</strong><small>所选时间内的访客估算</small></article>
+        <article><p>浏览量 <span>Page views</span></p><strong id="pageviews">—</strong><small>页面被浏览的次数</small></article>
+      </div>
+      <article class="panel trend"><div class="panel-heading"><h2>访问的起伏</h2><span>每日浏览量</span></div>
+        <div id="chart"><p class="empty">等待连接统计数据</p></div>
+      </article>
+      <div class="breakdowns">
+        <article class="panel pages"><div class="panel-heading"><h2>被读到的页面</h2><span>浏览量</span></div><ol id="pages"><li class="empty">等待数据</li></ol></article>
+        <div class="side">
+          <article class="panel"><div class="panel-heading"><h2>从哪里来</h2><span>浏览量</span></div><ol id="sources"><li class="empty">等待数据</li></ol></article>
+          <article class="panel"><div class="panel-heading"><h2>用什么浏览</h2><span>浏览量</span></div><ol id="devices"><li class="empty">等待数据</li></ol></article>
+        </div>
+      </div>
+    </div>
+    <footer class="notes"><p>正式网站 · Vercel Web Analytics · 按 UTC 日期统计（北京时间 08:00 换日）</p><p>最多复用 5 分钟内的数据。可查询的历史范围取决于 Vercel 套餐；访客数不等于精确的真实人数。</p><a href="https://vercel.com/luyaos-projects-fd881a99/portfolio/analytics" target="_blank" rel="noreferrer">在 Vercel 中查看 ↗</a></footer>
+  </section>
+</Layout>
+<script>
+  const byId = (id: string) => document.getElementById(id)!;
+  const number = new Intl.NumberFormat('zh-CN');
+  let days = 7;
+  let currentRequest = 0;
+  const names: Record<string, string> = { '/': '首页', '/essays': '随笔', '/work': '设计项目', '/ai-design': 'AI 实践', '/design-study': '设计研习', '/photography': '摄影', '/about': '关于', mobile: '手机', desktop: '电脑', tablet: '平板', Others: '其他' };
+  function list(id: string, rows: { label: string; count: number }[]) {
+    const el = byId(id); el.replaceChildren();
+    if (!rows.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = '这段时间还没有记录'; el.append(li); return; }
+    const sorted = [...rows].sort((a,b) => b.count - a.count);
+    for (const row of sorted) {
+      const li = document.createElement('li');
+      const safePath = id === 'pages' && /^\/(?!\/)/.test(row.label) && !/[\\\u0000-\u0020]/.test(row.label);
+      const label = document.createElement(safePath ? 'a' : 'span');
+      label.textContent = names[row.label.replace(/\/$/, '')] || names[row.label] || row.label || '未知页面';
+      if (label instanceof HTMLAnchorElement) { label.href = new URL(row.label, 'https://luyao.studio').href; label.target = '_blank'; label.rel = 'noreferrer'; }
+      const value = document.createElement('b'); value.textContent = number.format(row.count);
+      li.append(label, value); el.append(li);
+    }
+  }
+  function chart(rows: { date: string; pageviews: number }[]) {
+    const el = byId('chart'); el.replaceChildren();
+    if (!rows.length) { const p = document.createElement('p'); p.className = 'empty'; p.textContent = '这段时间还没有访问记录'; el.append(p); return; }
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', '0 0 900 230'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', '每日浏览量趋势，可展开下方数据表查看具体数值');
+    const max = Math.max(1, ...rows.map(r => r.pageviews));
+    for (let i = 0; i <= 3; i++) {
+      const line = document.createElementNS(ns,'line');
+      Object.entries({x1:'40', x2:'880', y1:String(20+i*60),y2:String(20+i*60),stroke:'currentColor',opacity:'.12'}).forEach(([k,v])=>line.setAttribute(k,v)); svg.append(line);
+    }
+    const points = rows.map((row,i)=>[40+(rows.length===1?420:i*840/(rows.length-1)), 200-row.pageviews/max*180]);
+    const path = document.createElementNS(ns,'polyline');
+    path.setAttribute('points',points.map(p=>p.join(',')).join(' ')); path.setAttribute('fill','none'); path.setAttribute('stroke','currentColor'); path.setAttribute('stroke-width','2.5'); svg.append(path);
+    points.forEach(([x,y],i)=>{ const circle = document.createElementNS(ns,'circle'); circle.setAttribute('cx',String(x)); circle.setAttribute('cy',String(y)); circle.setAttribute('r','4'); circle.setAttribute('fill','currentColor'); const title = document.createElementNS(ns,'title'); title.textContent = `${rows[i].date}：${rows[i].pageviews} 次浏览`; circle.append(title); svg.append(circle); });
+    el.append(svg);
+    const dates = document.createElement('p'); dates.className='dates'; const first = document.createElement('span'); first.textContent=rows[0].date; const last=document.createElement('span'); last.textContent=rows.at(-1)!.date; dates.append(first,last); el.append(dates);
+    const details = document.createElement('details'); const summary=document.createElement('summary'); summary.textContent='查看每日数字'; details.append(summary);
+    const table = document.createElement('table');
+    for (const row of rows) { const tr=document.createElement('tr'); const th=document.createElement('th'); th.scope='row'; th.textContent=row.date; const td=document.createElement('td'); td.textContent=`${number.format(row.pageviews)} 次浏览`; tr.append(th,td); table.append(tr); } details.append(table); el.append(details);
+  }
+  async function load() {
+    const version = ++currentRequest;
+    byId('report').setAttribute('aria-busy','true'); byId('status').textContent='正在读取访问数据…';
+    byId('visitors').textContent='—'; byId('pageviews').textContent='—';
+    for (const id of ['chart','pages','sources','devices']) byId(id).replaceChildren();
+    try {
+      const response=await fetch(`/api/stats?days=${days}`, {cache:'no-store',signal:AbortSignal.timeout(20_000)});
+      if (response.status===401) throw new Error('登录已失效，请重新打开本页登录。');
+      const body=await response.json();
+      if (!response.ok) throw new Error(body.message || '暂时无法读取统计，请稍后重试。');
+      if (version!==currentRequest) return;
+      byId('visitors').textContent=number.format(body.summary.visitors); byId('pageviews').textContent=number.format(body.summary.pageviews);
+      chart(body.trend); list('pages',body.pages); list('sources',body.sources); list('devices',body.devices);
+      byId('status').textContent=`${body.since.slice(0,10)} — ${body.until.slice(0,10)} · 更新于 ${new Date(body.updatedAt).toLocaleString('zh-CN')}`;
+    } catch(error) { if(version===currentRequest) byId('status').textContent=error instanceof Error ? error.message : '连接失败，请稍后重试。'; }
+    finally { if(version===currentRequest) byId('report').setAttribute('aria-busy','false'); }
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-days]').forEach(button=>button.addEventListener('click',()=>{ days=Number(button.dataset.days); document.querySelectorAll('[data-days]').forEach(b=>b.setAttribute('aria-pressed',String(b===button))); load(); }));
+  byId('refresh').addEventListener('click',load);
+  load();
+</script>
+<style>
+  .stats{max-width:var(--width-content);margin:var(--space-48) auto 0}.intro{margin-bottom:var(--space-48)}.eyebrow{font-size:var(--text-caption);letter-spacing:.16em;color:var(--color-text-secondary)}h1{font-size:var(--text-title-page);font-weight:var(--weight-medium);margin:var(--space-16) 0}.muted,.notes,#status{color:var(--color-text-secondary);font-size:var(--text-intro)}.toolbar,.ranges,.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8)}button{font:inherit;font-size:var(--text-intro);cursor:pointer;background:transparent;border:1px solid var(--color-border);padding:var(--space-8) var(--space-16);border-radius:8px;color:var(--color-text)}button[aria-pressed=true]{background:var(--color-text);color:var(--color-bg)}button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid currentColor;outline-offset:4px}#status{min-height:2em;margin:var(--space-24) 0}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-24);margin-bottom:var(--space-24)}.metrics article,.panel{border:1px solid var(--color-border);border-radius:12px;padding:var(--space-24);background:var(--color-surface)}.metrics p{margin:0;font-size:var(--text-summary)}.metrics span{font-size:var(--text-caption);color:var(--color-text-secondary);margin-left:var(--space-8)}.metrics strong{display:block;font-size:clamp(40px,7vw,64px);font-weight:var(--weight-medium);font-variant-numeric:tabular-nums;line-height:1.6}.metrics small{font-size:var(--text-caption);color:var(--color-text-secondary)}h2{font-size:var(--text-summary);font-weight:var(--weight-medium);margin:0}.panel-heading>span{font-size:var(--text-caption);color:var(--color-text-secondary)}.trend{margin-bottom:var(--space-24)}#chart{min-height:180px;padding-top:var(--space-24)}#chart :global(svg){width:100%;height:auto;color:var(--color-text-secondary)}#chart :global(.dates){display:flex;justify-content:space-between;font-size:var(--text-caption);color:var(--color-text-secondary)}#chart :global(details){font-size:var(--text-caption);margin-top:var(--space-16)}#chart :global(summary){cursor:pointer}#chart :global(table){width:100%;text-align:left;margin-top:var(--space-16)}#chart :global(th){font-weight:var(--weight-normal)}.breakdowns{display:grid;grid-template-columns:1.2fr 1fr;gap:var(--space-24)}.side{display:grid;gap:var(--space-24)}ol{list-style:none;padding:0;margin:var(--space-20) 0 0;max-height:420px;overflow:auto}ol :global(li){display:flex;justify-content:space-between;gap:var(--space-16);padding:var(--space-12) 0;border-bottom:1px solid var(--color-border);font-size:var(--text-intro)}ol :global(a),ol :global(span){overflow-wrap:anywhere;min-width:0;color:inherit}ol :global(b){font-weight:var(--weight-medium);font-variant-numeric:tabular-nums;flex-shrink:0}.stats :global(.empty){color:var(--color-text-secondary);font-size:var(--text-intro)}.notes{margin-top:var(--space-32);line-height:1.8}.notes p{margin:var(--space-4) 0}.notes a{color:inherit;display:inline-block;margin-top:var(--space-12)}[aria-busy=true]{opacity:.55}@media(max-width:720px){.stats{margin-top:var(--space-24)}.intro{margin-bottom:var(--space-32)}.breakdowns{grid-template-columns:1fr}.metrics{gap:var(--space-12)}.metrics article,.panel{padding:var(--space-16)}.metrics span{display:block;margin:var(--space-4) 0 0}.toolbar{flex-wrap:wrap;gap:var(--space-12)}button{padding:var(--space-8) var(--space-12)}}
+</style>

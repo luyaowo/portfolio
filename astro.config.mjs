@@ -10,5 +10,7 @@ import keystatic from '@keystatic/astro';
 export default defineConfig({
   site: 'https://luyao.studio',
   adapter: vercel(),
-  integrations: [react(), markdoc(), keystatic(), sitemap()],
+  integrations: [react(), markdoc(), keystatic(), sitemap({
+    filter: (page) => !/^\/stats\/?$/.test(new URL(page).pathname),
+  })],
 });

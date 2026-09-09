@@ -9,7 +9,8 @@ const {
   ogType = "website",
   ogImageWidth,
   ogImageHeight,
-  publishedTime
+  publishedTime,
+  privatePage = false
 } = Astro.props;
 
 const siteUrl = Astro.site?.origin ?? "https://luyao.studio";
@@ -28,7 +29,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta name="author" content="路遥知玛丽" />
-		<meta name="robots" content="index, follow" />
+		<meta name="robots" content={privatePage ? 'noindex, nofollow, noarchive' : 'index, follow'} />
 		<link rel="canonical" href={pageUrl} />
 		<meta property="og:type" content={ogType} />
 		{publishedTime && <meta property="article:published_time" content={publishedTime} />}
@@ -78,7 +79,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 				</a>
 			</nav>
 		</footer>
-		<Analytics />
+		{!privatePage && <Analytics />}
 		<script is:inline>
 			(() => {
 				const header = document.querySelector('.site-header');
