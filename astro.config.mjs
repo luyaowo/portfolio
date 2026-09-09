@@ -10,6 +10,13 @@ import keystatic from '@keystatic/astro';
 export default defineConfig({
   site: 'https://luyao.studio',
   adapter: vercel(),
+  vite: {
+    optimizeDeps: {
+      // Keep the config fields and UI in the same dependency optimization pass.
+      // Separate passes can instantiate two different Keystar contexts.
+      include: ['@keystatic/core', '@keystatic/core/ui', '@keystatic/astro/ui'],
+    },
+  },
   integrations: [react(), markdoc(), keystatic(), sitemap({
     filter: (page) => !/^\/stats\/?$/.test(new URL(page).pathname),
   })],
