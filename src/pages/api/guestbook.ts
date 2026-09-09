@@ -40,8 +40,8 @@ export const GET: APIRoute = async () => {
     const messages = await listApprovedMessages();
     return json({ ok: true, messages });
   } catch (error) {
-    const message = error instanceof Error ? error.message : '读取留言失败。';
-    return json({ ok: false, message, messages: [] }, 500);
+    console.error('[guestbook] 读取留言失败:', error);
+    return json({ ok: false, message: '留言服务暂时不可用，请稍后再来。', messages: [] }, 500);
   }
 };
 

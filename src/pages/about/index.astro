@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import GuestbookSection from '../../components/GuestbookSection.astro';
 
 const profile = {
   name: '路遥知玛丽',
@@ -71,6 +72,10 @@ const profile = {
       </section>
     </section>
   </main>
+
+  <div class="guestbook-wrap">
+    <GuestbookSection />
+  </div>
 </Layout>
 
 <style>
@@ -79,8 +84,13 @@ const profile = {
     display: grid;
     grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
     gap: var(--space-48);
-    margin: var(--space-56) auto var(--space-120);
+    margin: var(--space-56) auto var(--space-72);
     padding: 0 var(--space-20);
+  }
+
+  .guestbook-wrap {
+    margin-top: var(--space-16);
+    padding-bottom: var(--space-120);
   }
 
   .portrait {

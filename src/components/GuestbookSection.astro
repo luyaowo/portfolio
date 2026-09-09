@@ -1,0 +1,844 @@
+---
+// About 页底部留言区(原 /guestbook 独立页迁入)
+// 数据流不变:/api/guestbook + /api/reactions + src/lib/server/guestbook.ts
+const avatarOptions = [
+  { id: 'avatar-01', src: '/images/guestbook/avatars/avatar-01.png', alt: '头像 1' },
+  { id: 'avatar-02', src: '/images/guestbook/avatars/avatar-02.png', alt: '头像 2' },
+  { id: 'avatar-03', src: '/images/guestbook/avatars/avatar-03.png', alt: '头像 3' },
+];
+
+const reactionOptions = [
+  { key: 'thumbsup', emoji: '👍', label: '点赞' },
+  { key: 'laugh', emoji: '😄', label: '有趣' },
+  { key: 'hooray', emoji: '🎉', label: '撒花' },
+  { key: 'heart', emoji: '❤️', label: '喜欢' },
+  { key: 'rocket', emoji: '🚀', label: '真棒' },
+  { key: 'eyes', emoji: '👀', label: '围观' },
+];
+---
+
+<section class="guestbook-zone">
+  <header class="zone-header">
+    <h2>留言板</h2>
+    <p class="subtitle">这里会放来访者留下的话，也欢迎你写一句。</p>
+  </header>
+
+  <div class="reaction-bar" id="guestbook-reactions" role="group" aria-label="留言板表情反馈">
+    {reactionOptions.map((reaction) => (
+      <button type="button" class="reaction-button" data-key={reaction.key} aria-label={reaction.label}>
+        <span class="reaction-emoji" aria-hidden="true">{reaction.emoji}</span>
+        <span class="reaction-count" data-count>0</span>
+      </button>
+    ))}
+    <p class="reaction-feedback" id="reaction-feedback" role="status" hidden></p>
+  </div>
+
+  <div class="guestbook-column">
+    <section class="guestbook-panel">
+      <div class="panel-head">
+        <h3>Recent Messages</h3>
+        <span id="guestbook-state">loading</span>
+      </div>
+      <div class="message-list" id="guestbook-list" aria-live="polite">
+        <article class="message-card is-skeleton" aria-hidden="true">
+          <div class="skeleton-line skeleton-line-wide"></div>
+          <div class="skeleton-line skeleton-line-mid"></div>
+          <div class="skeleton-line skeleton-line-short"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="comment-box">
+      <div class="comment-tabs" role="tablist" aria-label="留言输入">
+        <button type="button" class="comment-tab is-active" data-mode="write" role="tab" aria-selected="true">
+          输入
+        </button>
+        <button type="button" class="comment-tab" data-mode="preview" role="tab" aria-selected="false">
+          预览
+        </button>
+      </div>
+
+      <form class="guestbook-form" id="guestbook-form">
+        <div class="form-fields">
+          <div class="field-row">
+            <label class="field nickname-field">
+              <span>昵称</span>
+              <input
+                type="text"
+                name="nickname"
+                maxlength="24"
+                autocomplete="nickname"
+                placeholder="怎么称呼你"
+                required
+              />
+            </label>
+
+            <div class="avatar-field">
+              <span class="avatar-label">选择头像</span>
+              <div class="avatar-grid">
+                {avatarOptions.map((avatar, index) => (
+                  <label class="avatar-option">
+                    <input
+                      type="radio"
+                      name="avatarId"
+                      value={avatar.id}
+                      checked={index === 0}
+                      required
+                    />
+                    <img src={avatar.src} alt={avatar.alt} loading="lazy" decoding="async" />
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div class="compose-area">
+            <textarea
+              id="guestbook-textarea"
+              name="message"
+              rows="6"
+              maxlength="500"
+              placeholder="如果你愿意，可以在这里留下一句话。"
+              required
+            ></textarea>
+            <div class="compose-preview" id="guestbook-preview" hidden></div>
+            <p class="compose-hint">纯文本 · 最多 500 字</p>
+          </div>
+        </div>
+
+        <label class="honeypot" aria-hidden="true">
+          <span>Website</span>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" />
+        </label>
+
+        <div class="form-actions">
+          <p class="form-status" id="guestbook-feedback">留言会在审核后展示。</p>
+          <button type="submit" id="guestbook-submit">提交留言</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</section>
+
+<script is:inline>
+  const listEl = document.getElementById('guestbook-list');
+  const stateEl = document.getElementById('guestbook-state');
+  const formEl = document.getElementById('guestbook-form');
+  const feedbackEl = document.getElementById('guestbook-feedback');
+  const submitEl = document.getElementById('guestbook-submit');
+  const reactionsEl = document.getElementById('guestbook-reactions');
+  const reactionFeedbackEl = document.getElementById('reaction-feedback');
+  const textareaEl = document.getElementById('guestbook-textarea');
+  const previewEl = document.getElementById('guestbook-preview');
+  const avatarMap = {
+    'avatar-01': '/images/guestbook/avatars/avatar-01.png',
+    'avatar-02': '/images/guestbook/avatars/avatar-02.png',
+    'avatar-03': '/images/guestbook/avatars/avatar-03.png',
+  };
+  const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  function setFeedback(message, type) {
+    if (!feedbackEl) return;
+    feedbackEl.textContent = message;
+    feedbackEl.dataset.state = type;
+  }
+
+  let reactionFeedbackTimer = null;
+
+  function setReactionFeedback(message) {
+    if (!reactionFeedbackEl) return;
+    reactionFeedbackEl.textContent = message;
+    reactionFeedbackEl.hidden = !message;
+    clearTimeout(reactionFeedbackTimer);
+    if (message) {
+      reactionFeedbackTimer = setTimeout(() => {
+        reactionFeedbackEl.hidden = true;
+      }, 4000);
+    }
+  }
+
+  function createMessageCard(message) {
+    const article = document.createElement('article');
+    article.className = 'message-card message-entry';
+
+    const avatar = document.createElement('img');
+    avatar.className = 'message-avatar';
+    avatar.src = avatarMap[message.avatar_id] || avatarMap['avatar-01'];
+    avatar.alt = `${message.nickname} 的头像`;
+    avatar.loading = 'lazy';
+    avatar.decoding = 'async';
+
+    const content = document.createElement('div');
+    content.className = 'message-content';
+
+    const titleRow = document.createElement('div');
+    titleRow.className = 'message-title-row';
+
+    const name = document.createElement('p');
+    name.className = 'message-name';
+    name.textContent = message.nickname;
+
+    const body = document.createElement('p');
+    body.className = 'message-body';
+    body.textContent = message.message;
+
+    const meta = document.createElement('time');
+    meta.className = 'message-meta';
+    const rawDate = message.approved_at || message.created_at;
+    const formattedDate = rawDate ? dateFormatter.format(new Date(rawDate)) : '';
+    meta.textContent = formattedDate;
+
+    titleRow.append(name, meta);
+    content.append(titleRow, body);
+    article.append(avatar, content);
+    return article;
+  }
+
+  function renderFallback(message) {
+    if (!listEl) return;
+    listEl.innerHTML = '';
+
+    const article = document.createElement('article');
+    article.className = 'message-card is-muted';
+
+    const body = document.createElement('p');
+    body.className = 'message-body';
+    body.textContent = message;
+
+    const meta = document.createElement('p');
+    meta.className = 'message-meta';
+    meta.textContent = 'Guestbook';
+
+    article.append(body, meta);
+    listEl.append(article);
+  }
+
+  async function loadMessages() {
+    if (!listEl || !stateEl) return;
+
+    try {
+      const response = await fetch('/api/guestbook', {
+        headers: { accept: 'application/json' },
+      });
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        stateEl.textContent = 'unavailable';
+        renderFallback(result.message || '留言系统暂时不可用。');
+        return;
+      }
+
+      const messages = Array.isArray(result.messages) ? result.messages : [];
+      stateEl.textContent = `${messages.length} messages`;
+      listEl.innerHTML = '';
+
+      if (!messages.length) {
+        renderFallback('还没有公开展示的留言。你可以成为第一位留下话的人。');
+        return;
+      }
+
+      messages.forEach((message) => {
+        listEl.append(createMessageCard(message));
+      });
+    } catch (_error) {
+      stateEl.textContent = 'offline';
+      renderFallback('留言系统暂时不可用。完成 Supabase 和环境变量配置后，这里会显示真实留言。');
+    }
+  }
+
+  function renderReactions(counts) {
+    if (!reactionsEl) return;
+    reactionsEl.querySelectorAll('.reaction-button').forEach((button) => {
+      const key = button.dataset.key;
+      const countEl = button.querySelector('[data-count]');
+      if (countEl) {
+        countEl.textContent = String(counts?.[key] ?? 0);
+      }
+    });
+  }
+
+  async function loadReactions() {
+    try {
+      const response = await fetch('/api/reactions', {
+        headers: { accept: 'application/json' },
+      });
+      const result = await response.json();
+      renderReactions(result.ok ? result.reactions : null);
+    } catch (_error) {
+      renderReactions(null);
+    }
+  }
+
+  async function handleReactionClick(event) {
+    const button = event.target.closest('.reaction-button');
+    if (!button || button.disabled) return;
+
+    const key = button.dataset.key;
+    button.disabled = true;
+    setReactionFeedback('');
+
+    try {
+      const response = await fetch('/api/reactions', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ emoji: key }),
+      });
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || '操作失败，请稍后再试。');
+      }
+
+      renderReactions(result.reactions);
+      button.classList.add('is-active');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '操作失败，请稍后再试。';
+      setReactionFeedback(message);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  function setupTabs() {
+    const tabs = document.querySelectorAll('.comment-tab');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const mode = tab.dataset.mode;
+        tabs.forEach((item) => {
+          const active = item === tab;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', String(active));
+        });
+
+        const previewing = mode === 'preview';
+
+        if (previewing) {
+          previewEl.textContent = textareaEl.value || '输入内容后，这里会显示留言的样子。';
+        }
+
+        textareaEl.hidden = previewing;
+        previewEl.hidden = !previewing;
+      });
+    });
+
+    textareaEl?.addEventListener('input', () => {
+      if (!previewEl.hidden) {
+        previewEl.textContent = textareaEl.value || '输入内容后，这里会显示留言的样子。';
+      }
+    });
+  }
+
+  formEl?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+
+    if (!(form instanceof HTMLFormElement)) {
+      return;
+    }
+
+    const formData = new FormData(form);
+    submitEl?.setAttribute('disabled', 'true');
+    setFeedback('正在提交...', 'pending');
+
+    try {
+      const response = await fetch('/api/guestbook', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        throw new Error(result.message || '提交失败，请稍后再试。');
+      }
+
+      form.reset();
+      setFeedback(result.message || '已收到，审核后会展示在这里。', 'success');
+      await loadMessages();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '提交失败，请稍后再试。';
+      setFeedback(message, 'error');
+    } finally {
+      submitEl?.removeAttribute('disabled');
+    }
+  });
+
+  reactionsEl?.addEventListener('click', handleReactionClick);
+  setupTabs();
+  loadReactions();
+  loadMessages();
+</script>
+
+<style>
+  .guestbook-zone {
+    width: min(var(--width-content), 100%);
+    margin: 0 auto;
+    padding: 0 var(--space-20);
+  }
+
+  .zone-header {
+    max-width: 640px;
+    margin: 0 auto var(--space-32);
+    text-align: center;
+  }
+
+  .zone-header h2 {
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-title-article);
+    line-height: 1.25;
+    margin: 0 0 var(--space-12);
+  }
+
+  .subtitle {
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .reaction-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-40);
+    flex-wrap: wrap;
+  }
+
+  .reaction-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--text-intro);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .reaction-button:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  .reaction-button:active {
+    transform: translateY(1px);
+  }
+
+  .reaction-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  .reaction-button.is-active {
+    border-color: var(--color-interactive);
+    color: var(--color-text);
+  }
+
+  .reaction-emoji {
+    font-size: var(--text-summary);
+    line-height: 1;
+  }
+
+  .reaction-count {
+    font-size: var(--text-caption);
+    letter-spacing: 0.02em;
+  }
+
+  .reaction-feedback {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    font-size: var(--text-caption);
+    color: var(--color-link-hover);
+  }
+
+  .guestbook-column {
+    max-width: 720px;
+    margin: 0 auto;
+    display: grid;
+    gap: var(--space-32);
+  }
+
+  .guestbook-panel {
+    border: var(--divider-subtle);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface) 78%, transparent);
+    padding: var(--space-20);
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
+  }
+
+  .panel-head h3 {
+    color: var(--color-text-heading);
+    font-family: var(--font-heading);
+    font-size: var(--text-body);
+    margin: 0;
+  }
+
+  .panel-head span {
+    font-size: var(--text-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  .message-list {
+    display: grid;
+    gap: var(--space-20);
+  }
+
+  :global(.message-card) {
+    min-width: 0;
+  }
+
+  :global(.message-entry) {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: var(--space-16);
+    align-items: start;
+    padding: var(--space-20);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+  }
+
+  :global(.message-avatar) {
+    width: var(--space-48);
+    height: var(--space-48);
+    border-radius: 50%;
+    object-fit: cover;
+    background: color-mix(in srgb, var(--color-surface) 85%, var(--color-bg));
+    flex-shrink: 0;
+  }
+
+  :global(.message-content) {
+    min-width: 0;
+  }
+
+  :global(.message-title-row) {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-8);
+  }
+
+  :global(.message-name) {
+    margin: 0;
+    color: var(--color-text);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-meta);
+  }
+
+  :global(.message-card.is-muted) {
+    padding: var(--space-16);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 95%, transparent);
+    border: 1px solid var(--color-border);
+  }
+
+  :global(.message-card.is-skeleton) {
+    display: grid;
+    gap: var(--space-12);
+    padding: var(--space-16);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 95%, transparent);
+    border: 1px solid var(--color-border);
+  }
+
+  :global(.skeleton-line) {
+    height: var(--space-12);
+    border-radius: 999px;
+    background: var(--color-hover);
+  }
+
+  :global(.skeleton-line-wide) {
+    width: 88%;
+  }
+
+  :global(.skeleton-line-mid) {
+    width: 72%;
+  }
+
+  :global(.skeleton-line-short) {
+    width: 28%;
+  }
+
+  :global(.message-body) {
+    margin: 0;
+    line-height: var(--leading-summary);
+    font-size: var(--text-intro);
+    color: var(--color-text);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  :global(.message-meta) {
+    margin: 0;
+    font-size: var(--text-caption);
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary);
+  }
+
+  .comment-box {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 97%, transparent);
+    overflow: hidden;
+  }
+
+  .comment-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-8);
+    padding: 14px var(--space-20) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .comment-tab {
+    border: 1px solid var(--color-border);
+    border-bottom: none;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    background: color-mix(in srgb, var(--color-bg) 62%, transparent);
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--text-intro);
+    padding: 8px 18px 10px;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+  }
+
+  .comment-tab.is-active {
+    background: color-mix(in srgb, var(--color-bg) 97%, transparent);
+    color: var(--color-text);
+  }
+
+  .comment-tab:focus-visible {
+    outline: 2px solid var(--color-border-strong);
+    outline-offset: -2px;
+  }
+
+  .guestbook-form {
+    padding: var(--space-20);
+    margin: 0;
+  }
+
+  .form-fields {
+    display: grid;
+    gap: var(--space-16);
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-16);
+    align-items: end;
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  .field span,
+  .avatar-label {
+    font-size: var(--text-intro);
+    color: var(--color-text-secondary);
+  }
+
+  .nickname-field input {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    color: inherit;
+    font: inherit;
+    padding: 12px var(--space-16);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .nickname-field input:focus {
+    outline: 2px solid var(--color-border-strong);
+    outline-offset: var(--space-4);
+  }
+
+  .avatar-field {
+    display: grid;
+    gap: var(--space-12);
+    min-width: 0;
+  }
+
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 44px));
+    gap: var(--space-12);
+  }
+
+  .avatar-option {
+    display: block;
+    cursor: pointer;
+  }
+
+  .avatar-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .avatar-option img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .avatar-option input:checked + img {
+    border-color: var(--color-interactive);
+    transform: translateY(-1px);
+  }
+
+  .avatar-option input:focus-visible + img {
+    outline: 2px solid var(--color-border-strong);
+    outline-offset: 3px;
+  }
+
+  .compose-area {
+    position: relative;
+  }
+
+  .compose-area textarea {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    color: inherit;
+    font: inherit;
+    line-height: var(--leading-summary);
+    padding: 14px var(--space-16);
+    resize: vertical;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 140px;
+    display: block;
+  }
+
+  .compose-area textarea:focus {
+    outline: 2px solid var(--color-border-strong);
+    outline-offset: var(--space-4);
+  }
+
+  .compose-preview {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    padding: 14px var(--space-16);
+    min-height: 140px;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--color-text-secondary);
+  }
+
+  .compose-hint {
+    position: absolute;
+    right: 12px;
+    bottom: 8px;
+    margin: 0;
+    font-size: var(--text-caption);
+    letter-spacing: 0.02em;
+    color: var(--color-text-tertiary);
+    pointer-events: none;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-16);
+    margin-top: var(--space-16);
+  }
+
+  .form-actions button {
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--color-interactive);
+    color: var(--color-surface);
+    padding: 11px var(--space-20);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .form-actions button[disabled] {
+    opacity: 0.5;
+    cursor: wait;
+  }
+
+  .form-status {
+    margin: 0;
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    color: var(--color-text-secondary);
+    text-align: right;
+  }
+
+  .form-status[data-state='success'] {
+    color: var(--color-text);
+  }
+
+  .form-status[data-state='error'] {
+    color: var(--color-link-hover);
+  }
+
+  @media (max-width: 640px) {
+    .field-row {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    .form-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .form-actions button {
+      width: 100%;
+    }
+
+    .form-status {
+      text-align: left;
+    }
+  }
+</style>

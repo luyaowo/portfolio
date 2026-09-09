@@ -186,3 +186,76 @@ export async function createPendingMessage(input: MessageInput) {
     throw new Error(error.message);
   }
 }
+
+const VALID_REACTION_EMOJIS = new Set(['thumbsup', 'laugh', 'hooray', 'heart', 'rocket', 'eyes']);
+const REACTIONS_TABLE = 'page_reactions';
+
+export function validateReactionEmoji(emoji: string) {
+  if (!VALID_REACTION_EMOJIS.has(emoji)) {
+    throw new Error('不支持的表情。');
+  }
+}
+
+export async function listPageReactions(): Promise<Record<string, number>> {
+  const supabase = getSupabaseAdmin();
+
+  if (!supabase) {
+    throw new Error('Guestbook service is not configured.');
+  }
+
+  const { data, error } = await supabase.from(REACTIONS_TABLE).select('emoji');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const counts: Record<string, number> = {};
+  for (const row of data ?? []) {
+    counts[row.emoji] = (counts[row.emoji] ?? 0) + 1;
+  }
+
+  return counts;
+}
+
+export async function togglePageReaction(emoji: string, ipHash: string | null): Promise<boolean> {
+  validateReactionEmoji(emoji);
+
+  if (!ipHash) {
+    throw new Error('无法确认访问者，请稍后再试。');
+  }
+
+  const supabase = getSupabaseAdmin();
+
+  if (!supabase) {
+    throw new Error('Guestbook service is not configured.');
+  }
+
+  const { data: existing, error: existingError } = await supabase
+    .from(REACTIONS_TABLE)
+    .select('id')
+    .eq('emoji', emoji)
+    .eq('ip_hash', ipHash)
+    .maybeSingle();
+
+  if (existingError) {
+    throw new Error(existingError.message);
+  }
+
+  if (existing) {
+    const { error: deleteError } = await supabase.from(REACTIONS_TABLE).delete().eq('id', existing.id);
+
+    if (deleteError) {
+      throw new Error(deleteError.message);
+    }
+
+    return false;
+  }
+
+  const { error: insertError } = await supabase.from(REACTIONS_TABLE).insert({ emoji, ip_hash: ipHash });
+
+  if (insertError) {
+    throw new Error(insertError.message);
+  }
+
+  return true;
+}
