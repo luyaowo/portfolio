@@ -42,7 +42,17 @@ const profile = {
       ],
     },
   ],
-  contact: 'fly890611@163.com',
+  socials: [
+    {
+      name: '小红书',
+      href: 'https://xhslink.com/m/6YY41S0QMoI',
+    },
+    {
+      name: 'Instagram',
+      href: 'https://www.instagram.com/luyao_owo/',
+    },
+  ],
+  email: 'fly890611@163.com',
 };
 ---
 
@@ -67,8 +77,34 @@ const profile = {
       ))}
 
       <section class="block contact">
-        <h2>联系我</h2>
-        <p>{profile.contact}</p>
+        <h2>关注我</h2>
+        <nav class="social-links" aria-label="社交平台">
+          <details class="wechat-follow">
+            <summary>微信公众号</summary>
+            <div class="wechat-card">
+              <img
+                src="/images/wechat-qr.jpeg"
+                alt="微信公众号二维码"
+                width="140"
+                height="140"
+                loading="lazy"
+              />
+              <span>微信扫码关注</span>
+            </div>
+          </details>
+          {profile.socials.map((social) => (
+            <a href={social.href} target="_blank" rel="noreferrer">{social.name}</a>
+          ))}
+          <details class="email-follow">
+            <summary aria-label="显示邮箱" title="邮箱">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M3.75 6.75h16.5v10.5H3.75V6.75Z" stroke="currentColor" stroke-width="1.5" />
+                <path d="m4.5 7.5 7.5 5.25 7.5-5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </summary>
+            <span class="email-card">{profile.email}</span>
+          </details>
+        </nav>
       </section>
     </section>
   </main>
@@ -80,6 +116,7 @@ const profile = {
 
 <style>
   .about {
+    box-sizing: border-box;
     width: min(1120px, 100%);
     display: grid;
     grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
@@ -141,9 +178,113 @@ const profile = {
     margin-bottom: 0;
   }
 
-  .contact p {
-    letter-spacing: 0.02em;
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-8) var(--space-20);
+  }
+
+  .social-links a,
+  .wechat-follow summary,
+  .email-follow summary {
     color: var(--color-text-secondary);
+    font-size: var(--text-body);
+    line-height: var(--leading-text);
+    text-decoration: underline;
+    text-decoration-color: var(--color-link-underline);
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+    transition: color 0.16s ease, text-decoration-color 0.16s ease, transform 0.1s ease;
+  }
+
+  .social-links a:hover,
+  .wechat-follow summary:hover,
+  .email-follow summary:hover {
+    color: var(--color-link-hover);
+    text-decoration-color: var(--color-link-underline-hover);
+  }
+
+  .social-links a:focus-visible,
+  .wechat-follow summary:focus-visible,
+  .email-follow summary:focus-visible {
+    outline: 2px solid var(--color-link-underline-hover);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .social-links a:active,
+  .wechat-follow summary:active,
+  .email-follow summary:active {
+    transform: translateY(1px);
+  }
+
+  .wechat-follow,
+  .email-follow {
+    position: relative;
+  }
+
+  .wechat-follow summary,
+  .email-follow summary {
+    list-style: none;
+  }
+
+  .wechat-follow summary::-webkit-details-marker,
+  .email-follow summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .email-follow summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    text-decoration: none;
+  }
+
+  .wechat-card {
+    position: absolute;
+    z-index: 1;
+    top: calc(100% + var(--space-12));
+    left: 0;
+    display: grid;
+    gap: var(--space-8);
+    width: max-content;
+    padding: var(--space-12);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-float);
+  }
+
+  .wechat-card img {
+    display: block;
+    width: 140px;
+    height: 140px;
+  }
+
+  .wechat-card span {
+    color: var(--color-text-tertiary);
+    font-size: var(--text-meta);
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .email-card {
+    position: absolute;
+    z-index: 1;
+    top: calc(100% + var(--space-12));
+    right: 0;
+    width: max-content;
+    padding: var(--space-8) var(--space-12);
+    color: var(--color-text-secondary);
+    font-size: var(--text-summary);
+    line-height: var(--leading-heading);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-float);
   }
 
   @media (max-width: 860px) {
@@ -159,6 +300,18 @@ const profile = {
   @media (max-width: 540px) {
     .about {
       margin-top: var(--space-12);
+    }
+
+    .social-links {
+      display: grid;
+      grid-template-columns: max-content max-content max-content max-content;
+      align-items: start;
+      gap: var(--space-8) var(--space-16);
+    }
+
+    .wechat-card {
+      position: static;
+      margin-top: var(--space-8);
     }
   }
 </style>
