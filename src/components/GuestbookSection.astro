@@ -1,4 +1,9 @@
 ---
+import publishedReplies from '../data/guestbook-replies.json';
+// Read fresh local edits on every request; production uses the published snapshot.
+const ownerReplies = import.meta.env.DEV
+  ? JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../data/guestbook-replies.json', import.meta.url), 'utf8'))
+  : publishedReplies;
 // About 页底部留言区(原 /guestbook 独立页迁入)
 // 数据流不变:/api/guestbook + /api/reactions + src/lib/server/guestbook.ts
 const avatarOptions = [
@@ -17,12 +22,8 @@ const reactionOptions = [
 ];
 ---
 
-<section class="guestbook-zone">
-  <header class="zone-header">
-    <h2>留言板</h2>
-    <p class="subtitle">这里会放来访者留下的话，也欢迎你写一句。</p>
-  </header>
-
+<section class="guestbook-zone" data-local-editor={import.meta.env.DEV ? 'true' : 'false'}>
+  <script type="application/json" id="guestbook-owner-replies" set:html={JSON.stringify(ownerReplies).replace(/</g, '\\u003c')} />
   <div class="reaction-bar" id="guestbook-reactions" role="group" aria-label="留言板表情反馈">
     {reactionOptions.map((reaction) => (
       <button type="button" class="reaction-button" data-key={reaction.key} aria-label={reaction.label}>
@@ -49,15 +50,6 @@ const reactionOptions = [
     </section>
 
     <section class="comment-box">
-      <div class="comment-tabs" role="tablist" aria-label="留言输入">
-        <button type="button" class="comment-tab is-active" data-mode="write" role="tab" aria-selected="true">
-          输入
-        </button>
-        <button type="button" class="comment-tab" data-mode="preview" role="tab" aria-selected="false">
-          预览
-        </button>
-      </div>
-
       <form class="guestbook-form" id="guestbook-form">
         <div class="form-fields">
           <div class="field-row">
@@ -101,7 +93,6 @@ const reactionOptions = [
               placeholder="如果你愿意，可以在这里留下一句话。"
               required
             ></textarea>
-            <div class="compose-preview" id="guestbook-preview" hidden></div>
             <p class="compose-hint">纯文本 · 最多 500 字</p>
           </div>
         </div>
@@ -122,14 +113,14 @@ const reactionOptions = [
 
 <script is:inline>
   const listEl = document.getElementById('guestbook-list');
+  const ownerReplies = JSON.parse(document.getElementById('guestbook-owner-replies').textContent);
+  const localEditor = document.querySelector('.guestbook-zone').dataset.localEditor === 'true';
   const stateEl = document.getElementById('guestbook-state');
   const formEl = document.getElementById('guestbook-form');
   const feedbackEl = document.getElementById('guestbook-feedback');
   const submitEl = document.getElementById('guestbook-submit');
   const reactionsEl = document.getElementById('guestbook-reactions');
   const reactionFeedbackEl = document.getElementById('reaction-feedback');
-  const textareaEl = document.getElementById('guestbook-textarea');
-  const previewEl = document.getElementById('guestbook-preview');
   const avatarMap = {
     'avatar-01': '/images/guestbook/avatars/avatar-01.png',
     'avatar-02': '/images/guestbook/avatars/avatar-02.png',
@@ -194,6 +185,76 @@ const reactionOptions = [
 
     titleRow.append(name, meta);
     content.append(titleRow, body);
+    const replyArea = document.createElement('div');
+    function showReply(reply) {
+      replyArea.replaceChildren();
+      if (!reply) return;
+      replyArea.className = 'owner-reply';
+      const label = document.createElement('p');
+      label.className = 'message-title-row';
+      const owner = document.createElement('strong');
+      owner.textContent = '路遥知玛丽';
+      const date = document.createElement('time');
+      date.className = 'message-meta';
+      date.dateTime = reply.createdAt;
+      date.textContent = dateFormatter.format(new Date(reply.createdAt));
+      label.append(owner, date);
+      const text = document.createElement('p');
+      text.className = 'message-body';
+      text.textContent = reply.text;
+      replyArea.append(label, text);
+    }
+    showReply(ownerReplies[message.id]);
+    content.append(replyArea);
+    if (localEditor) {
+      const edit = document.createElement('button');
+      edit.type = 'button';
+      edit.className = 'reply-button';
+      edit.textContent = ownerReplies[message.id] ? '编辑回复' : '回复';
+      const editor = document.createElement('form');
+      editor.className = 'reply-editor';
+      editor.hidden = true;
+      const input = document.createElement('textarea');
+      input.required = true;
+      input.maxLength = 500;
+      input.rows = 3;
+      input.setAttribute('aria-label', `回复 ${message.nickname}`);
+      input.placeholder = `回复 ${message.nickname}…`;
+      input.value = ownerReplies[message.id]?.text || '';
+      const save = document.createElement('button');
+      save.type = 'submit';
+      save.textContent = '保存回复';
+      const cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.textContent = '取消';
+      const status = document.createElement('p');
+      status.setAttribute('role', 'status');
+      status.textContent = '保存到本机，发布网站后访客可见。';
+      editor.append(input, save, cancel, status);
+      edit.addEventListener('click', () => { editor.hidden = false; edit.hidden = true; input.focus(); });
+      cancel.addEventListener('click', () => { editor.hidden = true; edit.hidden = false; edit.focus(); });
+      editor.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        save.disabled = true;
+        cancel.disabled = true;
+        status.textContent = '正在保存…';
+        try {
+          const response = await fetch('/api/guestbook-reply', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ messageId: message.id, text: input.value }),
+          });
+          const result = await response.json();
+          if (!response.ok || !result.ok) throw new Error(result.message || '保存失败，请重试。');
+          ownerReplies[message.id] = result.reply;
+          showReply(result.reply);
+          edit.textContent = '编辑回复';
+          status.textContent = '已保存到本机，发布网站后访客可见。';
+        } catch (error) {
+          status.textContent = error.message || '保存失败，请重试。';
+        } finally { save.disabled = false; cancel.disabled = false; }
+      });
+      content.append(edit, editor);
+    }
     article.append(avatar, content);
     return article;
   }
@@ -303,36 +364,6 @@ const reactionOptions = [
     }
   }
 
-  function setupTabs() {
-    const tabs = document.querySelectorAll('.comment-tab');
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const mode = tab.dataset.mode;
-        tabs.forEach((item) => {
-          const active = item === tab;
-          item.classList.toggle('is-active', active);
-          item.setAttribute('aria-selected', String(active));
-        });
-
-        const previewing = mode === 'preview';
-
-        if (previewing) {
-          previewEl.textContent = textareaEl.value || '输入内容后，这里会显示留言的样子。';
-        }
-
-        textareaEl.hidden = previewing;
-        previewEl.hidden = !previewing;
-      });
-    });
-
-    textareaEl?.addEventListener('input', () => {
-      if (!previewEl.hidden) {
-        previewEl.textContent = textareaEl.value || '输入内容后，这里会显示留言的样子。';
-      }
-    });
-  }
-
   formEl?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -369,38 +400,49 @@ const reactionOptions = [
   });
 
   reactionsEl?.addEventListener('click', handleReactionClick);
-  setupTabs();
   loadReactions();
   loadMessages();
 </script>
 
 <style>
+  :global(.owner-reply) {
+    margin-top: var(--space-20);
+    padding: var(--space-16) 0 0 var(--space-16);
+    border-left: 2px solid var(--color-border);
+    border-top: 1px solid var(--color-border);
+  }
+  :global(.reply-button), :global(.reply-editor button) {
+    margin-top: var(--space-12);
+    margin-right: var(--space-12);
+    padding: var(--space-8) var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font: inherit;
+    cursor: pointer;
+  }
+  :global(.reply-editor textarea) {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: var(--space-16);
+    padding: var(--space-12);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    resize: vertical;
+  }
+  :global(.reply-editor p) {
+    color: var(--color-text-secondary);
+    font-size: var(--text-caption);
+  }
   .guestbook-zone {
     box-sizing: border-box;
     width: min(var(--width-content), 100%);
     margin: 0 auto;
     padding: 0 var(--space-20);
-  }
-
-  .zone-header {
-    max-width: 640px;
-    margin: 0 auto var(--space-32);
-    text-align: center;
-  }
-
-  .zone-header h2 {
-    color: var(--color-text-heading);
-    font-family: var(--font-heading);
-    font-size: var(--text-title-article);
-    line-height: 1.25;
-    margin: 0 0 var(--space-12);
-  }
-
-  .subtitle {
-    font-size: var(--text-summary);
-    line-height: var(--leading-text);
-    color: var(--color-text-secondary);
-    margin: 0;
   }
 
   .reaction-bar {
@@ -606,38 +648,6 @@ const reactionOptions = [
     overflow: hidden;
   }
 
-  .comment-tabs {
-    display: flex;
-    align-items: flex-end;
-    gap: var(--space-8);
-    padding: 14px var(--space-20) 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .comment-tab {
-    border: 1px solid var(--color-border);
-    border-bottom: none;
-    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-    background: color-mix(in srgb, var(--color-bg) 62%, transparent);
-    color: var(--color-text-secondary);
-    font: inherit;
-    font-size: var(--text-intro);
-    padding: 8px 18px 10px;
-    cursor: pointer;
-    position: relative;
-    top: 1px;
-  }
-
-  .comment-tab.is-active {
-    background: color-mix(in srgb, var(--color-bg) 97%, transparent);
-    color: var(--color-text);
-  }
-
-  .comment-tab:focus-visible {
-    outline: 2px solid var(--color-border-strong);
-    outline-offset: -2px;
-  }
-
   .guestbook-form {
     padding: var(--space-20);
     margin: 0;
@@ -748,22 +758,6 @@ const reactionOptions = [
   .compose-area textarea:focus {
     outline: 2px solid var(--color-border-strong);
     outline-offset: var(--space-4);
-  }
-
-  .compose-preview {
-    border: 1px solid var(--color-border-strong);
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-    color: var(--color-text);
-    font: inherit;
-    font-size: var(--text-intro);
-    line-height: var(--leading-summary);
-    padding: 14px var(--space-16);
-    min-height: 140px;
-    box-sizing: border-box;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    color: var(--color-text-secondary);
   }
 
   .compose-hint {

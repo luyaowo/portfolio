@@ -95,15 +95,10 @@ const profile = {
           {profile.socials.map((social) => (
             <a href={social.href} target="_blank" rel="noreferrer">{social.name}</a>
           ))}
-          <details class="email-follow">
-            <summary aria-label="显示邮箱" title="邮箱">
-              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M3.75 6.75h16.5v10.5H3.75V6.75Z" stroke="currentColor" stroke-width="1.5" />
-                <path d="m4.5 7.5 7.5 5.25 7.5-5.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </summary>
-            <span class="email-card">{profile.email}</span>
-          </details>
+          <span class="email-follow">
+            <button type="button" aria-describedby="email-address">邮箱</button>
+            <span class="email-card" id="email-address" role="tooltip">{profile.email}</span>
+          </span>
         </nav>
       </section>
     </section>
@@ -187,7 +182,7 @@ const profile = {
 
   .social-links a,
   .wechat-follow summary,
-  .email-follow summary {
+  .email-follow button {
     color: var(--color-text-secondary);
     font-size: var(--text-body);
     line-height: var(--leading-text);
@@ -195,19 +190,23 @@ const profile = {
     text-decoration-color: var(--color-link-underline);
     text-underline-offset: 0.2em;
     cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
     transition: color 0.16s ease, text-decoration-color 0.16s ease, transform 0.1s ease;
   }
 
   .social-links a:hover,
   .wechat-follow summary:hover,
-  .email-follow summary:hover {
+  .email-follow button:hover {
     color: var(--color-link-hover);
     text-decoration-color: var(--color-link-underline-hover);
   }
 
   .social-links a:focus-visible,
   .wechat-follow summary:focus-visible,
-  .email-follow summary:focus-visible {
+  .email-follow button:focus-visible {
     outline: 2px solid var(--color-link-underline-hover);
     outline-offset: 4px;
     border-radius: 2px;
@@ -215,7 +214,7 @@ const profile = {
 
   .social-links a:active,
   .wechat-follow summary:active,
-  .email-follow summary:active {
+  .email-follow button:active {
     transform: translateY(1px);
   }
 
@@ -224,23 +223,12 @@ const profile = {
     position: relative;
   }
 
-  .wechat-follow summary,
-  .email-follow summary {
+  .wechat-follow summary {
     list-style: none;
   }
 
-  .wechat-follow summary::-webkit-details-marker,
-  .email-follow summary::-webkit-details-marker {
+  .wechat-follow summary::-webkit-details-marker {
     display: none;
-  }
-
-  .email-follow summary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    text-decoration: none;
   }
 
   .wechat-card {
@@ -285,6 +273,18 @@ const profile = {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-float);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 0.16s ease, visibility 0.16s ease, transform 0.16s ease;
+  }
+
+  .email-follow:hover .email-card,
+  .email-follow:focus-within .email-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
 
   @media (max-width: 860px) {
