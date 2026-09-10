@@ -27,3 +27,4 @@ pnpm-debug.log*
 # Claude Code local settings (may contain local paths)
 .claude/settings.local.json
 qiaomu-blog-opensource
+.firecrawl/wechat-lqgi.md
