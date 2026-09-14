@@ -4,11 +4,20 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 const projects = await getCollection('work');
-// 置顶项目：写在这条数组里的 slug 排在列表最前
-const PINNED_SLUGS: string[] = ['yuandan-fuka'];
+// 列表顺序：写在这条数组里的 slug 按此顺序排在最前，未列出的按日期从新到旧排在后面
+const WORK_ORDER: string[] = [
+  'yuandan-fuka',
+  'aftersales-agent',
+  'article-2025-10-01',
+  '2025',
+  'app',
+  'article-2026-01-01',
+  'maokaplanet-202410',
+  'portfolio',
+];
 const sortedProjects = projects.sort((a, b) => {
-  const ia = PINNED_SLUGS.indexOf(a.slug);
-  const ib = PINNED_SLUGS.indexOf(b.slug);
+  const ia = WORK_ORDER.indexOf(a.slug);
+  const ib = WORK_ORDER.indexOf(b.slug);
   if (ia !== -1 || ib !== -1) {
     return (ia === -1 ? Infinity : ia) - (ib === -1 ? Infinity : ib);
   }
@@ -133,6 +142,7 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border-radius: var(--radius-sm);
+    box-shadow: 0 0 0 1px var(--color-image-ring);
   }
 
   .item-meta {

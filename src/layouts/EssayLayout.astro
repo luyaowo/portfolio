@@ -398,18 +398,29 @@ const hasToc = tocHeadings.length >= 3;
     max-height: 82vh;
   }
 
-  /* Work：以图为证，正文图放宽到 1180，文字保持窄栏 */
+  /* Work：以图为证，正文图实际显示 1000（shell 1032 减去 .essay 左右各 16 的内边距），文字保持窄栏 */
   .essay-shell.essay-collection-work {
-    width: min(1180px, 100%);
+    width: min(1032px, 100%);
   }
 
   .essay-collection-work .essay-body :global(p:has(> img:only-child)),
   .essay-collection-work .essay-body :global(figure) {
-    width: min(100%, 1180px);
+    width: min(100%, 1032px);
   }
 
   .essay-collection-work .essay-body :global(img) {
     max-height: none;
+  }
+
+  /* 以图为证：每块作品图都加一圈细边，米白版面才不至于糊进页面背景（深色下同理，环画在图片框外，不压图） */
+  .essay-collection-work .essay-body :global(p:has(> img:only-child) img),
+  .essay-collection-work .essay-body :global(figure img) {
+    box-shadow: 0 0 0 1px var(--color-image-ring);
+  }
+
+  /* 作品页：每块板之间留出明确间距，覆盖全站相邻图片的 -14px 收紧 */
+  .essay-collection-work .essay-body :global(p:has(> img:only-child) + p:has(> img:only-child)) {
+    margin-top: var(--space-32);
   }
 
   .essay-toc {

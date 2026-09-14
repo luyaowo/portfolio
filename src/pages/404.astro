@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="页面不存在 · 路遥知玛丽" privatePage>
+	<section class="not-found">
+		<p class="code">404</p>
+		<h1>这里什么都没有</h1>
+		<p class="note">你要找的页面不存在，或者已经被移动了。</p>
+		<a class="back" href="/">回首页</a>
+	</section>
+</Layout>
+
+<style>
+	.not-found {
+		text-align: center;
+		padding: var(--space-72) var(--space-24);
+	}
+
+	.code {
+		font-family: var(--font-mono);
+		font-size: var(--text-intro);
+		letter-spacing: 0.18em;
+		color: var(--color-text-tertiary);
+		margin: 0 0 var(--space-16);
+	}
+
+	h1 {
+		font-family: var(--font-heading);
+		font-size: var(--text-heading-1);
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+		color: var(--color-text-heading);
+		margin: 0 0 var(--space-16);
+	}
+
+	.note {
+		font-size: var(--text-summary);
+		line-height: var(--leading-text);
+		color: var(--color-text-secondary);
+		margin: 0 0 var(--space-32);
+	}
+
+	.back {
+		font-size: var(--text-summary);
+		color: var(--color-link);
+		text-decoration-color: var(--color-link-underline);
+		text-underline-offset: 3px;
+	}
+
+	.back:hover {
+		color: var(--color-link-hover);
+		text-decoration-color: var(--color-link-underline-hover);
+	}
+</style>

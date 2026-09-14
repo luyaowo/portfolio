@@ -80,6 +80,7 @@ This is not a glossy product site. It should feel closer to a modern publishing 
 - Do not use deep navy as the main text impression.
 - Do not use bright accent colors as a recurring theme.
 - Let contrast come from type hierarchy, not from dark blocks.
+- Note: the values above predate the current token pass. The shipped values live in `src/layouts/Layout.astro` (`:root` → warm gray family `rgba(48,48,46,…)` / `rgba(94,93,89,…)`, accent `#8f4a38`). Treat Layout.astro as the source of truth.
 
 ## 6. Typography
 
@@ -428,3 +429,38 @@ A page is visually correct when:
 - long-form reading feels stable for several screenfuls
 - list pages feel like indexes, not marketing grids
 - TOC helps orientation without pulling attention away from content
+
+## 18. Dark Theme
+
+A two-state manual toggle (light ⇄ dark) sits at the end of the top nav. First visit follows the OS; once the visitor toggles, the choice is stored (`localStorage` key `luyao-theme`) and wins from then on.
+
+### Behavior
+
+- An inline `<head>` script resolves the theme before first paint and writes `<html data-theme="light|dark">`. Every dark rule hangs off `:root[data-theme='dark']` — one place, no CSS duplication.
+- While no choice is stored, the page keeps following the OS live (`matchMedia` change listener). No third "system" value is ever stored; absence of the key is the system state.
+- `color-scheme` follows the resolved theme so form controls and scrollbars match.
+- The toggle's sun/moon icon swap is pure CSS on the resolved attribute — it can never flicker.
+
+### Palette
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--color-bg` | `#f7f6f2` | `#1b1917` |
+| `--color-surface` | `#fbfaf7` | `#242120` |
+| `--color-text` | `rgba(48,48,46,.94)` | `rgba(237,233,225,.90)` |
+| `--color-text-heading` | `rgba(20,20,19,.99)` | `rgba(247,244,238,.98)` |
+| `--color-text-secondary` | `rgba(94,93,89,.82)` | `rgba(182,176,167,.78)` |
+| `--color-text-tertiary` | `rgba(94,93,89,.58)` | `rgba(182,176,167,.56)` |
+| `--color-border` | `rgba(94,93,89,.14)` | `rgba(237,233,225,.12)` |
+| `--color-interactive` | `rgba(20,20,19,.98)` | `rgba(242,238,231,.90)` |
+| `--color-code-block` | `#181922` | `#26221f` |
+| `--color-link` | `#8f4a38` | `#d2937e` |
+| `--color-image-ring` | `rgba(94,93,89,.22)` | `rgba(237,233,225,.12)` |
+
+### Rules
+
+- Artwork images are never dimmed, tinted, overlaid, or filtered in dark mode — bright boards popping against the dark page is the point of the feature.
+- No pure black and no cool navy; the dark surface stays warm. The light-mode code-block navy is replaced with a warm raised panel.
+- Value relationships must hold in both themes: the raised surface stays lighter than the page, borders stay subtle, and separation still comes from spacing and type hierarchy before fills or shadows.
+- Work images carry a 1px `--color-image-ring` in both themes so light boards separate from the light page (and dark artwork from the dark page). The ring is drawn outside the image box — it never covers or dims the artwork.
+- Contrast floors: body text ≥ 4.5:1 and meta text ≥ 3:1 against the page background, in both themes. Dark secondary/tertiary text is intentionally set higher than its light counterpart, which sits below AA.

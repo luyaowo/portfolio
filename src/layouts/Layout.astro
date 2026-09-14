@@ -42,6 +42,39 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		<meta property="og:image:alt" content={title} />
 		<meta property="og:site_name" content="路遥知玛丽 · 个人站" />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="theme-color" content="#f7f6f2" />
+		<script is:inline>
+			(() => {
+				const KEY = 'luyao-theme';
+				const META = { light: '#f7f6f2', dark: '#1b1917' };
+				const root = document.documentElement;
+				const meta = document.querySelector('meta[name="theme-color"]');
+				const mq = window.matchMedia('(prefers-color-scheme: dark)');
+				const read = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+				const write = (v) => { try { localStorage.setItem(KEY, v); } catch {} };
+				const sync = () => document.querySelectorAll('[data-theme-set]')
+					.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === root.dataset.theme)));
+				const apply = (t) => { root.dataset.theme = t; if (meta) meta.content = META[t]; sync(); };
+				const resolve = () => read() ?? (mq.matches ? 'dark' : 'light');
+				apply(resolve());
+				document.addEventListener('DOMContentLoaded', sync);
+				const onSystem = () => { if (!read()) apply(resolve()); };
+				mq.addEventListener ? mq.addEventListener('change', onSystem) : mq.addListener(onSystem);
+				// bfcache：后退/前进恢复的页面不会重跑脚本，恢复时按存储值重新应用
+				window.addEventListener('pageshow', () => apply(resolve()));
+				// 多标签页：别的标签页切了主题，这里跟着变
+				window.addEventListener('storage', (e) => {
+					if (e.key === KEY || e.key === null) apply(resolve());
+				});
+				document.addEventListener('click', (e) => {
+					const t = e.target;
+					if (!(t instanceof Element)) return;
+					const option = t.closest('[data-theme-set]');
+					if (!option) return;
+					write(option.dataset.themeSet); apply(option.dataset.themeSet);
+				});
+			})();
+		</script>
 	</head>
 	<body>
 		<header class="site-header">
@@ -56,6 +89,19 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 				<a href="/photography" class={Astro.url.pathname.startsWith('/photography') ? 'is-active' : ''}>Photography</a>
 				<a href="/play" class={Astro.url.pathname.startsWith('/play') ? 'is-active' : ''}>Play</a>
 				<a href="/about" class={Astro.url.pathname.startsWith('/about') ? 'is-active' : ''}>About</a>
+				<div class="theme-toggle" role="group" aria-label="深浅模式">
+					<button type="button" class="theme-option" data-theme-set="light" aria-label="浅色模式" aria-pressed="false" title="浅色模式">
+						<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+							<circle cx="12" cy="12" r="4.2"></circle>
+							<path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"></path>
+						</svg>
+					</button>
+					<button type="button" class="theme-option" data-theme-set="dark" aria-label="深色模式" aria-pressed="false" title="深色模式">
+						<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M20.5 14.5A8.6 8.6 0 0 1 9.5 3.5a8.6 8.6 0 1 0 11 11Z"></path>
+						</svg>
+					</button>
+				</div>
 			</nav>
 		</header>
 		<main class="site-main">
@@ -122,6 +168,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400..800&display=swap');
 
 	:global(:root) {
+		color-scheme: light;
 		--font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
 		--font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', sans-serif;
 		--font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
@@ -175,6 +222,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		--color-link-hover: #6f3528;
 		--color-link-underline: rgba(143, 74, 56, 0.28);
 		--color-link-underline-hover: rgba(111, 53, 40, 0.56);
+		--color-image-ring: rgba(94, 93, 89, 0.22);
 
 		--shadow-float: 0 8px 24px rgba(29, 31, 42, 0.06);
 		--shadow-float-soft: 0 6px 18px rgba(29, 31, 42, 0.045);
@@ -216,6 +264,33 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		--opacity-timeline-dot-active: 0.52;
 	}
 
+	/* 深色主题：暖深灰，不用纯黑、不用冷蓝；作品图永不压暗（亮板弹出深底就是目的本身） */
+	:global(:root[data-theme='dark']) {
+		color-scheme: dark;
+		--color-bg: #1b1917;
+		--color-surface: #242120;
+		--color-surface-white: #3a3531;
+		--color-text: rgba(237, 233, 225, 0.90);
+		--color-text-heading: rgba(247, 244, 238, 0.98);
+		--color-text-secondary: rgba(182, 176, 167, 0.78);
+		--color-text-tertiary: rgba(182, 176, 167, 0.56);
+		--color-border: rgba(237, 233, 225, 0.12);
+		--color-border-strong: rgba(237, 233, 225, 0.20);
+		--color-interactive: rgba(242, 238, 231, 0.90);
+		--color-hover: rgba(237, 233, 225, 0.06);
+		--color-pressed: rgba(237, 233, 225, 0.10);
+		--color-code: rgba(237, 233, 225, 0.09);
+		--color-code-block: #26221f;
+		--color-code-block-text: #ece6da;
+		--color-link: #d2937e;
+		--color-link-hover: #e6ab95;
+		--color-link-underline: rgba(210, 147, 126, 0.34);
+		--color-link-underline-hover: rgba(230, 171, 149, 0.58);
+		--color-image-ring: rgba(237, 233, 225, 0.12);
+		--shadow-float: 0 8px 24px rgba(0, 0, 0, 0.55);
+		--shadow-float-soft: 0 6px 18px rgba(0, 0, 0, 0.45);
+	}
+
 	:global(html),
 	:global(body) {
 		margin: 0;
@@ -241,7 +316,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		z-index: 50;
 		box-sizing: border-box;
 		min-height: var(--space-56);
-		padding: 12px var(--space-56);
+		padding: 14px var(--space-56);
 		background: color-mix(in srgb, var(--color-bg) 72%, transparent);
 		border-bottom: 1px solid transparent;
 		box-shadow: none !important;
@@ -282,6 +357,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 
 	:global(.site-nav) {
 		display: flex;
+		align-items: center;
 		gap: var(--space-20);
 		justify-content: flex-end;
 	}
@@ -291,6 +367,8 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		text-decoration: none;
 		color: var(--color-text);
 		border-bottom: 1px solid transparent;
+		/* 下划线预留（4px + 1px 边框）下多上少会让文字整体偏上，用等量 padding-top 配平 */
+		padding-top: 5px;
 		padding-bottom: var(--space-4);
 	}
 
@@ -300,6 +378,59 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 
 	:global(.site-nav a.is-active) {
 		border-bottom-color: var(--color-interactive);
+	}
+
+	:global(.theme-toggle) {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		align-self: center;
+		flex: 0 0 auto;
+		padding: 3px;
+		border: 1px solid var(--color-border);
+		border-radius: 999px;
+		transition: border-color 0.2s ease;
+	}
+
+	:global(.theme-toggle:hover) {
+		border-color: var(--color-border-strong);
+	}
+
+	:global(.theme-option) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 26px;
+		padding: 0;
+		border: 0;
+		background: none;
+		border-radius: 999px;
+		color: var(--color-text-tertiary);
+		cursor: pointer;
+		transition: color 0.2s ease, background-color 0.2s ease;
+	}
+
+	:global(.theme-option svg) {
+		width: 15px;
+		height: 15px;
+		display: block;
+	}
+
+	:global(.theme-option:hover) {
+		color: var(--color-text);
+	}
+
+	:global(.theme-option:focus-visible) {
+		outline: 2px solid var(--color-border-strong);
+		outline-offset: 1px;
+	}
+
+	/* 当前所在的一档：实心圆反色高亮（同站内已按下标签的处理），跟随 <html data-theme>，首帧即正确 */
+	:global(:root:not([data-theme='dark']) .theme-option[data-theme-set='light']),
+	:global(:root[data-theme='dark'] .theme-option[data-theme-set='dark']) {
+		color: var(--color-bg);
+		background: var(--color-interactive);
 	}
 
 	:global(.site-header:hover),
@@ -396,6 +527,12 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 
 		:global(.site-nav a) {
 			flex: 0 0 auto;
+		}
+
+		/* 移动端 nav 是横向滚动条，开关贴最左才够得到（DOM 仍在末位，Tab 序不变） */
+		:global(.theme-toggle) {
+			order: -1;
+			margin-right: var(--space-4);
 		}
 
 		:global(.site-main) {
