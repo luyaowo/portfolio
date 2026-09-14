@@ -27,7 +27,7 @@ const hasToc = tocHeadings.length >= 3;
   ogType="article" ogImageWidth={shareImage?.attributes.width} ogImageHeight={shareImage?.attributes.height}
   publishedTime={publishedDate?.toISOString()}>
 
-  <div class:list={['essay-shell', { 'has-toc': hasToc }]}>
+  <div class:list={['essay-shell', { 'has-toc': hasToc, 'essay-collection-work': collection === 'work' }]}>
     <article class:list={["essay", articleClass]}>
       <header class="essay-header">
         <h1 class="essay-title">{title}</h1>
@@ -396,6 +396,20 @@ const hasToc = tocHeadings.length >= 3;
 
   .essay-technical-longread .essay-body :global(img) {
     max-height: 82vh;
+  }
+
+  /* Work：以图为证，正文图放宽到 1280，文字保持窄栏 */
+  .essay-shell.essay-collection-work {
+    width: min(1280px, 100%);
+  }
+
+  .essay-collection-work .essay-body :global(p:has(> img:only-child)),
+  .essay-collection-work .essay-body :global(figure) {
+    width: min(100%, 1280px);
+  }
+
+  .essay-collection-work .essay-body :global(img) {
+    max-height: none;
   }
 
   .essay-toc {
