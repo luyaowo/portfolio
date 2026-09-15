@@ -3,8 +3,9 @@ title: 体外售后维修智能体
 date: 2026-09-12
 summary: 面向医疗设备患者的售后对话智能体原型：售后问答、故障排查引导与维修申请，本地可运行，业务数据为模拟。
 cover: cover.jpg
-metaLeft: AI 应用 / 产品设计
+metaLeft: 产品设计
 metaRight: Dify 原型
+type: AI
 ---
 
 这是一个售后方向的对话智能体原型：为体外神经刺激设备的患者处理售后咨询、故障排查引导和维修申请，基于本地 Dify Chatflow 与 React 卡片前端实现，业务数据为模拟。

@@ -2,9 +2,12 @@
 title: "元旦活动运营"
 date: 2026-01-01
 summary: "拜年计划是患者服务团队持续十年的新年关怀活动。项目包含 AI 福卡和节日互动 H5，通过个性化祝福、轻互动、分享及礼品领取等形式，增强用户参与和节日关怀，并探索 AIGC 在患者服务活动中的应用。"
-cover: "59.webp"
-metaLeft: "产品设计"
+cover: "cover.webp"
+metaLeft: "交互 / 视觉 / 动效"
 metaRight: "2026"
+type: AI
+period: 2023.12-2024.12
+status: 已上线
 ---
 ![项目图片 01](<59.webp>)
 

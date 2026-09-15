@@ -13,7 +13,6 @@ const WORK_ORDER: string[] = [
   'app',
   'article-2026-01-01',
   'maokaplanet-202410',
-  'portfolio',
 ];
 const sortedProjects = projects.sort((a, b) => {
   const ia = WORK_ORDER.indexOf(a.slug);
@@ -23,16 +22,29 @@ const sortedProjects = projects.sort((a, b) => {
   }
   return b.data.date.getTime() - a.data.date.getTime();
 });
-const formatDate = (value: Date) =>
-  `${value.getFullYear()}.${String(value.getMonth() + 1).padStart(2, '0')}`;
 const getCover = (cover: { src: string; width?: number; height?: number } | string) =>
   typeof cover === 'string' ? { src: cover } : cover;
+// 按关键词映射职责标签颜色（产品=红 / 交互=绿 / 视觉=蓝），其余走中性样式
+const roleTagClass = (tag: string) => {
+  if (tag.startsWith('产品')) return 'tag-product';
+  if (tag.startsWith('交互')) return 'tag-interaction';
+  if (tag.startsWith('可视')) return 'tag-visualization';
+  if (tag.startsWith('视觉')) return 'tag-visual';
+  if (tag.startsWith('动效')) return 'tag-motion';
+  if (tag.startsWith('设计规范')) return 'tag-standards';
+  if (tag.startsWith('组件库')) return 'tag-components';
+  return '';
+};
 ---
 
 <Layout title="Work · 路遥知玛丽" description="设计作品与项目实践">
+  <div class="work-shell">
   <section class="work">
     <header class="work-header">
-      <h1>Work</h1>
+      <div class="work-title-row">
+        <h1>Work</h1>
+        <span class="work-hint">（建议右上角切换暗色模式查看）</span>
+      </div>
       <p class="intro">
         一些我参与过的设计与产品实践，<br />
         关注在复杂约束下如何做出清晰判断。
@@ -42,13 +54,27 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
     <section class="work-list">
       {sortedProjects.map((project) => {
         const cover = getCover(project.data.cover);
+        const tags = project.data.metaLeft.split('/').map((tag) => tag.trim()).filter(Boolean);
 
         return (
-        <article class="work-item">
+        <article class="work-item" id={project.slug}>
           <a class="work-card" href={`/work/${project.slug}`}>
             <header class="item-header">
               <h2>{project.data.title}</h2>
-              <p>{project.data.summary}</p>
+              <ul class="item-tags">
+                {project.data.type && <li class="tag-type">{project.data.type}</li>}
+                {tags.map((tag) => <li class={roleTagClass(tag)}>{tag}</li>)}
+              </ul>
+              {(project.data.period || project.data.status) && (
+                <p class="item-facts">
+                  {project.data.period && (
+                    <span><span class="fact-label">项目周期</span>{project.data.period}</span>
+                  )}
+                  {project.data.status && (
+                    <span><span class="fact-label">项目状态</span>{project.data.status}</span>
+                  )}
+                </p>
+              )}
             </header>
 
             <figure class="item-cover">
@@ -60,19 +86,61 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
                   format="webp" quality={88} loading="lazy" decoding="async" />
               )}
             </figure>
-
-            <footer class="item-meta">
-              <span>{project.data.metaLeft}</span>
-              <span>{formatDate(project.data.date)}</span>
-              <span>{project.data.metaRight}</span>
-            </footer>
           </a>
         </article>
         );
       })}
     </section>
   </section>
+
+  <aside class="work-toc" aria-label="项目目录">
+    <nav class="work-toc-nav">
+      {sortedProjects.map((project) => (
+        <a class="work-toc-link" href={`#${project.slug}`}>{project.data.title}</a>
+      ))}
+    </nav>
+  </aside>
+  </div>
 </Layout>
+
+<script is:inline>
+  (() => {
+    const links = Array.from(document.querySelectorAll('.work-toc-link'));
+    if (!links.length) return;
+
+    const items = links
+      .map((link) => {
+        const id = decodeURIComponent(link.getAttribute('href')?.slice(1) ?? '');
+        const el = document.getElementById(id);
+        return el ? { link, el } : null;
+      })
+      .filter(Boolean);
+    if (!items.length) return;
+
+    let ticking = false;
+    const update = () => {
+      const pivot = window.innerHeight * 0.22;
+      let active = items[0];
+      items.forEach((item) => {
+        if (item.el.getBoundingClientRect().top <= pivot) active = item;
+      });
+      items.forEach(({ link }) => {
+        const isActive = link === active.link;
+        link.classList.toggle('is-active', isActive);
+        if (isActive) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+      ticking = false;
+    };
+
+    update();
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+  })();
+</script>
 
 <style>
   .work {
@@ -83,12 +151,95 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
     gap: var(--space-48);
   }
 
+  .work-shell {
+    width: 100%;
+  }
+
+  .work-toc {
+    display: none;
+  }
+
+  .work-toc-link {
+    display: block;
+    padding: var(--space-8);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-title);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .work-toc-link:hover,
+  .work-toc-link:focus-visible {
+    color: var(--color-text);
+    background: var(--color-hover);
+    outline: none;
+  }
+
+  .work-toc-link.is-active {
+    color: var(--color-text-heading);
+    background: var(--color-hover);
+    box-shadow: inset 2px 0 var(--color-link);
+  }
+
+  /* ≥88em：左右等宽留白 + 中间内容列（保持视口居中），右栏放粘性目录 */
+  @media (min-width: 88em) {
+    .work-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, var(--width-content-narrow)) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .work {
+      grid-column: 2;
+    }
+
+    .work-toc {
+      display: block;
+      grid-column: 3;
+      justify-self: end;
+      width: var(--width-toc);
+      height: 100%;
+      padding-right: var(--space-56);
+      padding-left: var(--space-24);
+    }
+
+    .work-toc-nav {
+      position: sticky;
+      top: 88px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      max-height: calc(100vh - 112px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      margin-top: var(--space-56);
+    }
+  }
+
+  .work-title-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    margin-bottom: var(--space-12);
+  }
+
   .work-header h1 {
     color: var(--color-text-heading);
     font-family: var(--font-heading);
     font-size: var(--text-title-page);
     font-weight: var(--weight-semibold);
-    margin: 0 0 var(--space-12);
+    margin: 0;
+  }
+
+  .work-hint {
+    font-size: var(--text-heading-2);
+    line-height: var(--leading-text);
+    color: var(--color-text-heading);
   }
 
   .intro {
@@ -106,6 +257,7 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
   .work-item {
     display: grid;
     gap: var(--space-16);
+    scroll-margin-top: 96px;
   }
 
   .work-card {
@@ -120,15 +272,79 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
     font-family: var(--font-heading);
     font-size: var(--text-title-card);
     line-height: var(--leading-meta);
-    margin: 0 0 var(--space-4);
+    margin: 0;
     letter-spacing: 0;
   }
 
-  .item-header p {
-    margin: 0;
+  .item-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin: var(--space-12) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item-tags li {
+    padding: 4px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
     font-size: var(--text-intro);
-    line-height: var(--leading-summary);
+    line-height: var(--leading-text);
+    letter-spacing: 0.04em;
     color: var(--color-text-secondary);
+  }
+
+  /* 项目类型标签：实心，和职责标签（描边）一眼分得开 */
+  .item-tags li.tag-type {
+    color: var(--color-bg);
+    background: var(--color-interactive);
+    border-color: var(--color-interactive);
+  }
+
+  /* 职责标签按关键词上色：产品=红 / 交互=绿 / 视觉=蓝 / 动效=琥珀 / 可视化=紫 / 设计规范=青 / 组件库=玫红 */
+  .tag-product { --tag: #b1402a; }
+  .tag-interaction { --tag: #347347; }
+  .tag-visual { --tag: #34659b; }
+  .tag-motion { --tag: #b06a2a; }
+  .tag-visualization { --tag: #6f56a3; }
+  .tag-standards { --tag: #2f7a72; }
+  .tag-components { --tag: #a84a68; }
+
+  .item-tags li.tag-product,
+  .item-tags li.tag-interaction,
+  .item-tags li.tag-visual,
+  .item-tags li.tag-motion,
+  .item-tags li.tag-visualization,
+  .item-tags li.tag-standards,
+  .item-tags li.tag-components {
+    border-color: color-mix(in srgb, var(--tag) 42%, transparent);
+    background: color-mix(in srgb, var(--tag) 12%, transparent);
+    color: var(--tag);
+  }
+
+  :global(:root[data-theme='dark']) .tag-product { --tag: #e0907c; }
+  :global(:root[data-theme='dark']) .tag-interaction { --tag: #86c194; }
+  :global(:root[data-theme='dark']) .tag-visual { --tag: #86aede; }
+  :global(:root[data-theme='dark']) .tag-motion { --tag: #e0a06a; }
+  :global(:root[data-theme='dark']) .tag-visualization { --tag: #b39bd6; }
+  :global(:root[data-theme='dark']) .tag-standards { --tag: #7fc4ba; }
+  :global(:root[data-theme='dark']) .tag-components { --tag: #d996ac; }
+
+  .item-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-24);
+    margin: var(--space-16) 0 0;
+    font-size: var(--text-intro);
+    line-height: var(--leading-text);
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+  }
+
+  .fact-label {
+    color: var(--color-text-tertiary);
+    margin-right: var(--space-8);
   }
 
   .item-cover {
@@ -145,14 +361,6 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
     box-shadow: 0 0 0 1px var(--color-image-ring);
   }
 
-  .item-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: var(--text-caption);
-    letter-spacing: 0.04em;
-    color: var(--color-text-tertiary);
-  }
-
   .work-card:hover .item-header h2 {
     text-decoration: underline;
   }
@@ -160,12 +368,6 @@ const getCover = (cover: { src: string; width?: number; height?: number } | stri
   @media (max-width: 540px) {
     .work {
       margin-top: var(--space-32);
-    }
-
-    .item-meta {
-      flex-direction: column;
-      gap: var(--space-8);
-      align-items: flex-start;
     }
   }
 </style>

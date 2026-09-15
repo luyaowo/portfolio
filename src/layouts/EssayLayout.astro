@@ -412,6 +412,11 @@ const hasToc = tocHeadings.length >= 3;
     max-height: none;
   }
 
+  /* 作品页：页头（标题/日期）与版面图左对齐；默认是居中的 712 文字栏 */
+  .essay-collection-work .essay-header {
+    width: 100%;
+  }
+
   /* 以图为证：每块作品图都加一圈细边，米白版面才不至于糊进页面背景（深色下同理，环画在图片框外，不压图） */
   .essay-collection-work .essay-body :global(p:has(> img:only-child) img),
   .essay-collection-work .essay-body :global(figure img) {
@@ -486,21 +491,26 @@ const hasToc = tocHeadings.length >= 3;
 
   @media (min-width: 88em) {
     .essay-toc-mobile { display: none; }
+    /* 三栏：文章列保持视口居中，目录挪到最右（右缘与顶部导航对齐，56px） */
     .essay-shell.has-toc {
       display: grid;
-      grid-template-columns: minmax(0, var(--width-article)) var(--width-toc);
-      column-gap: var(--space-24);
+      grid-template-columns: minmax(0, 1fr) minmax(0, var(--width-article)) minmax(0, 1fr);
       align-items: start;
-      width: min(
-        calc(var(--width-article) + var(--space-24) + var(--width-toc)),
-        100%
-      );
+      width: 100%;
+    }
+
+    .essay {
+      grid-column: 2;
     }
 
     .essay-toc {
       display: block;
+      grid-column: 3;
+      justify-self: end;
       width: var(--width-toc);
       height: 100%;
+      padding-right: var(--space-56);
+      padding-left: var(--space-24);
     }
 
     .essay-toc-nav {

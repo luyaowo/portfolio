@@ -23,6 +23,10 @@ const work = defineCollection({
       cover: image().or(z.string()),
       metaLeft: z.string(),
       metaRight: z.string(),
+      /** 项目类型：AI / APP / 中后台 / 运营 */
+      type: z.string().optional(),
+      period: z.string().optional(),
+      status: z.string().optional(),
     }),
 });
 

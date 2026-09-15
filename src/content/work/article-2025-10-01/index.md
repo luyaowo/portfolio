@@ -2,9 +2,12 @@
 title: "运营后台系统"
 date: 2025-10-01
 summary: "针对旧版后台任务分散、数据展示割裂等问题，结合运营部门在服务单、售后管理等方面的新增需求，主导信息架构、核心流程及视觉体验优化。"
-cover: "1.webp"
-metaLeft: "产品设计"
+cover: "cover.webp"
+metaLeft: "交互 / 视觉 / 可视化"
 metaRight: "2025"
+type: 中后台
+period: 2023.09-2024.06
+status: 已上线
 ---
 ![项目图片 01](<1.webp>)
 
