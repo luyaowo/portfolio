@@ -417,6 +417,13 @@ const hasToc = tocHeadings.length >= 3;
     width: 100%;
   }
 
+  /* 作品页的文字介绍（如有）：与版面图同宽同左缘（仅 work 详情页生效） */
+  .essay-collection-work .essay-body :global(p:not(:has(> img:only-child))),
+  .essay-collection-work .essay-body :global(ol),
+  .essay-collection-work .essay-body :global(ul) {
+    width: 100%;
+  }
+
   /* 以图为证：每块作品图都加一圈细边，米白版面才不至于糊进页面背景（深色下同理，环画在图片框外，不压图） */
   .essay-collection-work .essay-body :global(p:has(> img:only-child) img),
   .essay-collection-work .essay-body :global(figure img) {

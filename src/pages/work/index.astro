@@ -4,6 +4,18 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 const projects = await getCollection('work');
+const filters = [
+  { id: 'all', label: '全部' },
+  { id: 'ai', label: 'AI 应用' },
+  { id: 'backend', label: '中后台' },
+  { id: 'app', label: 'App' },
+  { id: 'campaign', label: '运营活动' },
+];
+const projectCategories = (project: (typeof projects)[number]) => {
+  if (project.slug === 'yuandan-fuka') return 'ai campaign';
+  if (project.slug === 'article-2026-01-01') return 'campaign';
+  return ({ AI: 'ai', 中后台: 'backend', APP: 'app' } as Record<string, string>)[project.data.type ?? ''] ?? '';
+};
 // 列表顺序：写在这条数组里的 slug 按此顺序排在最前，未列出的按日期从新到旧排在后面
 const WORK_ORDER: string[] = [
   'yuandan-fuka',
@@ -49,15 +61,22 @@ const roleTagClass = (tag: string) => {
         一些我参与过的设计与产品实践，<br />
         关注在复杂约束下如何做出清晰判断。
       </p>
+      <div class="work-filters" role="group" aria-label="按项目类型筛选">
+        {filters.map(({ id, label }) => (
+          <button type="button" class="work-filter" data-filter={id}
+            aria-pressed={id === 'all' ? 'true' : 'false'} aria-controls="work-results">{label}</button>
+        ))}
+      </div>
+      <p class="filter-status" role="status" aria-live="polite" aria-atomic="true"></p>
     </header>
 
-    <section class="work-list">
+    <section class="work-list" id="work-results">
       {sortedProjects.map((project) => {
         const cover = getCover(project.data.cover);
         const tags = project.data.metaLeft.split('/').map((tag) => tag.trim()).filter(Boolean);
 
         return (
-        <article class="work-item" id={project.slug}>
+        <article class="work-item" id={project.slug} data-categories={projectCategories(project)}>
           <a class="work-card" href={`/work/${project.slug}`}>
             <header class="item-header">
               <h2>{project.data.title}</h2>
@@ -120,18 +139,35 @@ const roleTagClass = (tag: string) => {
     let ticking = false;
     const update = () => {
       const pivot = window.innerHeight * 0.22;
-      let active = items[0];
-      items.forEach((item) => {
+      const visibleItems = items.filter(({ el }) => !el.hidden);
+      let active = visibleItems[0];
+      visibleItems.forEach((item) => {
         if (item.el.getBoundingClientRect().top <= pivot) active = item;
       });
       items.forEach(({ link }) => {
-        const isActive = link === active.link;
+        const isActive = link === active?.link;
         link.classList.toggle('is-active', isActive);
         if (isActive) link.setAttribute('aria-current', 'true');
         else link.removeAttribute('aria-current');
       });
       ticking = false;
     };
+
+    const buttons = Array.from(document.querySelectorAll('.work-filter'));
+    const status = document.querySelector('.filter-status');
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const category = button.dataset.filter;
+        buttons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+        items.forEach(({ el, link }) => {
+          const visible = category === 'all' || el.dataset.categories.split(' ').includes(category);
+          el.hidden = !visible;
+          link.hidden = !visible;
+        });
+        if (status) status.textContent = `${button.textContent}：${items.filter(({ el }) => !el.hidden).length} 个项目`;
+        update();
+      });
+    });
 
     update();
     window.addEventListener('scroll', () => {
@@ -247,6 +283,59 @@ const roleTagClass = (tag: string) => {
     line-height: var(--leading-text);
     color: var(--color-text-secondary);
     margin: 0;
+  }
+
+  .work-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: var(--space-24);
+  }
+
+  .work-filter {
+    appearance: none;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: var(--space-8) var(--space-12);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--text-intro);
+    line-height: var(--leading-text);
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .work-filter:hover,
+  .work-filter[aria-pressed='true'] {
+    color: var(--color-text-heading);
+    background: var(--color-hover);
+  }
+
+  .work-filter[aria-pressed='true'] {
+    font-weight: var(--weight-semibold);
+    border-color: var(--color-border);
+  }
+
+  .work-filter:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: 2px;
+  }
+
+  .work-item[hidden],
+  .work-toc-link[hidden] {
+    display: none;
+  }
+
+  .filter-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .work-list {

@@ -14,9 +14,8 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await post.render();
 const { title, date, summary, cover } = post.data;
-const formattedDate = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}`;
 ---
 
-<EssayLayout summary={summary} cover={cover} publishedDate={date} collection="work" currentSlug={post.slug} title={title} date={formattedDate}>
+<EssayLayout summary={summary} cover={cover} publishedDate={date} collection="work" currentSlug={post.slug} title={title}>
   <Content />
 </EssayLayout>
