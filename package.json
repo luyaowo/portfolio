@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.2.0",
   "scripts": {
     "clean": "rm -rf .astro node_modules/.vite",
     "dev": "astro dev",
