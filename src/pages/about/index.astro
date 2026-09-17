@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import GuestbookSection from '../../components/GuestbookSection.astro';
+import WalineComments from '../../components/WalineComments.astro';
 
 const profile = {
   name: '路遥知玛丽',
@@ -104,9 +104,7 @@ const profile = {
     </section>
   </main>
 
-  <div class="guestbook-wrap">
-    <GuestbookSection />
-  </div>
+  <WalineComments />
 </Layout>
 
 <style>
@@ -118,11 +116,6 @@ const profile = {
     gap: var(--space-48);
     margin: var(--space-56) auto var(--space-72);
     padding: 0 var(--space-20);
-  }
-
-  .guestbook-wrap {
-    margin-top: var(--space-16);
-    padding-bottom: var(--space-120);
   }
 
   .portrait {

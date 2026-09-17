@@ -17,9 +17,9 @@ src/
 │   ├── work/        # /work 设计项目
 │   ├── photography/ # /photography 摄影
 │   ├── play/        # /play 代码实验
-│   ├── about/       # /about 关于页
-│   ├── guestbook/   # /guestbook 留言板
-│   └── api/         # API 端点（guestbook）
+│   ├── about/       # /about 关于页（含评论区）
+│   ├── stats.astro  # /stats 私有统计页
+│   └── api/         # API 端点（stats、import-article）
 ├── layouts/
 │   ├── Layout.astro      # 全局布局（导航、footer、设计 tokens）
 │   └── EssayLayout.astro # 文章页布局（标题、正文排版、TOC）
@@ -31,7 +31,7 @@ src/
 │   ├── design-study/ # 设计原理、界面组件与研究笔记
 │   └── work/        # 设计项目
 ├── assets/          # 图片资源（photography/, ai/）
-├── lib/server/      # 服务端逻辑（guestbook Supabase）
+├── lib/server/      # 服务端逻辑（stats.mjs）
 └── public/          # 静态文件（头像、OG 图、微信二维码）
 ```
 

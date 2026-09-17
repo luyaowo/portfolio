@@ -1,0 +1,396 @@
+---
+// 评论区。服务端是自部署的 Waline（see .claude/rules/ 里的说明）。
+// 不接管主题：Waline 的 dark 选项保持关闭，配色全部映射到本站 token，
+// 这样 <html data-theme> 切换时评论区自动跟随。
+import '@waline/client/waline.css';
+
+const { serverURL = 'https://comment.luyao.studio' } = Astro.props;
+---
+
+<section class="comments" aria-labelledby="comments-title">
+  <h2 id="comments-title" class="comments-title">留言</h2>
+  <div id="waline" data-server-url={serverURL}></div>
+</section>
+
+<script>
+  import { init } from '@waline/client';
+
+  const mount = document.getElementById('waline');
+  const serverURL = mount?.dataset.serverUrl;
+
+  // Waline 的 reaction 图标必须是图片地址。默认那套走 unpkg.com，
+  // 在国内经常加载不出来，所以改成内联 SVG，零外部请求。
+  const reactionIcon = (emoji: string) =>
+    `data:image/svg+xml,${encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="16" y="25" font-size="26" text-anchor="middle">${emoji}</text></svg>`
+    )}`;
+
+  if (mount && serverURL) {
+    init({
+      el: mount,
+      serverURL,
+      lang: 'zh-CN',
+      // 主题交给本站 CSS 变量处理，不要让 Waline 自己注入深色样式
+      dark: false,
+      // 必须通过第三方账号登录才能评论：昵称和头像都来自账号，避免自由填昵称冒充
+      login: 'force',
+      // 头像取不到时不要显示来源标识
+      noCopyright: true,
+      noRss: true,
+      search: false,
+      imageUploader: false,
+      pageSize: 10,
+      commentSorting: 'latest',
+      wordLimit: 500,
+      // 沿用原来那六个表情
+      reaction: ['👍', '😂', '🎉', '❤️', '🚀', '👀'].map(reactionIcon),
+      locale: {
+        reactionTitle: '这个页面怎么样',
+        reaction0: '有用',
+        reaction1: '好笑',
+        reaction2: '开心',
+        reaction3: '喜欢',
+        reaction4: '厉害',
+        reaction5: '围观',
+      },
+    });
+
+    // 表情计数为 0 时藏掉上标。Waline 总是渲染计数，一排 0 会让页面显得没人来过。
+    // 只监听内容和子节点，不监听属性，避免改 style 触发自身循环。
+    const syncZeroVotes = () => {
+      mount.querySelectorAll<HTMLElement>('.wl-reaction-votes').forEach((el) => {
+        el.style.visibility = el.textContent?.trim() === '0' ? 'hidden' : 'visible';
+      });
+    };
+
+    new MutationObserver(syncZeroVotes).observe(mount, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+    });
+    syncZeroVotes();
+  }
+</script>
+
+<style is:global>
+  .comments {
+    width: min(var(--width-content-narrow), 100%);
+    margin: var(--space-56) auto 0;
+    padding: 0 var(--space-20);
+
+    /* 配色全部走本站 token，深浅主题自动跟随 */
+    --waline-font-size: var(--text-summary);
+    --waline-color: var(--color-text);
+    --waline-theme-color: var(--color-link);
+    --waline-active-color: var(--color-link-hover);
+    --waline-bg-color: transparent;
+    --waline-bg-color-light: var(--color-surface);
+    --waline-bg-color-hover: var(--color-hover);
+    --waline-border-color: var(--color-border);
+    --waline-light-grey: var(--color-text-tertiary);
+    --waline-dark-grey: var(--color-text-secondary);
+    --waline-disable-bg-color: var(--color-surface);
+    --waline-disable-color: var(--color-text-tertiary);
+    --waline-info-bg-color: transparent;
+    --waline-info-color: var(--color-text-tertiary);
+    --waline-bq-color: var(--color-surface);
+    --waline-badge-color: var(--color-text-secondary);
+    --waline-warning-color: var(--color-text-secondary);
+    --waline-box-shadow: none;
+    --waline-avatar-size: 2.5rem;
+    --waline-m-avatar-size: calc(2.5rem * 9 / 13);
+  }
+
+  /* 标题与 about 页其他小节保持一致 */
+  .comments .comments-title {
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--text-summary);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.08em;
+    margin: 0 0 var(--space-32);
+  }
+
+  /* ---------- 面板：去掉 Waline 的卡片与虚线，改用站点的实线细环 ---------- */
+
+  .comments .wl-panel {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .comments .wl-header {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .comments .wl-comment {
+    margin-bottom: 0;
+  }
+
+  /* 分隔线一律实线，和站点其他位置统一（Waline 默认是虚线） */
+  .comments .wl-card {
+    padding-bottom: var(--space-24);
+    border-bottom: var(--divider-subtle);
+  }
+
+  .comments .wl-card-item:last-child > .wl-card {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  /* ---------- 表情反馈：做成安静的 pill chip，而不是浮着的图标 ---------- */
+
+  .comments .wl-reaction {
+    margin-bottom: var(--space-32);
+    text-align: left;
+  }
+
+  .comments .wl-reaction-title {
+    margin: 0 0 var(--space-12);
+    font-size: var(--text-intro);
+    font-weight: var(--weight-normal);
+    color: var(--color-text-secondary);
+    text-align: left;
+  }
+
+  .comments .wl-reaction-list {
+    justify-content: flex-start;
+    gap: var(--space-8);
+    padding: 0;
+  }
+
+  .comments .wl-reaction-item {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-8);
+    padding: 6px 14px 6px 10px;
+    border: var(--divider-subtle);
+    border-radius: 999px;
+    transition: var(--transition-interactive);
+  }
+
+  .comments .wl-reaction-item:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-hover);
+  }
+
+  .comments .wl-reaction-img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .comments .wl-reaction-text {
+    font-size: var(--text-intro);
+    color: var(--color-text-secondary);
+  }
+
+  /* 计数默认是描边气泡，压成安静的上标 */
+  .comments .wl-reaction-votes {
+    inset-inline-end: -6px;
+    top: -6px;
+    min-width: 0;
+    padding: 0 2px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-text-tertiary);
+    font-size: var(--text-caption);
+    line-height: 1;
+  }
+
+  .comments .wl-reaction-item.active .wl-reaction-votes {
+    background: transparent;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---------- 书写区：一块安静的纸面 ---------- */
+
+  .comments .wl-editor {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 132px;
+    margin: 0;
+    padding: var(--space-16) var(--space-20);
+    border: var(--divider-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    outline: none;
+    transition: var(--transition-interactive);
+  }
+
+  .comments .wl-editor::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-editor:focus {
+    border-color: var(--color-border-strong);
+    background: var(--color-surface);
+  }
+
+  /* ---------- 操作行：工具收敛，主操作做够分量 ---------- */
+
+  .comments .wl-actions {
+    padding-top: var(--space-12);
+  }
+
+  .comments .wl-actions button {
+    color: var(--color-text-tertiary);
+    transition: var(--transition-interactive);
+  }
+
+  .comments .wl-actions button:hover {
+    color: var(--color-text);
+  }
+
+  .comments .wl-info {
+    padding-top: var(--space-12);
+  }
+
+  .comments .wl-info .wl-text-number {
+    font-size: var(--text-caption);
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-btn {
+    border-radius: var(--radius-md);
+    font-size: var(--text-intro);
+    transition: var(--transition-interactive);
+  }
+
+  /* 实心按钮上的文字用 --color-bg：和站内主题切换按钮同一套约定，
+     --color-interactive 与 --color-bg 在深浅主题下始终互为反色 */
+  .comments .wl-btn.primary {
+    padding: 9px 22px;
+    border-color: var(--color-interactive);
+    background: var(--color-interactive);
+    color: var(--color-bg);
+    font-weight: var(--weight-medium);
+  }
+
+  .comments .wl-btn.primary:hover,
+  .comments .wl-btn.primary:active {
+    border-color: var(--color-interactive);
+    background: var(--color-interactive);
+    color: var(--color-bg);
+    opacity: 0.86;
+  }
+
+  .comments .wl-btn.primary:disabled {
+    border-color: var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-tertiary);
+    opacity: 1;
+  }
+
+  /* ---------- 列表：标题降级，名字和正文才是主角 ---------- */
+
+  /* 列表上方那一行（标题 + 条数 + 排序）压成辅助信息 */
+  .comments .wl-meta-head {
+    margin-bottom: var(--space-24);
+    font-size: var(--text-meta);
+    font-weight: var(--weight-normal);
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-meta-head > * {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+  }
+
+  .comments .wl-sort,
+  .comments .wl-sort a {
+    font-size: var(--text-meta);
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-sort a:hover {
+    color: var(--color-text);
+  }
+
+  .comments .wl-cards .wl-user {
+    --avatar-size: 34px;
+    margin-inline-end: var(--space-12);
+  }
+
+  .comments .wl-card .wl-head .wl-nick {
+    font-size: var(--text-summary);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-heading);
+  }
+
+  .comments .wl-card span.wl-nick {
+    color: var(--color-text-secondary);
+  }
+
+  .comments .wl-card .wl-time {
+    font-size: var(--text-caption);
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-card .wl-content {
+    margin-bottom: var(--space-12);
+    padding-top: var(--space-8);
+    font-size: var(--text-summary);
+    line-height: var(--leading-text);
+    color: var(--color-text);
+  }
+
+  /* 归属地 / 浏览器 / 系统那几个标签：去掉灰底，改成细描边 */
+  .comments .wl-card .wl-meta > span {
+    padding: 1px 6px;
+    border: var(--divider-subtle);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-text-tertiary);
+    font-size: var(--text-caption);
+  }
+
+  .comments .wl-card .wl-comment-actions {
+    color: var(--color-text-tertiary);
+    font-size: var(--text-meta);
+  }
+
+  .comments .wl-card .wl-reply,
+  .comments .wl-card .wl-like,
+  .comments .wl-card .wl-edit,
+  .comments .wl-card .wl-delete {
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-card .wl-reply:hover,
+  .comments .wl-card .wl-like:hover,
+  .comments .wl-card .wl-edit:hover {
+    color: var(--color-text);
+  }
+
+  .comments .wl-empty {
+    padding: var(--space-40) 0;
+    font-size: var(--text-intro);
+    text-align: center;
+    color: var(--color-text-tertiary);
+  }
+
+  .comments .wl-power {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    .comments .wl-reaction-item {
+      padding: 5px 10px 5px 8px;
+    }
+
+    .comments .wl-editor {
+      min-height: 108px;
+    }
+  }
+</style>
