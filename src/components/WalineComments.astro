@@ -45,7 +45,8 @@ const { serverURL = 'https://comment.luyao.studio' } = Astro.props;
       // 沿用原来那六个表情
       reaction: ['👍', '😂', '🎉', '❤️', '🚀', '👀'].map(reactionIcon),
       locale: {
-        reactionTitle: '这个页面怎么样',
+        placeholder: '请登录再留言',
+        reactionTitle: '写点什么吧～',
         reaction0: '有用',
         reaction1: '好笑',
         reaction2: '开心',
@@ -55,20 +56,31 @@ const { serverURL = 'https://comment.luyao.studio' } = Astro.props;
       },
     });
 
-    // 表情计数为 0 时藏掉上标。Waline 总是渲染计数，一排 0 会让页面显得没人来过。
-    // 只监听内容和子节点，不监听属性，避免改 style 触发自身循环。
-    const syncZeroVotes = () => {
+    // Waline 的 placeholder 是静态文案，不随登录状态变，这里自己接一下。
+    // 只监听子节点和文本，不监听属性，避免改 style / placeholder 触发自身循环。
+    const syncDom = () => {
+      // 计数为 0 时藏掉上标。Waline 总是渲染计数，一排 0 会让页面显得没人来过。
       mount.querySelectorAll<HTMLElement>('.wl-reaction-votes').forEach((el) => {
         el.style.visibility = el.textContent?.trim() === '0' ? 'hidden' : 'visible';
       });
+
+      const editor = mount.querySelector<HTMLTextAreaElement>('.wl-editor');
+      if (editor) {
+        const placeholder = mount.querySelector('.wl-login-info')
+          ? '写点什么吧～'
+          : '请登录再留言';
+        if (editor.placeholder !== placeholder) {
+          editor.placeholder = placeholder;
+        }
+      }
     };
 
-    new MutationObserver(syncZeroVotes).observe(mount, {
+    new MutationObserver(syncDom).observe(mount, {
       subtree: true,
       childList: true,
       characterData: true,
     });
-    syncZeroVotes();
+    syncDom();
   }
 </script>
 
