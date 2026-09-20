@@ -135,7 +135,8 @@ const profile = {
   .intro h1 {
     color: var(--color-text-heading);
     font-family: var(--font-heading);
-    font-size: var(--text-title-page);
+    /* token 里 42px 往下直接跳到 22px，中间没有档，这一页单独取中间值 */
+    font-size: clamp(24px, 2.4vw, 30px);
     margin: 0 0 var(--space-12);
     letter-spacing: 0.02em;
   }
