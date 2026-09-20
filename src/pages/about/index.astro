@@ -98,6 +98,7 @@ const profile = {
         </nav>
       </section>
     </section>
+    <div class="about-rule" role="presentation"></div>
   </main>
 
   <WalineComments />
@@ -111,8 +112,16 @@ const profile = {
     /* 左列必须定宽：minmax 挨着 1fr 时会塌到基准值，长不上去 */
     grid-template-columns: clamp(320px, 32vw, 420px) minmax(0, 1fr);
     gap: var(--space-40);
-    margin: var(--space-56) auto var(--space-72);
+    margin: var(--space-56) auto 0;
     padding: 0 var(--space-20);
+  }
+
+  /* 内容块与评论区之间的分割线。
+     作为网格的一行横跨两栏，宽度自然和内容块对齐，不用重复算宽度。 */
+  .about-rule {
+    grid-column: 1 / -1;
+    margin-top: var(--space-72);
+    border-top: var(--divider-subtle);
   }
 
   .portrait {

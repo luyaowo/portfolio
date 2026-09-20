@@ -87,8 +87,9 @@ const { serverURL = 'https://comment.luyao.studio' } = Astro.props;
 <style is:global>
   .comments {
     width: min(var(--width-content-narrow), 100%);
-    margin: var(--space-56) auto 0;
-    padding: 0 var(--space-20);
+    /* 与上方内容块的分割线由页面负责，这里只留线以下的间距 */
+    margin: 0 auto;
+    padding: var(--space-72) var(--space-20) 0;
 
     /* 配色全部走本站 token，深浅主题自动跟随 */
     --waline-font-size: var(--text-summary);
