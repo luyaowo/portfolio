@@ -4,41 +4,37 @@ import WalineComments from '../../components/WalineComments.astro';
 
 const profile = {
   name: '路遥知玛丽',
-  intro: '一个产品设计师，会点儿吉他，喜欢摄影，最近在研究 Ai。',
+  intro: '一名产品设计师 / AI 产品经理。喜欢吉他、摄影，最近在研究 AI。',
   sections: [
     {
-      title: '我在做什么',
+      title: 'My Journey',
       body: [
-        '从事产品与交互设计工作，',
-        '具有系统化的设计教育背景，',
-        '长期参与真实业务场景中的产品实践。',
+        '本科和硕士都学的是工业设计专业。',
+        '毕业后进入一家医疗设备公司，到现在已经工作 6 年多。最开始做 UI 设计，后来逐渐开始做交互和产品设计，也开始接触更多复杂业务和 B 端产品。',
+        'AI 出现之后，我也开始把注意力转到 AI 产品上，尝试推进 AI 和现有产品、业务流程的结合。',
       ],
     },
     {
-      title: '',
+      title: 'What I Do',
       body: [
-        '我的工作通常围绕复杂系统展开——',
-        '从需求梳理、信息结构到交互与视觉表达，',
-        '关注设计如何在限制条件中成立。',
+        '现在主要做产品设计和产品方案。',
+        '从前期需求分析、业务梳理，到产品方案、原型和设计，再到后面的开发跟进和落地，基本都会参与。',
+        '做过移动端 App、小程序、H5，也做过 B 端后台，接触过不同类型的产品和业务。除了传统产品，也参与了 AI 产品相关的工作，包括智能体、AI 工作流以及一些 AI 应用。',
       ],
     },
     {
-      title: '我关心什么',
+      title: "What I'm Exploring",
       body: [
-        '除了设计工作本身，',
-        '我也持续通过摄影与写作进行观察。',
-        '相比结果，我更在意过程如何发生：',
-        '一次决策、一段路径、一个被忽略的瞬间，',
-        '往往比结论更有信息量。',
+        '最近主要在研究 AI 产品、Agent、AI Coding、RAG 和工作流。',
+        '平时也会用 Claude Code、Codex 这些工具做需求拆解、文档整理、原型验证和一些简单的产品实验。在尝试发现 AI 能在哪些环节真正提高效率，以及人与 AI 之间的协作方式。',
       ],
     },
     {
-      title: '我怎么工作',
+      title: 'Beyond Work',
       body: [
-        '我习惯通过可视化工具辅助思考与沟通，',
-        '包括流程图、原型与界面系统，',
-        '也在逐步将 AI 引入设计流程，',
-        '用于探索、验证与降低表达成本。',
+        '喜欢弹吉他，有三把琴，一把是 Taylor 214CE，一把是圣马可 STA1000，一把是 Lava guitar。',
+        '也喜欢摄影，有两个胶片相机和一个数码相机，平时拍得比较多的是人文和街头摄影，喜欢记录路上的人、光和一些很普通的瞬间。',
+        '偶尔也会写点东西，发在公众号上，后来就搭了这个站。',
       ],
     },
   ],
@@ -112,14 +108,16 @@ const profile = {
     box-sizing: border-box;
     width: min(1120px, 100%);
     display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
-    gap: var(--space-48);
+    /* 左列必须定宽：minmax 挨着 1fr 时会塌到基准值，长不上去 */
+    grid-template-columns: clamp(320px, 32vw, 420px) minmax(0, 1fr);
+    gap: var(--space-40);
     margin: var(--space-56) auto var(--space-72);
     padding: 0 var(--space-20);
   }
 
   .portrait {
     width: 100%;
+    max-width: 420px;
   }
 
   .portrait img {
@@ -157,7 +155,7 @@ const profile = {
   }
 
   .block p {
-    margin: 0 0 6px;
+    margin: 0 0 var(--space-12);
     line-height: var(--leading-text);
     color: var(--color-text);
   }
@@ -285,9 +283,6 @@ const profile = {
       grid-template-columns: 1fr;
     }
 
-    .portrait {
-      max-width: 520px;
-    }
   }
 
   @media (max-width: 540px) {
