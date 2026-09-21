@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import EssayLayout from '../../layouts/EssayLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('work');
+  const posts = (await getCollection('work')).filter((post) => !post.data.draft);
 
   return posts.map((post) => ({
     params: { slug: post.slug },

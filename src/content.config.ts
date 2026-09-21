@@ -27,6 +27,8 @@ const work = defineCollection({
       type: z.string().optional(),
       period: z.string().optional(),
       status: z.string().optional(),
+      /** 临时隐藏：列表与详情页都不生成，去掉这行就恢复 */
+      draft: z.boolean().optional(),
     }),
 });
 

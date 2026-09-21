@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
-const projects = await getCollection('work');
+const projects = (await getCollection('work')).filter((project) => !project.data.draft);
 const filters = [
   { id: 'all', label: '全部' },
   { id: 'ai', label: 'AI 应用' },

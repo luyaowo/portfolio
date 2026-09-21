@@ -6,6 +6,7 @@ cover: cover.jpg
 metaLeft: 产品设计
 metaRight: Dify 原型
 type: AI
+draft: true
 ---
 
 这是一个售后方向的对话智能体原型：为体外神经刺激设备的患者处理售后咨询、故障排查引导和维修申请，基于本地 Dify Chatflow 与 React 卡片前端实现，业务数据为模拟。

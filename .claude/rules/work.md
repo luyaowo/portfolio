@@ -5,8 +5,9 @@
 ## 1. 目录与字段
 
 - 一个项目 = `src/content/work/<slug>/`：`index.md` + 全部图片
-- frontmatter：`title` / `date` / `summary` / `cover` / `metaLeft` / `metaRight` / `type` / `period` / `status`
-  - `type` / `period` / `status` 是后加的可选字段（schema 在 `src/content.config.ts`），**不在 Keystatic 后台表单里，只能在 md 里改**
+- frontmatter：`title` / `date` / `summary` / `cover` / `metaLeft` / `metaRight` / `type` / `period` / `status` / `draft`
+  - `type` / `period` / `status` / `draft` 是后加的可选字段（schema 在 `src/content.config.ts`），**不在 Keystatic 后台表单里，只能在 md 里改**
+  - `draft: true` 临时隐藏项目：列表、详情页和「继续阅读」推荐都不出现。**如果该项目还有静态附件**（如 `public/work/<slug>/` 下的板页），要一并挪出 `public/`，否则文件仍会被发布
   - `metaLeft` 写职责标签，用 ` / ` 分隔，如 `产品 / 交互 / 视觉`
   - `period` / `status` 的值**一律取自板子第一张底部的信息条**（那是权威口径）；没有就留空，卡片会自动不显示那一行
 

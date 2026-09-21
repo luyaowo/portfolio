@@ -7,7 +7,10 @@ interface Props {
   heading?: string;
 }
 const { collection, excludeSlug, limit = 2, heading = '继续阅读' } = Astro.props;
-const posts = await getCollection(collection);
+const posts = (await getCollection(collection)).filter(
+  // work 集合有 draft 字段，隐藏的项目也不该出现在推荐里
+  (post) => !(post.data as { draft?: boolean }).draft
+);
 const suggestions = posts.filter(post => post.slug !== excludeSlug)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, limit);
 ---
