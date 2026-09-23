@@ -94,6 +94,7 @@ const roleTagClass = (tag: string) => {
                   )}
                 </p>
               )}
+              <p class="item-summary">{project.data.summary}</p>
             </header>
 
             <figure class="item-cover">
@@ -434,6 +435,17 @@ const roleTagClass = (tag: string) => {
   .fact-label {
     color: var(--color-text-tertiary);
     margin-right: var(--space-8);
+  }
+
+  .item-summary {
+    margin: var(--space-12) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-intro);
+    line-height: var(--leading-summary);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 
   .item-cover {
