@@ -14,8 +14,67 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await post.render();
 const { title, date, summary, cover } = post.data;
+const isAftersalesAgent = post.slug === 'aftersales-agent';
 ---
 
 <EssayLayout summary={summary} cover={cover} publishedDate={date} collection="work" currentSlug={post.slug} title={title}>
+  {isAftersalesAgent && (
+    <div class="work-demo-entry">
+      <div>
+        <strong>在线体验</strong>
+        <p>用演示数据走一遍患者咨询、维修申请和客服接管流程。</p>
+      </div>
+      <a href="/work/aftersales-agent/demo/">打开体验 ↗</a>
+    </div>
+  )}
   <Content />
 </EssayLayout>
+
+<style>
+  .work-demo-entry {
+    width: min(100%, var(--width-article-text));
+    box-sizing: border-box;
+    margin: 0 auto var(--space-40);
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border: 1px solid color-mix(in srgb, var(--color-link) 25%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--color-link) 5%, var(--color-bg));
+  }
+
+  .work-demo-entry strong {
+    display: block;
+    color: var(--color-text-heading);
+    font-size: 17px;
+    font-weight: var(--weight-semibold);
+  }
+
+  .work-demo-entry p {
+    margin: 5px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .work-demo-entry a {
+    flex: 0 0 auto;
+    padding: 11px 17px;
+    border-radius: 8px;
+    background: var(--color-link);
+    color: #fff;
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+
+  .work-demo-entry a:hover,
+  .work-demo-entry a:focus-visible { opacity: .85; }
+
+  @media (max-width: 600px) {
+    .work-demo-entry { align-items: stretch; flex-direction: column; }
+    .work-demo-entry a { align-self: flex-start; }
+  }
+</style>

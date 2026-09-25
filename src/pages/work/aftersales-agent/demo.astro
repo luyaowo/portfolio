@@ -1,0 +1,501 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout title="售后维修智能体 · 在线体验" description="使用演示数据体验售后咨询、维修申请和客服接管流程">
+  <div class="demo-page">
+    <header class="demo-heading">
+      <a class="back-link" href="/work/aftersales-agent/">← 返回项目案例</a>
+      <div class="heading-row">
+        <div>
+          <p class="eyebrow">WORK / 售后维修智能体</p>
+          <h1>在线体验</h1>
+          <p class="intro">从患者咨询到客服接管，按自己的顺序试一遍。</p>
+        </div>
+        <button id="reset-demo" class="reset-button" type="button">重置演示</button>
+      </div>
+      <p class="demo-notice">交互演示 · 所有信息均为虚构数据 · 回复按预设场景生成，不连接真实 AI、客服或维修系统</p>
+      <div class="view-tabs" role="tablist" aria-label="选择体验界面">
+        <button id="patient-tab" class="view-tab active" role="tab" type="button" aria-selected="true" aria-controls="patient-view" data-view="patient">患者端 <span>咨询与申请</span></button>
+        <button id="console-tab" class="view-tab" role="tab" type="button" aria-selected="false" aria-controls="console-view" data-view="console">客服工作台 <span>接管与审核</span></button>
+      </div>
+    </header>
+
+    <section id="patient-view" class="demo-view patient-stage" role="tabpanel" aria-labelledby="patient-tab">
+      <div class="stage-hint">
+        <span class="hint-number">01</span>
+        <div><strong>试试患者端</strong><p>点下方快捷入口，或在输入框里发消息。转人工、提交申请后再切到客服工作台。</p></div>
+      </div>
+      <div class="chat-app">
+        <div class="chat-header">
+          <span class="bot-logo" aria-hidden="true">✚</span>
+          <div class="chat-title"><strong>体外售后智能体</strong><span>售后咨询 · 演示模式</span></div>
+          <span class="chat-demo-tag">演示</span>
+        </div>
+        <div id="patient-messages" class="chat-messages" aria-live="polite"></div>
+        <div class="chat-bottom">
+          <div class="quick-actions" aria-label="体验场景">
+            <button type="button" data-action="fault">故障咨询</button>
+            <button type="button" data-action="repair">维修申请</button>
+            <button type="button" data-action="progress">进度查询</button>
+            <button type="button" data-action="transfer">转人工</button>
+          </div>
+          <form id="patient-form" class="chat-form">
+            <label class="sr-only" for="patient-input">输入演示消息</label>
+            <input id="patient-input" type="text" maxlength="200" placeholder="输入问题，或点击上方场景" autocomplete="off" />
+            <button type="submit">发送</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="console-view" class="demo-view console-stage" role="tabpanel" aria-labelledby="console-tab" hidden>
+      <div class="stage-hint">
+        <span class="hint-number">02</span>
+        <div><strong>试试客服工作台</strong><p>患者端的演示操作会显示在这里。可以接管会话、发送回复或审核示例维修单。</p></div>
+      </div>
+      <div class="console-app">
+        <aside class="console-nav" aria-label="工作台导航">
+          <div class="console-brand"><span>品</span><strong>品驰数据中台</strong></div>
+          <div class="nav-current">◫　对话管理</div>
+          <div>▤　维修管理</div>
+          <div>◉　数据概览</div>
+          <small>模拟中台 · 演示数据</small>
+        </aside>
+        <div class="console-main">
+          <div class="console-top"><strong>对话工作台</strong><span>演示坐席　● 在线</span></div>
+          <div class="console-stats">
+            <div><b id="queued-count">0</b><span>待接管</span></div>
+            <div><b id="human-count">0</b><span>人工服务中</span></div>
+            <div><b id="ticket-count">0</b><span>待审核申请</span></div>
+          </div>
+          <div class="console-columns">
+            <div class="session-panel">
+              <div class="panel-heading"><strong>会话列表</strong><span>演示访客</span></div>
+              <div id="session-list" class="session-list"></div>
+              <div id="ticket-review" class="ticket-review"></div>
+            </div>
+            <div class="service-panel">
+              <div class="panel-heading"><strong>会话详情</strong><span id="session-state">暂无会话</span></div>
+              <div id="admin-messages" class="admin-messages"></div>
+              <div class="service-bottom">
+                <div id="service-actions" class="service-actions"></div>
+                <form id="agent-form" class="agent-form">
+                  <label class="sr-only" for="agent-input">输入客服回复</label>
+                  <input id="agent-input" type="text" maxlength="200" placeholder="接管会话后发送演示回复" autocomplete="off" disabled />
+                  <button id="agent-send" type="submit" disabled>发送</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  type Role = 'bot' | 'patient' | 'agent' | 'system';
+  type Message = { role: Role; text: string; card?: 'model' | 'issue' | 'confirm' | 'ticket' | 'progress' };
+  type SessionStatus = 'idle' | 'queued' | 'human' | 'closed';
+  type TicketStatus = null | 'pending' | 'approved' | 'rejected';
+  type RepairStep = 'idle' | 'model' | 'issue' | 'confirm' | 'submitted';
+
+  const welcome: Message = {
+    role: 'bot',
+    text: '你好，我是售后智能助手。可以咨询设备故障、申请维修、查询进度，也可以转接人工客服。请从下方选择一个演示场景。',
+  };
+  const state: { messages: Message[]; session: SessionStatus; ticket: TicketStatus; repairStep: RepairStep; model: string; issue: string; view: 'patient' | 'console' } = {
+    messages: [welcome], session: 'idle', ticket: null, repairStep: 'idle', model: 'R802', issue: '设备无法充电', view: 'patient',
+  };
+
+  const byId = (id: string) => document.getElementById(id)!;
+  const make = (tag: string, className?: string, text?: string) => {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (text) el.textContent = text;
+    return el;
+  };
+  const button = (label: string, action: string, className = '') => {
+    const el = make('button', className, label) as HTMLButtonElement;
+    el.type = 'button';
+    el.dataset.action = action;
+    return el;
+  };
+  const add = (role: Role, text: string, card?: Message['card']) => {
+    state.messages.push({ role, text, card });
+    render();
+  };
+  const labels: Record<Role, string> = { bot: '智能助手', patient: '演示访客', agent: '演示客服', system: '系统' };
+
+  function renderPatient() {
+    const list = byId('patient-messages');
+    list.replaceChildren();
+    for (const item of state.messages) {
+      const row = make('div', `message-row ${item.role}`);
+      if (item.role !== 'system') row.append(make('span', 'message-avatar', item.role === 'patient' ? '我' : item.role === 'agent' ? '人' : '✚'));
+      const content = make('div', 'message-content');
+      content.append(make('span', 'message-author', labels[item.role]), make('p', 'message-bubble', item.text));
+      if (item.card === 'model' && state.repairStep === 'model') {
+        const card = make('div', 'inline-card');
+        card.append(make('strong', '', '选择示例设备'));
+        card.append(make('p', '', '你也可以直接在下方输入设备型号。'));
+        card.append(button('R802', 'choose-model', 'primary-small'));
+        content.append(card);
+      }
+      if (item.card === 'issue' && state.repairStep === 'issue') {
+        const card = make('div', 'inline-card');
+        card.append(make('strong', '', '选择示例故障'));
+        card.append(make('p', '', '你也可以直接在下方描述故障现象。'));
+        card.append(button('设备无法充电', 'choose-issue', 'primary-small'));
+        content.append(card);
+      }
+      if (item.card === 'confirm') {
+        const card = make('div', 'inline-card');
+        card.append(make('strong', '', '维修申请信息确认'));
+        card.append(make('p', '', `设备型号：${state.model}\n故障描述：${state.issue}\n联系人：演示用户`));
+        if (state.ticket) card.append(make('small', '', '示例申请已提交'));
+        else card.append(button('确认提交示例申请', 'confirm-ticket', 'primary-small'));
+        content.append(card);
+      }
+      if (item.card === 'ticket' || item.card === 'progress') {
+        const card = make('div', 'inline-card');
+        card.append(make('strong', '', '示例维修单 · WX-DEMO-001'));
+        card.append(make('p', '', `当前状态：${ticketLabel()}\n设备型号：${state.model}`));
+        if (state.ticket === 'pending') card.append(make('small', '', '已提交申请，等待客服审核。'));
+        content.append(card);
+      }
+      row.append(content);
+      list.append(row);
+    }
+    list.scrollTop = list.scrollHeight;
+  }
+
+  function ticketLabel() {
+    return ({ pending: '待审核', approved: '审核通过', rejected: '审核未通过' } as Record<string, string>)[state.ticket ?? ''] ?? '暂无维修申请';
+  }
+
+  function renderConsole() {
+    byId('queued-count').textContent = state.session === 'queued' ? '1' : '0';
+    byId('human-count').textContent = state.session === 'human' ? '1' : '0';
+    byId('ticket-count').textContent = state.ticket === 'pending' ? '1' : '0';
+    const list = byId('session-list');
+    list.replaceChildren();
+    if (state.session === 'idle') {
+      list.append(make('p', 'empty-small', '暂无会话。请先在患者端点击「转人工」。'));
+    } else {
+      const card = make('div', 'session-card');
+      const row = make('div', 'session-card-top');
+      row.append(make('strong', '', '演示访客'), make('span', `status-pill ${state.session}`, ({ queued: '待接管', human: '人工服务中', closed: '已结束' } as Record<string, string>)[state.session]));
+      card.append(row, make('p', '', '设备咨询 · 模拟会话'), make('small', '', state.messages.filter((m) => m.role === 'patient').at(-1)?.text ?? '等待处理'));
+      list.append(card);
+    }
+    const review = byId('ticket-review');
+    review.replaceChildren();
+    review.append(make('h3', '', '维修申请审核'));
+    if (!state.ticket) review.append(make('p', 'empty-small', '暂无申请。可在患者端提交示例维修单。'));
+    else {
+      const card = make('div', 'review-card');
+      card.append(make('strong', '', 'WX-DEMO-001'), make('p', '', `${state.model} · ${state.issue}\n${ticketLabel()}`));
+      if (state.ticket === 'pending') {
+        const actions = make('div', 'review-actions');
+        actions.append(button('审核通过', 'approve', 'primary-small'), button('审核驳回', 'reject', 'secondary-small'));
+        card.append(actions);
+      }
+      review.append(card);
+    }
+    byId('session-state').textContent = ({ idle: '暂无会话', queued: '待人工接管', human: '人工服务中', closed: '服务已结束' } as Record<string, string>)[state.session];
+    const messages = byId('admin-messages');
+    messages.replaceChildren();
+    if (state.session === 'idle') messages.append(make('p', 'admin-empty', '患者端发起转人工后，对话会显示在这里。'));
+    else {
+      for (const item of state.messages) {
+        const row = make('div', `admin-message ${item.role}`);
+        row.append(make('span', '', labels[item.role]), make('p', '', item.text));
+        messages.append(row);
+      }
+    }
+    messages.scrollTop = messages.scrollHeight;
+    const actions = byId('service-actions');
+    actions.replaceChildren();
+    if (state.session === 'queued') actions.append(button('接管会话', 'takeover', 'primary-small'));
+    if (state.session === 'human') actions.append(button('结束服务', 'close-session', 'secondary-small'));
+    const input = byId('agent-input') as HTMLInputElement;
+    input.disabled = state.session !== 'human';
+    (byId('agent-send') as HTMLButtonElement).disabled = state.session !== 'human';
+  }
+
+  function render() {
+    renderPatient();
+    renderConsole();
+    document.querySelectorAll<HTMLButtonElement>('.quick-actions button').forEach((item) => {
+      item.disabled = state.session === 'human';
+    });
+    (byId('patient-input') as HTMLInputElement).placeholder = state.session === 'human'
+      ? '发送给演示客服'
+      : '输入问题，或点击上方场景';
+  }
+
+  function setView(view: 'patient' | 'console') {
+    state.view = view;
+    for (const name of ['patient', 'console'] as const) {
+      const selected = name === view;
+      byId(`${name}-view`).hidden = !selected;
+      const tab = byId(`${name}-tab`);
+      tab.classList.toggle('active', selected);
+      tab.setAttribute('aria-selected', String(selected));
+    }
+  }
+
+  function transfer(userText = '转人工客服') {
+    if (state.session === 'queued' || state.session === 'human') {
+      add('bot', state.session === 'queued' ? '已为你发起人工转接，请在客服工作台接管。' : '你正在与演示客服对话。');
+      return;
+    }
+    state.session = 'queued';
+    add('patient', userText);
+    add('bot', '已发起人工转接。请切换到「客服工作台」接管这条演示会话。');
+  }
+
+  function chooseModel(value: string) {
+    if (state.repairStep !== 'model') return;
+    state.model = value;
+    state.repairStep = 'issue';
+    add('patient', value);
+    add('bot', '收到。设备出现了什么问题？可以输入故障现象，或选择示例。', 'issue');
+  }
+
+  function chooseIssue(value: string) {
+    if (state.repairStep !== 'issue') return;
+    state.issue = value;
+    state.repairStep = 'confirm';
+    add('patient', value);
+    add('bot', '我把刚才的信息整理好了。请核对后确认提交。', 'confirm');
+  }
+
+  function action(name: string, userText?: string) {
+    if (name === 'fault') {
+      add('patient', userText ?? 'R802 设备充不进去电怎么办？');
+      add('bot', '这是预设场景回复：请先检查充电线与电源连接是否牢固，观察设备指示状态。若仍无法充电，请停止使用并联系售后进一步排查；不要自行拆机。');
+    }
+    if (name === 'repair') {
+      add('patient', userText ?? '我想申请维修');
+      if (state.ticket) add('bot', `已有一张示例维修单，当前状态：${ticketLabel()}。`, 'progress');
+      else if (state.repairStep === 'idle') {
+        state.repairStep = 'model';
+        add('bot', '好的，先告诉我需要维修的设备型号。可以输入，或选择示例设备。', 'model');
+      } else add('bot', '我们正在收集维修申请信息，请按上方提示继续。');
+    }
+    if (name === 'progress') {
+      add('patient', userText ?? '查询维修进度');
+      add('bot', state.ticket ? '查到你的示例维修单：' : '当前还没有示例维修单。先体验「维修申请」并确认提交。', state.ticket ? 'progress' : undefined);
+    }
+    if (name === 'transfer') transfer(userText);
+    if (name === 'choose-model') chooseModel('R802');
+    if (name === 'choose-issue') chooseIssue('设备无法充电');
+    if (name === 'confirm-ticket' && !state.ticket) {
+      state.ticket = 'pending';
+      state.repairStep = 'submitted';
+      add('patient', '确认提交示例申请');
+      add('bot', '示例维修申请已提交。可切换到客服工作台审核。', 'ticket');
+    }
+    if (name === 'takeover' && state.session === 'queued') {
+      state.session = 'human';
+      add('system', '演示客服已接管会话。');
+      add('agent', '你好，我是演示客服。已经看到你刚才的问题，请问还有什么需要补充？');
+    }
+    if (name === 'close-session' && state.session === 'human') {
+      state.session = 'closed';
+      add('system', '演示客服已结束本次服务。你可以继续使用快捷入口。');
+    }
+    if ((name === 'approve' || name === 'reject') && state.ticket === 'pending') {
+      state.ticket = name === 'approve' ? 'approved' : 'rejected';
+      add('system', `示例维修单 WX-DEMO-001：${ticketLabel()}。`);
+    }
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-view]').forEach((tab) => {
+    tab.addEventListener('click', () => setView(tab.dataset.view as 'patient' | 'console'));
+  });
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const item = target.closest<HTMLButtonElement>('[data-action]');
+    if (item?.dataset.action) action(item.dataset.action);
+  });
+  byId('patient-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = byId('patient-input') as HTMLInputElement;
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    if (state.session === 'human') { add('patient', text); return; }
+    if (state.repairStep === 'model') { chooseModel(text); return; }
+    if (state.repairStep === 'issue') { chooseIssue(text); return; }
+    if (/人工|客服/.test(text)) { transfer(text); return; }
+    if (/申请|报修|维修/.test(text)) { action('repair', text); return; }
+    if (/进度|工单/.test(text)) { action('progress', text); return; }
+    if (/故障|充电|开机|设备/.test(text)) { action('fault', text); return; }
+    add('patient', text);
+    add('bot', '当前是预设场景演示，尚未连接实时 AI。可以点击「故障咨询」「维修申请」「进度查询」或「转人工」体验主要流程。');
+  });
+  byId('agent-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (state.session !== 'human') return;
+    const input = byId('agent-input') as HTMLInputElement;
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    add('agent', text);
+  });
+  byId('reset-demo').addEventListener('click', () => {
+    state.messages = [welcome];
+    state.session = 'idle';
+    state.ticket = null;
+    state.repairStep = 'idle';
+    state.model = 'R802';
+    state.issue = '设备无法充电';
+    setView('patient');
+    render();
+  });
+  render();
+</script>
+
+<style>
+  .demo-page { width: min(1240px, calc(100% - 48px)); margin: 48px auto 96px; color: var(--color-text); }
+  .back-link { color: var(--color-text-secondary); font-size: 14px; text-decoration: none; }
+  .back-link:hover { color: var(--color-link); }
+  .heading-row { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-top: 28px; }
+  .eyebrow { color: var(--color-link); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  h1 { margin: 8px 0 0; color: var(--color-text-heading); font-size: clamp(30px, 4vw, 46px); line-height: 1.2; }
+  .intro { margin: 14px 0 0; color: var(--color-text-secondary); font-size: 16px; }
+  .reset-button { padding: 10px 15px; flex: 0 0 auto; border: 1px solid var(--color-border); border-radius: 8px; background: transparent; color: var(--color-text-secondary); cursor: pointer; }
+  .reset-button:hover { color: var(--color-link); border-color: var(--color-link); }
+  .demo-notice { margin: 26px 0 0; padding: 12px 16px; border-radius: 8px; background: #f0f5ff; color: #45618e; font-size: 13px; line-height: 1.6; }
+  .view-tabs { display: flex; gap: 28px; margin-top: 32px; border-bottom: 1px solid var(--color-border); }
+  .view-tab { padding: 0 0 14px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--color-text-secondary); font-size: 17px; font-weight: 600; cursor: pointer; }
+  .view-tab span { margin-left: 5px; font-size: 12px; font-weight: 400; }
+  .view-tab.active { color: var(--color-link); border-bottom-color: var(--color-link); }
+  .demo-view[hidden] { display: none !important; }
+  .stage-hint { display: flex; align-items: start; gap: 16px; margin: 26px 0 22px; }
+  .hint-number { color: #2e70ef; font-size: 13px; font-weight: 700; }
+  .stage-hint strong { color: var(--color-text-heading); font-size: 16px; }
+  .stage-hint p { margin: 5px 0 0; color: var(--color-text-secondary); font-size: 13px; line-height: 1.6; }
+  .patient-stage { min-height: 700px; }
+  .chat-app { width: min(100%, 480px); height: 630px; margin: 0 auto; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e3eaf8; border-radius: 20px; background: #fff; box-shadow: 0 24px 62px rgba(24, 59, 118, .12); }
+  .chat-header { display: flex; align-items: center; gap: 11px; padding: 14px 17px; border-bottom: 1px solid #e8edf6; }
+  .bot-logo { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: #3072f6; color: #fff; font-size: 18px; }
+  .chat-title { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .chat-title strong { color: #1b293c; font-size: 14px; }
+  .chat-title span { color: #8190a5; font-size: 11px; }
+  .chat-demo-tag { padding: 4px 9px; border-radius: 99px; background: #edf3ff; color: #326bdd; font-size: 11px; }
+  .chat-messages { flex: 1; overflow: auto; padding: 20px 17px; background: #f7f9fe; }
+  .chat-bottom { padding: 12px 14px 14px; border-top: 1px solid #e8edf6; }
+  .quick-actions { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 11px; }
+  .quick-actions button { padding: 6px 10px; border: 1px solid #cfddfb; border-radius: 99px; background: #f3f7ff; color: #315ca8; font-size: 11px; cursor: pointer; }
+  .quick-actions button:hover { background: #e5eeff; }
+  .chat-form, .agent-form { display: flex; gap: 8px; }
+  .chat-form input, .agent-form input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid #dce4f0; border-radius: 9px; background: #fff; outline: none; font-size: 13px; }
+  .chat-form input:focus, .agent-form input:focus { border-color: #6d9cf4; }
+  .chat-form button, .agent-form button { padding: 0 18px; border: 0; border-radius: 9px; background: #3072f6; color: #fff; font-size: 13px; cursor: pointer; }
+  .agent-form button:disabled { background: #b9c4d4; cursor: not-allowed; }
+  .console-app { height: 680px; display: flex; overflow: hidden; border: 1px solid #e1e5ed; border-radius: 12px; background: #fff; box-shadow: 0 14px 42px rgba(31, 43, 65, .09); color: #252d3a; }
+  .console-nav { width: 170px; flex: 0 0 auto; display: flex; flex-direction: column; gap: 5px; padding: 16px 10px; border-right: 1px solid #e8ebf1; background: #fafbfe; font-size: 12px; color: #687284; }
+  .console-brand { display: flex; align-items: center; gap: 8px; padding: 4px 7px 24px; color: #252d3a; }
+  .console-brand span { width: 27px; height: 27px; display: grid; place-items: center; border-radius: 7px; background: #7650b3; color: #fff; font-size: 12px; }
+  .console-nav > div:not(.console-brand) { padding: 11px 9px; border-radius: 6px; }
+  .console-nav .nav-current { background: #f0ebf8; color: #69449e; font-weight: 700; }
+  .console-nav small { margin-top: auto; padding: 10px 7px; border-top: 1px solid #e7eaf0; color: #9aa3b2; }
+  .console-main { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+  .console-top { height: 53px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid #e8ebf1; font-size: 14px; }
+  .console-top span { color: #738096; font-size: 12px; }
+  .console-stats { display: flex; gap: 12px; padding: 15px; background: #f5f7fa; }
+  .console-stats div { flex: 1; display: flex; align-items: baseline; gap: 10px; padding: 12px 16px; border: 1px solid #e9edf3; border-radius: 7px; background: #fff; }
+  .console-stats b { color: #3478f6; font-size: 22px; }
+  .console-stats span { color: #697384; font-size: 12px; }
+  .console-columns { min-height: 0; flex: 1; display: grid; grid-template-columns: 300px minmax(0, 1fr); }
+  .session-panel { min-height: 0; overflow: auto; border-right: 1px solid #e7ebf2; }
+  .panel-heading { min-height: 50px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 16px; border-bottom: 1px solid #e9edf3; }
+  .panel-heading strong { font-size: 13px; }
+  .panel-heading span { color: #8b95a4; font-size: 11px; }
+  .session-list { min-height: 122px; padding: 12px; }
+  .ticket-review { padding: 12px; border-top: 1px solid #e9edf3; }
+  .ticket-review h3 { margin: 0 0 10px; font-size: 13px; }
+  .service-panel { min-height: 0; display: flex; flex-direction: column; }
+  .admin-messages { flex: 1; overflow: auto; padding: 18px; background: #fcfdff; }
+  .service-bottom { padding: 12px 16px; border-top: 1px solid #e9edf3; }
+  .service-actions { min-height: 32px; margin-bottom: 9px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 900px) {
+    .console-nav { display: none; }
+    .console-columns { grid-template-columns: 245px minmax(0, 1fr); }
+  }
+  @media (max-width: 620px) {
+    .demo-page { width: calc(100% - 28px); margin-top: 28px; }
+    .heading-row { align-items: start; }
+    .intro { font-size: 14px; line-height: 1.5; }
+    .reset-button { padding: 8px 10px; font-size: 12px; }
+    .view-tabs { gap: 18px; }
+    .view-tab { font-size: 14px; }
+    .view-tab span { display: none; }
+    .chat-app { height: min(640px, 78vh); border-radius: 13px; }
+    .console-app { height: 740px; }
+    .console-top { padding: 0 12px; }
+    .console-stats { gap: 6px; padding: 8px; }
+    .console-stats div { flex-direction: column; gap: 2px; padding: 8px; }
+    .console-stats b { font-size: 18px; }
+    .console-stats span { font-size: 10px; }
+    .console-columns { display: flex; flex-direction: column; }
+    .session-panel { flex: 0 0 208px; overflow: auto; border-right: 0; border-bottom: 1px solid #e7ebf2; }
+    .session-list { min-height: 0; }
+    .ticket-review { padding-top: 8px; }
+    .service-panel { min-height: 0; flex: 1; }
+  }
+</style>
+
+<style is:global>
+  .demo-page .quick-actions button:disabled { opacity: .45; cursor: not-allowed; }
+  .demo-page .primary-small, .demo-page .secondary-small { padding: 8px 11px; border: 1px solid #3478f6; border-radius: 6px; background: #3478f6; color: #fff; font-size: 11px; cursor: pointer; }
+  .demo-page .secondary-small { border-color: #cbd4e2; background: #fff; color: #536070; }
+  .demo-page .session-card { padding: 12px; border: 1px solid #dce7fa; border-radius: 7px; background: #f9fbff; }
+  .demo-page .session-card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .demo-page .session-card-top strong { font-size: 13px; }
+  .demo-page .status-pill { padding: 3px 7px; border-radius: 99px; font-size: 10px; white-space: nowrap; }
+  .demo-page .status-pill.queued { background: #fff2df; color: #a7660c; }
+  .demo-page .status-pill.human { background: #eaf8f1; color: #218559; }
+  .demo-page .status-pill.closed { background: #eff1f5; color: #6f7988; }
+  .demo-page .session-card p, .demo-page .review-card p { white-space: pre-line; margin: 7px 0; color: #697588; font-size: 12px; line-height: 1.5; }
+  .demo-page .session-card small { display: block; overflow: hidden; color: #8c97a6; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+  .demo-page .review-card { padding: 12px; border: 1px solid #e7ebf3; border-radius: 7px; }
+  .demo-page .review-card strong { font-size: 12px; }
+  .demo-page .review-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .demo-page .empty-small { margin: 8px 0; color: #98a1ae; font-size: 12px; line-height: 1.6; }
+  .demo-page .admin-empty { margin: 75px auto; max-width: 230px; color: #9ba4b1; font-size: 13px; line-height: 1.7; text-align: center; }
+  .message-row { display: flex; align-items: start; gap: 8px; margin-bottom: 16px; }
+  .message-row.patient { flex-direction: row-reverse; }
+  .message-row.system { justify-content: center; }
+  .message-avatar { width: 24px; height: 24px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: #3072f6; color: #fff; font-size: 11px; }
+  .message-row.patient .message-avatar { background: #8198c5; }
+  .message-row.agent .message-avatar { background: #d09b55; }
+  .message-content { max-width: 83%; }
+  .message-row.patient .message-content { text-align: right; }
+  .message-author { display: block; margin: 2px 0 5px; color: #8a99ac; font-size: 10px; }
+  .message-bubble { display: inline-block; margin: 0; padding: 10px 12px; border: 1px solid #e7edf8; border-radius: 3px 12px 12px 12px; background: #fff; color: #33425a; font-size: 12px; line-height: 1.65; text-align: left; white-space: pre-wrap; }
+  .message-row.patient .message-bubble { border-color: #3072f6; border-radius: 12px 3px 12px 12px; background: #3072f6; color: #fff; }
+  .message-row.agent .message-bubble { border-color: #f4e4cf; background: #fff9ef; }
+  .message-row.system .message-content { max-width: 95%; text-align: center; }
+  .message-row.system .message-author { display: none; }
+  .message-row.system .message-bubble { border: 0; background: #e9edf4; color: #67748a; font-size: 11px; }
+  .inline-card { margin-top: 7px; padding: 12px; border: 1px solid #dbe6fb; border-radius: 10px; background: #fff; text-align: left; }
+  .inline-card strong { color: #293f68; font-size: 12px; }
+  .inline-card p { margin: 8px 0; color: #657791; font-size: 11px; line-height: 1.7; white-space: pre-line; }
+  .inline-card small { color: #8190a5; font-size: 10px; }
+  .inline-card button { margin-top: 5px; }
+  .admin-message { max-width: 72%; margin: 0 0 14px; }
+  .admin-message.agent { margin-left: auto; text-align: right; }
+  .admin-message.system { max-width: 100%; text-align: center; }
+  .admin-message span { color: #98a2b0; font-size: 10px; }
+  .admin-message p { margin: 4px 0 0; padding: 10px 12px; border: 1px solid #e5eaf2; border-radius: 7px; background: #fff; color: #46546a; font-size: 12px; line-height: 1.6; white-space: pre-wrap; text-align: left; }
+  .admin-message.agent p { border-color: #e7dcf7; background: #f5f0fc; }
+  .admin-message.system p { display: inline-block; border: 0; background: #edf0f5; color: #7a8595; font-size: 11px; }
+</style>
