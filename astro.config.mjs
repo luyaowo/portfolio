@@ -18,6 +18,6 @@ export default defineConfig({
     },
   },
   integrations: [react(), markdoc(), keystatic(), sitemap({
-    filter: (page) => !/^\/stats\/?$/.test(new URL(page).pathname),
+    filter: (page) => !/^\/(?:stats|design|admin|api|keystatic|notes|404)(?:\/|$|\.html$)/.test(new URL(page).pathname),
   })],
 });

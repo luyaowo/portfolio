@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 interface Props {
   title: string;
+  seoTitle?: string;
   description: string;
   collection: 'essays' | 'ai-design' | 'design-study';
   posts: Array<CollectionEntry<'essays'> | CollectionEntry<'ai-design'> | CollectionEntry<'design-study'>>;
@@ -12,7 +13,7 @@ interface Props {
   /** 提供轻量标签筛选;顺序即页面展示顺序 */
   tags?: string[];
 }
-const { title, description, collection, posts, toggle = false, tags = [] } = Astro.props;
+const { title, seoTitle = title, description, collection, posts, toggle = false, tags = [] } = Astro.props;
 const defaultView = 'list';
 /** 优先按 frontmatter 的 order 字段排序(手动顺序),否则按 date 降序 */
 const sortedPosts = [...posts].sort((a, b) => {
@@ -25,7 +26,7 @@ const sortedPosts = [...posts].sort((a, b) => {
 });
 const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
 ---
-<Layout title={`${title} · 路遥知玛丽`} description={description}>
+<Layout title={`${seoTitle} · 路遥知玛丽`} description={description}>
   <section class="list-page" data-collection={collection} data-default-view={defaultView}>
     <header class="list-header">
       <div class="header-row">

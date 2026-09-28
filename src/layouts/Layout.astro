@@ -10,6 +10,7 @@ const {
   ogImageWidth,
   ogImageHeight,
   publishedTime,
+  articleTitle,
   privatePage = false
 } = Astro.props;
 
@@ -18,6 +19,49 @@ const pageUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageVersion = "2";
 const ogImageUrl = new URL(ogImage, siteUrl);
 ogImageUrl.searchParams.set("v", ogImageVersion);
+const author = {
+  '@type': 'Person',
+  '@id': `${siteUrl}/#author`,
+  name: '路遥知玛丽',
+  url: `${siteUrl}/about`,
+};
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    author,
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: `${siteUrl}/`,
+      name: '路遥知玛丽',
+      inLanguage: lang,
+      author: { '@id': author['@id'] },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: lang,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+    },
+    ...(ogType === 'article' ? [{
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: articleTitle ?? title,
+      description,
+      url: pageUrl,
+      image: ogImageUrl.toString(),
+      datePublished: publishedTime,
+      inLanguage: lang,
+      author: { '@id': author['@id'] },
+      mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+    }] : []),
+  ],
+};
+// Prevent content containing HTML from closing the JSON-LD script element.
+const structuredDataJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang={lang}>
@@ -42,6 +86,7 @@ ogImageUrl.searchParams.set("v", ogImageVersion);
 		<meta property="og:image:alt" content={title} />
 		<meta property="og:site_name" content="路遥知玛丽 · 个人站" />
 		<meta name="twitter:card" content="summary_large_image" />
+		{!privatePage && <script type="application/ld+json" is:inline set:html={structuredDataJson} />}
 		<meta name="theme-color" content="#f7f6f2" />
 		<script is:inline>
 			(() => {

@@ -3,6 +3,6 @@ import ArticleList from '../../components/ArticleList.astro';
 import { getCollection } from 'astro:content';
 const posts = await getCollection('ai-design');
 ---
-<ArticleList title="AI Practice" description="AI 理论与实践研究" collection="ai-design" posts={posts} toggle>
+<ArticleList title="AI Practice" seoTitle="AI 实践与设计工作流" description="记录 AI 如何融入设计与产品工作，分享智能体、工作流和 AI 工具的实践经验与思考。" collection="ai-design" posts={posts} toggle>
   AI 如何融入设计工作流？<br />这里记录理论思考、实践经验和可能的方法论。
 </ArticleList>

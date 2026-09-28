@@ -25,7 +25,7 @@ const hasToc = tocHeadings.length >= 3;
 
 <Layout title={`${title} · 路遥知玛丽`} description={summary} ogImage={ogImage}
   ogType="article" ogImageWidth={shareImage?.attributes.width} ogImageHeight={shareImage?.attributes.height}
-  publishedTime={publishedDate?.toISOString()}>
+  publishedTime={publishedDate?.toISOString()} articleTitle={title}>
 
   <div class:list={['essay-shell', { 'has-toc': hasToc, 'essay-collection-work': collection === 'work' }]}>
     <article class:list={["essay", articleClass]}>
