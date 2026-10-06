@@ -4,7 +4,9 @@ import RelatedArticles from '../components/RelatedArticles.astro';
 import WorkImagePreview from '../components/WorkImagePreview.astro';
 import { getImage } from 'astro:assets';
 
-const { title, date, headings = [], articleClass, summary, cover, publishedDate, collection, currentSlug } = Astro.props;
+const { title, date, headings = [], articleClass, summary, cover, publishedDate, updatedDate, collection, currentSlug } = Astro.props;
+const revision = updatedDate instanceof Date && publishedDate instanceof Date && updatedDate > publishedDate
+  ? updatedDate : undefined;
 const shareImage = cover && typeof cover !== 'string'
   ? await getImage({ src: cover, width: Math.min(1200, cover.width), format: 'jpeg', quality: 85 })
   : undefined;
@@ -21,22 +23,26 @@ const tocHeadings = headings.filter((heading: { depth: number }) =>
   heading.depth === 1 || heading.depth === 2
 );
 const hasToc = tocHeadings.length >= 3;
+const tocLabel = collection === 'work' ? '案例目录' : '文章目录';
 ---
 
 <Layout title={`${title} · 路遥知玛丽`} description={summary} ogImage={ogImage}
   ogType="article" ogImageWidth={shareImage?.attributes.width} ogImageHeight={shareImage?.attributes.height}
-  publishedTime={publishedDate?.toISOString()} articleTitle={title}>
+  publishedTime={publishedDate?.toISOString()} modifiedTime={revision?.toISOString()} articleTitle={title}>
 
   <div class:list={['essay-shell', { 'has-toc': hasToc, 'essay-collection-work': collection === 'work' }]}>
     <article class:list={["essay", articleClass]}>
       <header class="essay-header">
         <h1 class="essay-title">{title}</h1>
-        {date && <time class="essay-date" datetime={publishedDate?.toISOString()}>{formattedDate}</time>}
+        {date && <div class="essay-meta">
+          <time class="essay-date" datetime={publishedDate?.toISOString()}>{revision ? '发布于 ' : ''}{formattedDate}</time>
+          {revision && <span class="essay-date">最近修订于 <time datetime={revision.toISOString()}>{revision.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>}
+        </div>}
       </header>
       {hasToc && (
         <details class="essay-toc-mobile">
-          <summary>文章目录</summary>
-          <nav aria-label="文章目录">
+          <summary>{tocLabel}</summary>
+          <nav aria-label={tocLabel}>
             {tocHeadings.map((heading: { slug: string; text: string }) => (
               <a class="essay-toc-link" href={`#${heading.slug}`}>{heading.text}</a>
             ))}
@@ -51,7 +57,7 @@ const hasToc = tocHeadings.length >= 3;
 
     {
       hasToc && (
-        <aside class="essay-toc" aria-label="文章目录">
+        <aside class="essay-toc" aria-label={tocLabel}>
           <nav class="essay-toc-nav">
             {tocHeadings.map((heading: { depth: number; slug: string; text: string }) => (
               <a class:list={['essay-toc-link', `depth-${heading.depth}`]} href={`#${heading.slug}`}>
@@ -101,6 +107,12 @@ const hasToc = tocHeadings.length >= 3;
     color: var(--color-text-tertiary);
     font-size: var(--text-meta);
     line-height: var(--leading-meta);
+  }
+
+  .essay-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-20);
   }
 
   .essay-body {
@@ -417,6 +429,16 @@ const hasToc = tocHeadings.length >= 3;
     width: 100%;
   }
 
+  .essay-collection-work .essay-toc-mobile,
+  .essay-collection-work .essay-body :global(h2) {
+    width: 100%;
+  }
+
+  .essay-collection-work .essay-body :global(h2) {
+    font-size: var(--text-heading-3);
+    margin-top: var(--space-48);
+  }
+
   /* 作品页的文字介绍（如有）：与版面图同宽同左缘（仅 work 详情页生效） */
   .essay-collection-work .essay-body :global(p:not(:has(> img:only-child))),
   .essay-collection-work .essay-body :global(ol),
@@ -526,6 +548,21 @@ const hasToc = tocHeadings.length >= 3;
       max-height: calc(100vh - 112px);
       overflow-y: auto;
       overscroll-behavior: contain;
+    }
+
+    /* 作品板图保持原来的 1000px 显示宽度，目录使用右侧留白。 */
+    .essay-shell.essay-collection-work.has-toc {
+      display: block;
+      width: min(1032px, 100%);
+    }
+
+    .essay-collection-work .essay-toc {
+      position: absolute;
+      top: var(--space-24);
+      left: 100%;
+      box-sizing: border-box;
+      width: min(var(--width-toc), calc((100vw - 1032px) / 2));
+      padding-inline: var(--space-24);
     }
   }
 

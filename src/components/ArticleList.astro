@@ -25,6 +25,8 @@ const sortedPosts = [...posts].sort((a, b) => {
   return b.data.date.getTime() - a.data.date.getTime();
 });
 const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
+const listImageSizes = '(max-width: 720px) 88px, (max-width: 960px) 128px, 144px';
+const gridImageSizes = '(max-width: 720px) 88px, (max-width: 808px) calc((100vw - 112px) / 2), (max-width: 960px) 348px, 224px';
 ---
 <Layout title={`${seoTitle} · 路遥知玛丽`} description={description}>
   <section class="list-page" data-collection={collection} data-default-view={defaultView}>
@@ -66,7 +68,7 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
             {post.data.cover && (
               <figure class:list={['cover', { contain: collection !== 'essays' }]}>
                 <Image src={post.data.cover} alt="" widths={[160, 320, 640, 960]}
-                  sizes="(max-width: 720px) calc(100vw - 80px), 144px" format="webp" quality={80}
+                  sizes={listImageSizes} data-list-sizes={listImageSizes} data-grid-sizes={gridImageSizes} format="webp" quality={80}
                   loading="lazy" decoding="async" />
               </figure>
             )}
@@ -97,6 +99,9 @@ const formatDate = (date: Date) => date.toLocaleDateString('zh-CN');
         const key = 'list-view-' + root.dataset.collection;
         const apply = (view) => {
           list.classList.toggle('is-grid', view === 'grid');
+          list.querySelectorAll('.cover img').forEach((image) => {
+            image.sizes = view === 'grid' ? image.dataset.gridSizes : image.dataset.listSizes;
+          });
           buttons.forEach((b) => b.setAttribute('aria-pressed', b.dataset.view === view ? 'true' : 'false'));
           try { localStorage.setItem(key, view); } catch {}
         };

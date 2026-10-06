@@ -32,7 +32,7 @@ const photos = Object.entries(imageModules)
             src={photo}
             alt={`摄影 ${String(index + 1).padStart(2, '0')}`}
             widths={[400, 800, 1200]}
-            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+            sizes="(max-width: 480px) calc(100vw - 88px), (max-width: 720px) calc((100vw - 104px) / 2), (max-width: 1024px) calc((100vw - 120px) / 3), (max-width: 1328px) calc((100vw - 136px) / 4), 298px"
             format="webp"
             quality={80}
             loading="lazy"
@@ -46,7 +46,8 @@ const photos = Object.entries(imageModules)
 
 <style>
   .photography {
-    max-width: 1280px;
+    box-sizing: border-box;
+    width: min(var(--width-gallery), 100%);
     margin: var(--space-56) auto var(--space-120);
     padding: 0 var(--space-20);
   }

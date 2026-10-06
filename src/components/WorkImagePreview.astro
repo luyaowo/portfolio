@@ -36,7 +36,7 @@
       currentIndex = (index + images.length) % images.length;
       const source = images[currentIndex];
 
-      previewImage.src = source.currentSrc || source.src;
+      previewImage.src = source.srcset ? source.src : source.currentSrc || source.src;
       previewImage.alt = source.alt || `文章图片 ${currentIndex + 1}`;
       counter.textContent = `${currentIndex + 1} / ${images.length}`;
       previousButton.hidden = images.length < 2;
