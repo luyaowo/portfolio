@@ -54,7 +54,7 @@ const profile = {
 
 <Layout
   title="关于我 · 路遥知玛丽"
-  description="关于路遥知玛丽：从工业设计到产品设计与 AI 产品实践，记录工作经历、当前探索与联系方式。"
+  description="路遥知玛丽是我使用的网名，luyao.studio 是我的个人网站与作品集。这里介绍我的产品设计经历、AI 产品实践与当前探索。"
 >
   <main class="about">
     <div class="portrait" role="presentation">
@@ -65,6 +65,10 @@ const profile = {
         <h1>{profile.name}</h1>
         <p>{profile.intro}</p>
       </header>
+
+      <section class="block">
+        <p>「路遥知玛丽」是我使用的网名，也是这个个人站的名字。这里是 luyao.studio，用来放我的产品设计作品、AI 实践，以及摄影和写作。</p>
+      </section>
 
       {profile.sections.map((section) => (
         <section class="block">
@@ -80,13 +84,13 @@ const profile = {
         <nav class="social-links" aria-label="社交平台">
           <details class="wechat-follow">
             <summary>微信公众号</summary>
-            <div class="wechat-card">
+            <div class="wechat-follow-card">
               <img
                 src="/images/wechat-qr.jpeg"
                 alt="微信公众号二维码"
                 width="140"
                 height="140"
-                loading="lazy"
+                loading="eager"
               />
               <span>微信扫码关注</span>
             </div>
@@ -106,6 +110,36 @@ const profile = {
 
   <WalineComments />
 </Layout>
+
+<script>
+  const wechatFollow = document.querySelector<HTMLDetailsElement>('.wechat-follow');
+  if (wechatFollow) {
+    const hoverPointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    wechatFollow.addEventListener('pointerenter', (event) => {
+      if (hoverPointer.matches && event.pointerType !== 'touch') wechatFollow.open = true;
+    });
+    wechatFollow.addEventListener('pointerleave', (event) => {
+      if (hoverPointer.matches && event.pointerType !== 'touch') wechatFollow.open = false;
+    });
+    wechatFollow.querySelector('summary')?.addEventListener('click', (event) => {
+      if (hoverPointer.matches && event.detail > 0) {
+        event.preventDefault();
+        wechatFollow.open = true;
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Node && !wechatFollow.contains(event.target)) {
+        wechatFollow.open = false;
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && wechatFollow.open) {
+        wechatFollow.open = false;
+        wechatFollow.querySelector('summary')?.focus({ preventScroll: true });
+      }
+    });
+  }
+</script>
 
 <style>
   .about {
@@ -235,7 +269,7 @@ const profile = {
     display: none;
   }
 
-  .wechat-card {
+  .wechat-follow-card {
     position: absolute;
     z-index: 1;
     top: calc(100% + var(--space-12));
@@ -250,13 +284,22 @@ const profile = {
     box-shadow: var(--shadow-float);
   }
 
-  .wechat-card img {
+  .wechat-follow-card::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    height: var(--space-12);
+  }
+
+  .wechat-follow-card img {
     display: block;
     width: 140px;
     height: 140px;
   }
 
-  .wechat-card span {
+  .wechat-follow-card span {
     color: var(--color-text-tertiary);
     font-size: var(--text-meta);
     line-height: 1.4;
@@ -310,9 +353,8 @@ const profile = {
       gap: var(--space-8) var(--space-16);
     }
 
-    .wechat-card {
-      position: static;
-      margin-top: var(--space-8);
+    .wechat-follow-card {
+      max-width: calc(100vw - var(--space-40));
     }
   }
 </style>
