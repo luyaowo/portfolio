@@ -11,6 +11,9 @@ import rehypeArticleImages from './src/lib/rehype-article-images.mjs';
 export default defineConfig({
   site: 'https://luyao.studio',
   adapter: vercel(),
+  image: {
+    service: { entrypoint: './src/lib/image-service.mjs' },
+  },
   markdown: {
     rehypePlugins: [rehypeArticleImages],
   },
